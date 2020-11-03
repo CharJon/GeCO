@@ -80,8 +80,7 @@ def capacitated_facility_location(n_customers, n_facilities, ratio, seed=0):
     model.addCons(scip.quicksum(capacities[j] * facility_vars[j] for j in range(n_facilities)) >= total_demand)
 
     # affectation constraints
-    for i in range(n_customers):
-        for j in range(n_facilities):
-            model.addCons(customer_facility_vars[i, j] <= facility_vars[j])
+    for i, j in itertools.product(range(n_customers), range(n_facilities)):
+        model.addCons(customer_facility_vars[i, j] <= facility_vars[j])
 
     return model
