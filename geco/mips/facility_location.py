@@ -68,24 +68,20 @@ def capacitated_facility_location(n_customers, n_facilities, ratio, seed=0):
 
     # add constraints
     for i in range(n_customers):
-        negative_customer_facility_vars = (-1 * customer_facility_vars[i, j] for j in range(n_facilities))
-        model.addCons(scip.quicksum(negative_customer_facility_vars) <= -1)
+        model.addCons(scip.quicksum(customer_facility_vars[i, j] for j in range(n_facilities)) >= 1)
     for j in range(n_facilities):
-        facility_constraint_vars = itertools.chain(
-            (demands[i] * customer_facility_vars[i, j] for i in range(n_customers)),
-            [-1 * capacities[j] * facility_vars[j]]
-        )
-        model.addCons(scip.quicksum(facility_constraint_vars) <= 0)
+        model.addCons(
+            scip.quicksum(demands[i] * customer_facility_vars[i, j] for i in range(n_customers))
+            <= capacities[j] * facility_vars[j])
 
     # optional constraints
 
     # total capacity constraint
-    variables = (-1 * capacities[j] * facility_vars[j] for j in range(n_facilities))
-    model.addCons(scip.quicksum(variables) <= -1 * total_demand)
+    model.addCons(scip.quicksum(capacities[j] * facility_vars[j] for j in range(n_facilities)) >= total_demand)
 
     # affectation constraints
     for i in range(n_customers):
         for j in range(n_facilities):
-            model.addCons(customer_facility_vars[i, j] - facility_vars[j] <= 0)
+            model.addCons(customer_facility_vars[i, j] <= facility_vars[j])
 
     return model
