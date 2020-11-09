@@ -9,11 +9,12 @@ dependencies:
   - numpy
   - scipy
   - jupyter
-  - pytest
   - pandas
   - tqdm
   - pyscipopt
   - networkx
+  - pytest
+  - coverage
   - pip:
       - git+https://github.com/rhgrant10/tsplib95.git
       - dwave_networkx
