@@ -6,7 +6,7 @@ import pyscipopt as scip
 
 def yang(n, seed):
     """
-        This function is based on the MIP generation techniques described in
+    Generates knapsack instance parameters according to:
         Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
         "Learning Generalized Strong Branching for Set Covering,
         Set Packing, and 0-1 Knapsack Problems", 2020.
