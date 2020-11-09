@@ -6,8 +6,8 @@ from geco.mips.knapsack import *
 
 @pytest.mark.parametrize("n,seed", itertools.product([10, 100, 1000], [0, 1, 1337, 53115]))
 def test_yang_knapsack_creation(n, seed):
-    param = yang(n, seed=seed)
-    model = knapsack(*param)
+    params = yang(n, seed=seed)
+    model = knapsack(*params)
     assert model.getNVars() == n
     assert model.getNConss() == 1
     assert model.getObjectiveSense() == 'maximize'

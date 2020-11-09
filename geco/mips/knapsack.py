@@ -16,11 +16,11 @@ def yang(n, seed):
     def draw_value():
         return random.randint(1, 10 * n)
 
-    profit = [draw_value() for _ in range(n)]
+    profits = [draw_value() for _ in range(n)]
     weights = [draw_value() for _ in range(n)]
     capacity = math.floor(sum(weights) / 5)
 
-    return profit, weights, capacity
+    return profits, weights, capacity
 
 
 def knapsack(weights, profits, capacity, name="Knapsack"):
