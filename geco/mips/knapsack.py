@@ -25,6 +25,9 @@ def yang(n, seed):
 
 def knapsack(weights, profits, capacity, name="Knapsack"):
     assert len(weights) == len(profits)
+    assert capacity >= 0
+    assert all(w >= 0 for w in weights)
+    assert all(p >= 0 for p in profits)
 
     model = scip.Model(name)
     # add variables and their cost
