@@ -60,4 +60,3 @@ def test_heinz_formulation():
     assert m_1.getObjectiveSense() == "minimize"
 
     m_1.optimize()
-    m_1.writeProblem("schedule_test.lp")
