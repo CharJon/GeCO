@@ -2,8 +2,10 @@ import itertools
 
 import numpy as np
 import pyscipopt as scip
+from networkx.utils import py_random_state
 
 
+@py_random_state(3)
 def capacitated_facility_location(n_customers, n_facilities, ratio, seed=0):
     """
     Generate a Capacited Facility Location problem following
@@ -19,23 +21,21 @@ def capacitated_facility_location(n_customers, n_facilities, ratio, seed=0):
         The desired number of facilities.
     ratio: float
         The desired capacity / demand ratio.
-    seed: int
-        The seed to use for random numbers.
+    seed: integer, random_state, or None
+        Indicator of random number generation state.
     """
-    rng = np.random.RandomState(seed)
-
     # locations for customers
-    c_x = rng.rand(n_customers)
-    c_y = rng.rand(n_customers)
+    c_x = np.array([seed.random() for _ in range(n_customers)])
+    c_y = np.array([seed.random() for _ in range(n_customers)])
 
     # locations for facilities
-    f_x = rng.rand(n_facilities)
-    f_y = rng.rand(n_facilities)
+    f_x = np.array([seed.random() for _ in range(n_facilities)])
+    f_y = np.array([seed.random() for _ in range(n_facilities)])
 
-    demands = rng.randint(5, 35 + 1, size=n_customers)
-    capacities = rng.randint(10, 160 + 1, size=n_facilities)
-    fixed_costs = rng.randint(100, 110 + 1, size=n_facilities) * np.sqrt(capacities) \
-                  + rng.randint(90 + 1, size=n_facilities)
+    demands = np.array(seed.sample(range(5, 35 + 1), k=n_customers))
+    capacities = np.array(seed.sample(range(10, 160 + 1), k=n_facilities))
+    fixed_costs = np.array(seed.sample(range(100, 110 + 1), k=n_facilities) * np.sqrt(capacities)) \
+                  + np.array(seed.sample(range(90 + 1), k=n_facilities))
     fixed_costs = fixed_costs.astype(int)
 
     total_demand = demands.sum()

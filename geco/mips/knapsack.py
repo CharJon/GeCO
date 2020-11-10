@@ -1,20 +1,20 @@
-import random
 import math
 
 import pyscipopt as scip
+from networkx.utils import py_random_state
 
 
-def yang(n, seed):
+@py_random_state(1)
+def yang(n, seed=0):
     """
     Generates knapsack instance parameters according to:
         Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
         "Learning Generalized Strong Branching for Set Covering,
         Set Packing, and 0-1 Knapsack Problems", 2020.
     """
-    random.seed(seed)
 
     def draw_value():
-        return random.randint(1, 10 * n)
+        return seed.randint(1, 10 * n)
 
     profits = [draw_value() for _ in range(n)]
     weights = [draw_value() for _ in range(n)]
