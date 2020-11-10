@@ -47,10 +47,12 @@ def naive(graph: nx):
         node_variables[v] = model.addVar(lb=0, ub=1, obj=0, name=str(v), vtype="B")
 
     edge_variables = {}
+    all_non_negative = True
     for u, v, d in graph.edges(data=True):
         edge_name = naming.undirected_edge_name(u, v)
         weight = d["weight"]
         edge_variables[edge_name] = model.addVar(lb=0, ub=1, obj=weight, name=edge_name, vtype="B")
+        if weight < 0: all_non_negative = False
 
     model.setMaximize()
 
@@ -58,8 +60,9 @@ def naive(graph: nx):
         edge_name = naming.undirected_edge_name(u, v)
         model.addCons(node_variables[u] + node_variables[v] + edge_variables[edge_name] <= 2)
         model.addCons(-node_variables[u] - node_variables[v] + edge_variables[edge_name] <= 0)
-        model.addCons(node_variables[u] - node_variables[v] - edge_variables[edge_name] <= 0)
-        model.addCons(-node_variables[u] + node_variables[v] - edge_variables[edge_name] <= 0)
+        if not all_non_negative:
+            model.addCons(node_variables[u] - node_variables[v] - edge_variables[edge_name] <= 0)
+            model.addCons(-node_variables[u] + node_variables[v] - edge_variables[edge_name] <= 0)
 
     return (node_variables, edge_variables), model
 
