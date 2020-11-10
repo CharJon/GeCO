@@ -3,8 +3,9 @@ This module implements the scheduling problem MIP generation techniques from dif
 """
 
 import itertools
+
 import pyscipopt as scip
-import random
+from networkx.utils import py_random_state
 
 
 def hooker_late_tasks_formulation(
@@ -15,8 +16,7 @@ def hooker_late_tasks_formulation(
         C,
         c,
         r,
-        d,
-        seed=0,
+        d
 ):
     # TODO: use more expressive param names
     """Generates late tasks mip formulation described in section 4 in
@@ -25,13 +25,11 @@ def hooker_late_tasks_formulation(
     number_of_facilities: the number of facilities to schedule on
     number_of_tasks: the number of tasks to assign to facilities
     time_steps: the number of time steps starting from 0 (corresponds to "N" in the paper)
-    seed: used for randomization
     Other parameters follow the same naming used in the paper
 
     Returns:
         model: SCIP model of the late tasks instance
     """
-    random.seed(seed)
     model = scip.Model("Hooker Scheduling Late Tasks Formulation")
     assert min(r) == 0  # TODO: handle the case that timesteps don't start at 0
 
@@ -103,21 +101,21 @@ def generate_hookers_instances():
         )
 
 
-def generate_params(number_of_facilities, number_of_tasks, seed):
-    random.seed(seed)
+@py_random_state(2)
+def generate_params(number_of_facilities, number_of_tasks, seed=0):
     p = {}
 
     for j, i in itertools.product(range(number_of_tasks), range(number_of_facilities)):
         if number_of_tasks < 22:
-            p[j, i] = random.randint(2, 20 + 5 * i)
+            p[j, i] = seed.randint(2, 20 + 5 * i)
         else:
-            p[j, i] = random.randint(5, 20 + 5 * i)
+            p[j, i] = seed.randint(5, 20 + 5 * i)
 
     C = [10] * number_of_facilities
 
     c = {}
     for i in range(number_of_facilities):
-        value = random.randint(1, 10)
+        value = seed.randint(1, 10)
         for j in range(number_of_tasks):
             c[j, i] = value
 
@@ -126,11 +124,11 @@ def generate_params(number_of_facilities, number_of_tasks, seed):
     d = {}
     beta = 20 / 9
     for j in range(number_of_tasks):
-        d[j] = random.uniform(beta * number_of_tasks / 4, beta * number_of_tasks)
+        d[j] = seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks)
 
     r = {}
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
-        r[j, k] = random.randint(1, 9)
+        r[j, k] = seed.randint(1, 9)
 
     return p, C, c, R, d, r
 
@@ -143,8 +141,7 @@ def heinz_formulation(
         c,
         R,
         d,
-        r,
-        seed=0,
+        r
 ):
     """Generates mip formulation according to Model 4 in
     # TODO: Add paper reference
@@ -152,12 +149,10 @@ def heinz_formulation(
     number_of_facilities: the number of facilities to schedule on
     number_of_tasks: the number of tasks to assign to facilities
     time_steps: the number of time steps starting from 0 (corresponds to "N" in the paper)
-    seed: used for randomization
 
     Returns:
         model: SCIP model of the late tasks instance
     """
-    random.seed(seed)
     model = scip.Model("Heinz Scheduling")
     time_steps = range(min(R), int(max(d.values())))
 
