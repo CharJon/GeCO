@@ -1,12 +1,13 @@
 import itertools
-import random
 
 import networkx as nx
 import pyscipopt as scip
+from networkx.utils import py_random_state
 
 import geco.mips.utilities.naming as naming
 
 
+@py_random_state(2)
 def tang(n, m, seed=0):
     """Generates a max-cut instance as described in A.2 in
         Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
@@ -14,12 +15,12 @@ def tang(n, m, seed=0):
         Args:
             n (int): number of nodes
             m (int): number of edges
-            seed (int): seed for randomization
+            seed (int, random state or None): seed for randomization
     """
-    random.seed(seed)
-    graph = nx.generators.gnm_random_graph(n, m)
+
+    graph = nx.generators.gnm_random_graph(n, m, seed=seed)
     for _, _, data in graph.edges(data=True):
-        data['weight'] = random.randint(0, 10)
+        data['weight'] = seed.randint(0, 10)
     _, model = naive(graph)
     return model
 
