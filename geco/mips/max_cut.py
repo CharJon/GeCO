@@ -80,11 +80,11 @@ def triangle(graph: nx):
     model.setMaximize()
 
     for i, j, k in itertools.combinations(graph.nodes(), 3):
-        Xij = _get_edge_variable(i, j, edge_variables)
-        Xik = _get_edge_variable(i, k, edge_variables)
-        Xkj = _get_edge_variable(k, j, edge_variables)
-        model.addCons(Xij <= Xik + Xkj)
-        model.addCons(Xij + Xik + Xkj <= 2)
+        x_ij = _get_edge_variable(i, j, edge_variables)
+        x_ik = _get_edge_variable(i, k, edge_variables)
+        x_kj = _get_edge_variable(k, j, edge_variables)
+        model.addCons(x_ij <= x_ik + x_kj)
+        model.addCons(x_ij + x_ik + x_kj <= 2)
 
     return edge_variables, model
 
