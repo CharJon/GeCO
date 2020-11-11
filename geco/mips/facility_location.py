@@ -5,8 +5,7 @@ import pyscipopt as scip
 from networkx.utils import py_random_state
 
 
-def capacitated_facility_location(n_customers, n_facilities, ratio, c_x, c_y, f_x, f_y, demands, capacities,
-                                  fixed_costs):
+def capacitated_facility_location(n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities):
     """
     Generate a Capacited Facility Location problem following
         Cornuejols G, Sridharan R, Thizy J-M (1991)
@@ -19,34 +18,17 @@ def capacitated_facility_location(n_customers, n_facilities, ratio, c_x, c_y, f_
         The desired number of customers.
     n_facilities: int
         The desired number of facilities.
-    ratio: float
-        The desired capacity / demand ratio.
-    c_x: list[int]
-        The x-coordinates of customers' locations.
-    c_y: list[int]
-        The y-coordinates of customers' locations.
-    f_x: list[int]
-        The x-coordinates of facilities' locations.
-    f_y: list[int]
-        The y-coordinates of facilities' locations.
+    transportation_cost:
+        Matrix of transportation costs from customer i to facility j [i,j]
     demands: list[int]
         Demands of each customer.
-    capacities: list[int]
-        Capacities of each facility.
     fixed_costs: list[int]
         Fixed costs of operating each facility.
+    capacities: list[int]
+        Capacities of each facility.
     """
     total_demand = demands.sum()
     total_capacity = capacities.sum()
-
-    # adjust capacities according to ratio
-    capacities = capacities * ratio * total_demand / total_capacity
-    capacities = capacities.astype(int)
-
-    # transportation costs
-    trans_costs = np.sqrt(
-        (c_x.reshape((-1, 1)) - f_x.reshape((1, -1))) ** 2 \
-        + (c_y.reshape((-1, 1)) - f_y.reshape((1, -1))) ** 2) * 10 * demands.reshape((-1, 1))
 
     model = scip.Model("Capacitated Facility Location")
 
@@ -56,7 +38,7 @@ def capacitated_facility_location(n_customers, n_facilities, ratio, c_x, c_y, f_
     facility_vars = []
     # add customer-facility vars
     for i, j in itertools.product(range(n_customers), range(n_facilities)):
-        var = model.addVar(lb=0, ub=1, obj=trans_costs[i, j], name=f"x_{i}_{j}", vtype="B")
+        var = model.addVar(lb=0, ub=1, obj=transportation_cost[i, j], name=f"x_{i}_{j}", vtype="B")
         customer_facility_vars[i, j] = var
     # add facility vars
     for j in range(n_facilities):
@@ -83,8 +65,8 @@ def capacitated_facility_location(n_customers, n_facilities, ratio, c_x, c_y, f_
     return model
 
 
-@py_random_state(2)
-def cornuejols_instance_params(n_customers, n_facilities, seed):
+@py_random_state(3)
+def cornuejols_instance_params(n_customers, n_facilities, ratio, seed):
     # locations for customers
     c_x = np.array([seed.random() for _ in range(n_customers)])
     c_y = np.array([seed.random() for _ in range(n_customers)])
@@ -98,4 +80,15 @@ def cornuejols_instance_params(n_customers, n_facilities, seed):
     fixed_costs = np.array(seed.sample(range(100, 110 + 1), k=n_facilities) * np.sqrt(capacities)) + np.array(
         seed.sample(range(90 + 1), k=n_facilities))
     fixed_costs = fixed_costs.astype(int)
-    return c_x, c_y, f_x, f_y, demands, capacities, fixed_costs
+
+    # adjust capacities according to ratio
+    total_demand = demands.sum()
+    total_capacity = capacities.sum()
+    capacities = capacities * ratio * total_demand / total_capacity
+    capacities = capacities.astype(int)
+
+    # transportation cost
+    trans_costs = np.sqrt(
+        (c_x.reshape((-1, 1)) - f_x.reshape((1, -1))) ** 2 \
+        + (c_y.reshape((-1, 1)) - f_y.reshape((1, -1))) ** 2) * 10 * demands.reshape((-1, 1))
+    return trans_costs, demands, fixed_costs, capacities
