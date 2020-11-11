@@ -20,11 +20,11 @@ def capacitated_facility_location(n_customers, n_facilities, transportation_cost
         The desired number of facilities.
     transportation_cost:
         Matrix of transportation costs from customer i to facility j [i,j]
-    demands: list[int]
+    demands: numpy array [int]
         Demands of each customer.
-    fixed_costs: list[int]
+    fixed_costs: numpy array [int]
         Fixed costs of operating each facility.
-    capacities: list[int]
+    capacities: numpy array [int]
         Capacities of each facility.
     """
     total_demand = demands.sum()
