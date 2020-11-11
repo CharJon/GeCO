@@ -5,6 +5,12 @@ import pyscipopt as scip
 from networkx.utils import py_random_state
 
 
+@py_random_state(3)
+def cornuejols_instance(n_customers, n_facilities, ratio, seed=0):
+    return capacitated_facility_location(n_customers, n_facilities,
+                                         *cornuejols_instance_params(n_customers, n_facilities, ratio, seed))
+
+
 def capacitated_facility_location(n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities):
     """
     Generate a Capacited Facility Location problem following
