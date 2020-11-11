@@ -18,7 +18,7 @@ def capacitated_facility_location(n_customers, n_facilities, transportation_cost
         The desired number of customers.
     n_facilities: int
         The desired number of facilities.
-    transportation_cost:
+    transportation_cost: numpy array [float]
         Matrix of transportation costs from customer i to facility j [i,j]
     demands: numpy array [int]
         Demands of each customer.
