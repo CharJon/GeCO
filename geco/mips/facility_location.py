@@ -28,7 +28,6 @@ def capacitated_facility_location(n_customers, n_facilities, transportation_cost
         Capacities of each facility.
     """
     total_demand = demands.sum()
-    total_capacity = capacities.sum()
 
     model = scip.Model("Capacitated Facility Location")
 
