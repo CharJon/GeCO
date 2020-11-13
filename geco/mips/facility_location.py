@@ -1,3 +1,10 @@
+"""Parts of this code are heavily based on the Code available in https://github.com/ds4dm/learn2branch
+which was used for
+ "Exact Combinatorial Optimization with Graph Convolutional Neural Networks" (2019)
+  Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
+  Advances in Neural Information Processing Systems 32 (2019)
+"""
+
 import itertools
 
 import numpy as np
