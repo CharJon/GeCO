@@ -3,7 +3,7 @@ from geco.mips.max_cut import *
 
 def test_tang():
     n, m = 100, 50
-    model = tang(n, m)
+    model = tang_instance(n, m)
     assert model.getNVars() == m + n
     assert model.getNConss() == 2 * m
     assert model.getObjectiveSense() == 'maximize'

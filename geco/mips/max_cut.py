@@ -8,7 +8,7 @@ import geco.mips.utilities.naming as naming
 
 
 @py_random_state(2)
-def tang(n, m, seed=0):
+def tang_instance(n, m, seed=0):
     """Generates a max-cut instance as described in A.2 in
         Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
         programming: Learning to cut. arXiv preprint arXiv:1906.04859.
