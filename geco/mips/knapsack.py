@@ -5,7 +5,12 @@ from networkx.utils import py_random_state
 
 
 @py_random_state(1)
-def yang(n, seed=0):
+def yang_instance(n, seed=0):
+    return knapsack(*yang_parameter(n, seed))
+
+
+@py_random_state(1)
+def yang_parameter(n, seed=0):
     """
     Generates knapsack instance parameters according to:
         Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
