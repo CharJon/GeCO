@@ -64,17 +64,10 @@ def test_heinz_formulation():
 
 def test_param_generation_seeding():
     n_resources, n_tasks = 10, 10
-    seed1 = 1
-    seed2 = 2
-    params1 = generate_params(n_resources, n_tasks, seed1)
-    params2 = generate_params(n_resources, n_tasks, seed2)
+    params1 = generate_params(n_resources, n_tasks, seed=1)
+    params2 = generate_params(n_resources, n_tasks, seed=2)
 
-    one_number_is_different = False
-    for i, param in enumerate(params1):
-        for key in get_keys(param):
-            assert key in get_keys(params2[i])
-            if params2[i][key] != param[key]: one_number_is_different = True
-    assert one_number_is_different
+    assert params1 != params2
 
 
 def test_hooker_simple_instance():
