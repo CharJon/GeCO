@@ -60,3 +60,34 @@ def test_heinz_formulation():
     assert model.getObjectiveSense() == "minimize"
 
     model.optimize()
+
+
+def test_param_generation_seeding():
+    n_resources, n_tasks = 10, 10
+    seed1 = 1
+    seed2 = 2
+    params1 = generate_params(n_resources, n_tasks, seed1)
+    params2 = generate_params(n_resources, n_tasks, seed2)
+
+    one_number_is_different = False
+    for i, param in enumerate(params1):
+        for key in get_keys(param):
+            assert key in get_keys(params2[i])
+            if params2[i][key] != param[key]: one_number_is_different = True
+    assert one_number_is_different
+
+
+def get_keys(iterable):
+    """
+    Given a list or a dict returns keys(indices)
+
+    Returns
+    -------
+    an iterable of keys
+    """
+    if isinstance(iterable, list):
+        return range(len(iterable))
+    elif isinstance(iterable, dict):
+        return iterable.keys()
+    else:
+        raise ValueError("iterable given should be of type list or dict")
