@@ -142,8 +142,11 @@ def heinz_formulation(
         d,
         r
 ):
-    """Generates mip formulation according to Model 4 in
-    # TODO: Add paper reference
+    """Generates MIP formulation according to Model 4 in
+    Heinz, J. (2013). Recent Improvements Using Constraint Integer Programming for Resource Allocation and Scheduling.
+    In Integration of AI and OR Techniques in Constraint Programming for Combinatorial Optimization Problems
+    (pp. 12–27). Springer Berlin Heidelberg.
+
 
     number_of_facilities: the number of facilities to schedule on
     number_of_tasks: the number of tasks to assign to facilities
