@@ -77,6 +77,25 @@ def test_param_generation_seeding():
     assert one_number_is_different
 
 
+def test_hooker_simple_instance():
+    hooker_model = hooker_late_tasks_formulation(*simple_instance_params()[:-1])
+    hooker_model.hideOutput()
+    hooker_model.optimize()
+    assert hooker_model.getStatus() == 'optimal'
+    assert hooker_model.getObjVal() == 0
+
+
+def test_heinz_simple_instance():
+    n_resources, n_tasks, time_steps, processing_times, capacities, assignment_costs, \
+    release_times, deadlines, resource_requirements = simple_instance_params()
+    heinz_model = heinz_formulation(n_resources, n_tasks, processing_times, capacities, assignment_costs,
+                                    release_times, deadlines, resource_requirements)
+    heinz_model.hideOutput()
+    heinz_model.optimize()
+    assert heinz_model.getStatus() == 'optimal'
+    assert heinz_model.getObjVal() == 1
+
+
 def get_keys(iterable):
     """
     Given a list or a dict returns keys(indices)
@@ -91,3 +110,18 @@ def get_keys(iterable):
         return iterable.keys()
     else:
         raise ValueError("iterable given should be of type list or dict")
+
+
+def simple_instance_params():
+    n_resources = 1
+    n_tasks = 1
+    time_steps = 1
+    processing_times = {(0, 0): 1}
+    capacities = [1]
+    assignment_costs = {(0, 0): 1}
+    release_times = [0]
+    # change the deadline to 0 or 1 to make it infeasible for the heinz formulation
+    # and add 1 late task to the hooker formulation
+    deadlines = {0: 2}
+    resource_requirements = {(0, 0): 1}
+    return n_resources, n_tasks, time_steps, processing_times, capacities, assignment_costs, release_times, deadlines, resource_requirements
