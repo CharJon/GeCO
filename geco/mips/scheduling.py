@@ -18,7 +18,6 @@ def hooker_late_tasks_formulation(
         release_dates,
         deadlines
 ):
-    # TODO: use more expressive param names
     """Generates late tasks mip formulation described in section 4 in
     Hooker, John. (2005). Planning and Scheduling to Minimize Tardiness. 314-327. 10.1007/11564751_25.
 
