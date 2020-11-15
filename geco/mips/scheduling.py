@@ -31,7 +31,8 @@ def hooker_late_tasks_formulation(
         model: SCIP model of the late tasks instance
     """
     model = scip.Model("Hooker Scheduling Late Tasks Formulation")
-    assert min(r) == 0  # TODO: handle the case that timesteps don't start at 0
+    start_time = min(r)
+    time_steps = range(start_time, start_time + time_steps + 1)
 
     # add variables and their cost
     L = []
@@ -42,14 +43,14 @@ def hooker_late_tasks_formulation(
     # assignment vars
     x = {}
     for j, i, t in itertools.product(
-            range(number_of_tasks), range(number_of_facilities), range(time_steps)
+            range(number_of_tasks), range(number_of_facilities), time_steps
     ):
         var = model.addVar(lb=0, ub=1, obj=0, name=f"x_{j}_{i}_{t}", vtype="B")
         x[j, i, t] = var
 
     # add constraints
     # constraint (a)
-    for j, t in itertools.product(range(number_of_tasks), range(time_steps)):
+    for j, t in itertools.product(range(number_of_tasks), time_steps):
         model.addCons(
             time_steps * L[j]
             >= scip.quicksum(
@@ -61,14 +62,12 @@ def hooker_late_tasks_formulation(
     for j in range(number_of_tasks):
         vars = (
             x[j, i, t]
-            for i, t in itertools.product(
-            range(number_of_facilities), range(time_steps)
-        )
+            for i, t in itertools.product(range(number_of_facilities), time_steps)
         )
         model.addCons(scip.quicksum(vars) == 1)
 
     # constraint (c)
-    for i, t in itertools.product(range(number_of_facilities), range(time_steps)):
+    for i, t in itertools.product(range(number_of_facilities), time_steps):
         vars = []
         for j in range(number_of_tasks):
             vars += [
@@ -80,7 +79,7 @@ def hooker_late_tasks_formulation(
 
     # constraint (d)
     for i, j, t in itertools.product(
-            range(number_of_facilities), range(number_of_tasks), range(time_steps)
+            range(number_of_facilities), range(number_of_tasks), time_steps
     ):
         if t < r[j] or t > time_steps - p[j, i]:
             model.addCons(x[j, i, t] == 0)
