@@ -101,34 +101,34 @@ def generate_hookers_instances():
 
 @py_random_state(2)
 def generate_params(number_of_facilities, number_of_tasks, seed=0):
-    p = {}
+    processing_times = {}
 
     for j, i in itertools.product(range(number_of_tasks), range(number_of_facilities)):
         if number_of_tasks < 22:
-            p[j, i] = seed.randint(2, 20 + 5 * i)
+            processing_times[j, i] = seed.randint(2, 20 + 5 * i)
         else:
-            p[j, i] = seed.randint(5, 20 + 5 * i)
+            processing_times[j, i] = seed.randint(5, 20 + 5 * i)
 
-    C = [10] * number_of_facilities
+    capacities = [10] * number_of_facilities
 
-    c = {}
+    assignment_costs = {}
     for i in range(number_of_facilities):
         value = seed.randint(1, 10)
         for j in range(number_of_tasks):
-            c[j, i] = value
+            assignment_costs[j, i] = value
 
-    R = [0] * number_of_tasks
+    release_times = [0] * number_of_tasks
 
-    d = {}
+    deadlines = {}
     beta = 20 / 9
     for j in range(number_of_tasks):
-        d[j] = seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks)
+        deadlines[j] = seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks)
 
-    r = {}
+    resource_requirements = {}
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
-        r[j, k] = seed.randint(1, 9)
+        resource_requirements[j, k] = seed.randint(1, 9)
 
-    return p, C, c, R, d, r
+    return processing_times, capacities, assignment_costs, release_times, deadlines, resource_requirements
 
 
 def heinz_formulation(
