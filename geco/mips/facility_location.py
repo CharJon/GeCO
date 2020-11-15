@@ -1,10 +1,3 @@
-"""Parts of this code are heavily based on the Code available in https://github.com/ds4dm/learn2branch
-which was used for
- "Exact Combinatorial Optimization with Graph Convolutional Neural Networks" (2019)
-  Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
-  Advances in Neural Information Processing Systems 32 (2019)
-"""
-
 import itertools
 
 import numpy as np
@@ -79,6 +72,12 @@ def capacitated_facility_location(n_customers, n_facilities, transportation_cost
 
 @py_random_state(3)
 def cornuejols_instance_params(n_customers, n_facilities, ratio, seed):
+    """This code is heavily based on the code available in
+     https://github.com/ds4dm/learn2branch which was used in
+     "Exact Combinatorial Optimization with Graph Convolutional Neural Networks" (2019)
+      Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
+      Advances in Neural Information Processing Systems 32 (2019)
+    """
     # locations for customers
     c_x = np.array([seed.random() for _ in range(n_customers)])
     c_y = np.array([seed.random() for _ in range(n_customers)])
