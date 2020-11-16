@@ -10,3 +10,15 @@ def test_capacitated_facility_location():
     assert model.getObjectiveSense() == "minimize"
     model.optimize()
     assert 5856 <= model.getObjVal() <= 5857
+
+
+def test_seeding():
+    n_customers, n_facilities, ratio = 10, 10, 3
+    params1 = cornuejols_instance_params(n_customers, n_facilities, ratio, seed=1)
+    params2 = cornuejols_instance_params(n_customers, n_facilities, ratio, seed=2)
+    something_different = False
+    for param1, param2 in zip(params1, params2):
+        if (param1 != param2).any():
+            something_different = True
+            break
+    assert something_different
