@@ -1,0 +1,8 @@
+language: python
+# command to install dependencies
+install:
+  - conda env create -n GeCO --file conda-env.yml
+# command to run tests
+script:
+  - conda activate GeCO
+  - pytest
