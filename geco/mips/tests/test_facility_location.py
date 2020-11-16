@@ -15,7 +15,7 @@ def test_capacitated_facility_location():
     assert 5403 <= model.getObjVal() <= 5404
 
 
-@pytest.mark.parametrize("n_customers, n_facilities, ratio ,seed1, seed2",
+@pytest.mark.parametrize("n_customers,n_facilities,ratio,seed1,seed2",
                          itertools.product([3, 10, 15], [3, 10, 15], [1, 2], [0, 1, 1337, 53115],
                                            [0, 1, 1337, 53115]))
 def test_seeding(n_customers, n_facilities, ratio, seed1, seed2):
