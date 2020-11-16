@@ -58,3 +58,10 @@ def test_naive_non_negative():
     model.optimize()
     assert model.getStatus() == 'optimal'
     assert model.getObjVal() == 2
+
+
+def test_seeding():
+    graph = nx.generators.complete_graph(3)
+    weights1 = tang_weights(graph, seed=1)
+    weights2 = tang_weights(graph, seed=2)
+    assert weights1 != weights2
