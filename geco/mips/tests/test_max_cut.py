@@ -1,3 +1,5 @@
+import pytest
+
 from geco.mips.max_cut import *
 
 
@@ -58,3 +60,14 @@ def test_naive_non_negative():
     model.optimize()
     assert model.getStatus() == "optimal"
     assert model.getObjVal() == 2
+
+
+@pytest.mark.parametrize(
+    "n,seed1,seed2",
+    itertools.product([3, 10, 100], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+)
+def test_seeding(n, seed1, seed2):
+    graph = nx.generators.complete_graph(n)
+    weights1 = tang_weights(graph, seed=seed1)
+    weights2 = tang_weights(graph, seed=seed2)
+    assert seed1 == seed2 or weights1 != weights2

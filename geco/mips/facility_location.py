@@ -93,7 +93,7 @@ def capacitated_facility_location(
     return model
 
 
-@py_random_state(3)
+@py_random_state(-1)
 def cornuejols_instance_params(n_customers, n_facilities, ratio, seed):
     # locations for customers
     c_x = np.array([seed.random() for _ in range(n_customers)])
@@ -103,11 +103,13 @@ def cornuejols_instance_params(n_customers, n_facilities, ratio, seed):
     f_x = np.array([seed.random() for _ in range(n_facilities)])
     f_y = np.array([seed.random() for _ in range(n_facilities)])
 
-    demands = np.array(seed.sample(range(5, 35 + 1), k=n_customers))
-    capacities = np.array(seed.sample(range(10, 160 + 1), k=n_facilities))
+    demands = np.array([seed.randint(5, 35 + 1) for _ in range(n_customers)])
+    capacities = np.array([seed.randint(10, 160 + 1) for _ in range(n_facilities)])
     fixed_costs = np.array(
-        seed.sample(range(100, 110 + 1), k=n_facilities) * np.sqrt(capacities)
-    ) + np.array(seed.sample(range(90 + 1), k=n_facilities))
+        [seed.randint(100, 110 + 1) for _ in range(n_facilities)]
+    ) * np.sqrt(capacities) + np.array(
+        [seed.randint(0, 90 + 1) for _ in range(n_facilities)]
+    )
     fixed_costs = fixed_costs.astype(int)
 
     # adjust capacities according to ratio

@@ -19,10 +19,19 @@ def tang_instance(n, m, seed=0):
     """
 
     graph = nx.generators.gnm_random_graph(n, m, seed=seed)
-    for _, _, data in graph.edges(data=True):
-        data["weight"] = seed.randint(0, 10)
+    weights = tang_weights(graph, seed=0)
+    for (_, _, data), weight in zip(graph.edges(data=True), weights):
+        data["weight"] = weight
     _, model = naive(graph)
     return model
+
+
+@py_random_state(1)
+def tang_weights(graph, seed=0):
+    weights = []
+    for _ in graph.edges:
+        weights.append(seed.randint(0, 10))
+    return weights
 
 
 def empty_edge(graph: nx):

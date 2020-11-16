@@ -1,5 +1,6 @@
-import pytest
 import itertools
+
+import pytest
 
 from geco.mips.knapsack import *
 
@@ -27,3 +28,13 @@ def test_yang_knapsack_solution_2():
     model.optimize()
     assert model.getStatus() == "optimal"
     assert model.getObjVal() == 3
+
+
+@pytest.mark.parametrize(
+    "n,seed1,seed2",
+    itertools.product([3, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+)
+def test_seeding(n, seed1, seed2):
+    params1 = yang_parameter(n, seed=seed1)
+    params2 = yang_parameter(n, seed=seed2)
+    assert seed1 == seed2 or params1 != params2
