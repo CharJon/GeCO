@@ -105,8 +105,11 @@ def cornuejols_instance_params(n_customers, n_facilities, ratio, seed):
 
     demands = np.array([seed.randint(5, 35 + 1) for _ in range(n_customers)])
     capacities = np.array([seed.randint(10, 160 + 1) for _ in range(n_facilities)])
-    fixed_costs = np.array([seed.randint(100, 110 + 1) for _ in range(n_facilities)]) * np.sqrt(capacities) + np.array(
-        [seed.randint(0, 90 + 1) for _ in range(n_facilities)])
+    fixed_costs = np.array(
+        [seed.randint(100, 110 + 1) for _ in range(n_facilities)]
+    ) * np.sqrt(capacities) + np.array(
+        [seed.randint(0, 90 + 1) for _ in range(n_facilities)]
+    )
     fixed_costs = fixed_costs.astype(int)
 
     # adjust capacities according to ratio

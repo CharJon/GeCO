@@ -62,7 +62,10 @@ def test_naive_non_negative():
     assert model.getObjVal() == 2
 
 
-@pytest.mark.parametrize("n,seed1,seed2", itertools.product([3, 10, 100], [0, 1, 1337, 53115], [0, 1, 1337, 53115]))
+@pytest.mark.parametrize(
+    "n,seed1,seed2",
+    itertools.product([3, 10, 100], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+)
 def test_seeding(n, seed1, seed2):
     graph = nx.generators.complete_graph(n)
     weights1 = tang_weights(graph, seed=seed1)

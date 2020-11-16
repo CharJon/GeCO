@@ -21,7 +21,7 @@ def tang_instance(n, m, seed=0):
     graph = nx.generators.gnm_random_graph(n, m, seed=seed)
     weights = tang_weights(graph, seed=0)
     for (_, _, data), weight in zip(graph.edges(data=True), weights):
-        data['weight'] = weight
+        data["weight"] = weight
     _, model = naive(graph)
     return model
 

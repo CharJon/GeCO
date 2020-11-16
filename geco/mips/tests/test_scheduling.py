@@ -62,8 +62,10 @@ def test_heinz_formulation():
     model.optimize()
 
 
-@pytest.mark.parametrize("n_resources,n_tasks,seed1,seed2",
-                         itertools.product([1, 2, 3], [5, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]))
+@pytest.mark.parametrize(
+    "n_resources,n_tasks,seed1,seed2",
+    itertools.product([1, 2, 3], [5, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+)
 def test_param_generation_seeding(n_resources, n_tasks, seed1, seed2):
     params1 = generate_params(n_resources, n_tasks, seed=seed1)
     params2 = generate_params(n_resources, n_tasks, seed=seed2)
