@@ -38,7 +38,10 @@ def knapsack(weights, profits, capacity, name="Knapsack"):
     # add variables and their cost
     variables = [model.addVar(lb=0, ub=1, obj=profit, vtype="B") for profit in profits]
     # add constraints
-    model.addCons(scip.quicksum(weight * variable for weight, variable in zip(weights, variables)) <= capacity)
+    model.addCons(
+        scip.quicksum(weight * variable for weight, variable in zip(weights, variables))
+        <= capacity
+    )
 
     model.setMaximize()
 

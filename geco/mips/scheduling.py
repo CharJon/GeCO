@@ -9,14 +9,14 @@ from networkx.utils import py_random_state
 
 
 def hooker_late_tasks_formulation(
-        number_of_facilities,
-        number_of_tasks,
-        time_steps,
-        processing_times,
-        capacities,
-        assignment_costs,
-        release_dates,
-        deadlines
+    number_of_facilities,
+    number_of_tasks,
+    time_steps,
+    processing_times,
+    capacities,
+    assignment_costs,
+    release_dates,
+    deadlines,
 ):
     """Generates late tasks mip formulation described in section 4 in
     Hooker, John. (2005). Planning and Scheduling to Minimize Tardiness. 314-327. 10.1007/11564751_25.
@@ -42,7 +42,7 @@ def hooker_late_tasks_formulation(
     # assignment vars
     x = {}
     for j, i, t in itertools.product(
-            range(number_of_tasks), range(number_of_facilities), time_steps
+        range(number_of_tasks), range(number_of_facilities), time_steps
     ):
         var = model.addVar(lb=0, ub=1, obj=0, name=f"x_{j}_{i}_{t}", vtype="B")
         x[j, i, t] = var
@@ -53,7 +53,10 @@ def hooker_late_tasks_formulation(
         model.addCons(
             len(time_steps) * L[j]
             >= scip.quicksum(
-                ((t + processing_times[j, i]) * x[j, i, t] - deadlines[j] for i in range(number_of_facilities))
+                (
+                    (t + processing_times[j, i]) * x[j, i, t] - deadlines[j]
+                    for i in range(number_of_facilities)
+                )
             )
         )
 
@@ -78,7 +81,7 @@ def hooker_late_tasks_formulation(
 
     # constraint (d)
     for i, j, t in itertools.product(
-            range(number_of_facilities), range(number_of_tasks), time_steps
+        range(number_of_facilities), range(number_of_tasks), time_steps
     ):
         if t < release_dates[j] or t > len(time_steps) - processing_times[j, i]:
             model.addCons(x[j, i, t] == 0)
@@ -128,18 +131,25 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
         resource_requirements[j, k] = seed.randint(1, 9)
 
-    return processing_times, capacities, assignment_costs, release_times, deadlines, resource_requirements
-
-
-def heinz_formulation(
-        number_of_facilities,
-        number_of_tasks,
+    return (
         processing_times,
         capacities,
         assignment_costs,
-        release_dates,
+        release_times,
         deadlines,
-        resource_requirements
+        resource_requirements,
+    )
+
+
+def heinz_formulation(
+    number_of_facilities,
+    number_of_tasks,
+    processing_times,
+    capacities,
+    assignment_costs,
+    release_dates,
+    deadlines,
+    resource_requirements,
 ):
     """Generates MIP formulation according to Model 4 in
     Heinz, J. (2013). Recent Improvements Using Constraint Integer Programming for Resource Allocation and Scheduling.
@@ -160,13 +170,15 @@ def heinz_formulation(
     # objective function
     x = {}
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
-        var = model.addVar(lb=0, ub=1, obj=assignment_costs[j, k], name=f"x_{j}_{k}", vtype="B")
+        var = model.addVar(
+            lb=0, ub=1, obj=assignment_costs[j, k], name=f"x_{j}_{k}", vtype="B"
+        )
         x[j, k] = var
 
     # y vars
     y = {}
     for j, k, t in itertools.product(
-            range(number_of_tasks), range(number_of_facilities), time_steps
+        range(number_of_tasks), range(number_of_facilities), time_steps
     ):
         if release_dates[j] <= t <= deadlines[j] - processing_times[j, k]:
             var = model.addVar(lb=0, ub=1, obj=0, name=f"y_{j}_{k}_{t}", vtype="B")
@@ -181,7 +193,11 @@ def heinz_formulation(
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
         model.addCons(
             scip.quicksum(
-                y[j, k, t] for t in range(release_dates[j], int(deadlines[j]) - processing_times[j, k]) if t < len(time_steps)
+                y[j, k, t]
+                for t in range(
+                    release_dates[j], int(deadlines[j]) - processing_times[j, k]
+                )
+                if t < len(time_steps)
             )
             == x[j, k]
         )
@@ -199,7 +215,9 @@ def heinz_formulation(
         )
 
     # constraint (15)
-    epsilon = filter(lambda ts: ts[0] < ts[1], itertools.product(release_dates, deadlines.values()))
+    epsilon = filter(
+        lambda ts: ts[0] < ts[1], itertools.product(release_dates, deadlines.values())
+    )
     for k, (t1, t2) in itertools.product(range(number_of_facilities), epsilon):
         model.addCons(
             scip.quicksum(
