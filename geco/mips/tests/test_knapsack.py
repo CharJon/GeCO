@@ -28,8 +28,8 @@ def test_yang_knapsack_solution_2():
     assert model.getObjVal() == 3
 
 
-def test_seeding():
-    n = 10
-    params1 = yang_parameter(n, seed=1)
-    params2 = yang_parameter(n, seed=2)
-    assert params1 != params2
+@pytest.mark.parametrize("n,seed1, seed2", itertools.product([3, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]))
+def test_seeding(n, seed1, seed2):
+    params1 = yang_parameter(n, seed=seed1)
+    params2 = yang_parameter(n, seed=seed2)
+    assert seed1 == seed2 or params1 != params2

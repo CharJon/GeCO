@@ -1,3 +1,5 @@
+import pytest
+
 from geco.mips.scheduling import *
 
 
@@ -62,12 +64,13 @@ def test_heinz_formulation():
     model.optimize()
 
 
-def test_param_generation_seeding():
-    n_resources, n_tasks = 10, 10
-    params1 = generate_params(n_resources, n_tasks, seed=1)
-    params2 = generate_params(n_resources, n_tasks, seed=2)
+@pytest.mark.parametrize("n_resources, n_tasks,seed1, seed2",
+                         itertools.product([1, 2, 3], [5, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]))
+def test_param_generation_seeding(n_resources, n_tasks, seed1, seed2):
+    params1 = generate_params(n_resources, n_tasks, seed=seed1)
+    params2 = generate_params(n_resources, n_tasks, seed=seed2)
 
-    assert params1 != params2
+    assert seed1 == seed2 or params1 != params2
 
 
 def test_hooker_simple_instance():
