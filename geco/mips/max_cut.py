@@ -10,17 +10,17 @@ import geco.mips.utilities.naming as naming
 @py_random_state(2)
 def tang_instance(n, m, seed=0):
     """Generates a max-cut instance as described in A.2 in
-        Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
-        programming: Learning to cut. arXiv preprint arXiv:1906.04859.
-        Args:
-            n (int): number of nodes
-            m (int): number of edges
-            seed (int, random state or None): seed for randomization
+    Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
+    programming: Learning to cut. arXiv preprint arXiv:1906.04859.
+    Args:
+        n (int): number of nodes
+        m (int): number of edges
+        seed (int, random state or None): seed for randomization
     """
 
     graph = nx.generators.gnm_random_graph(n, m, seed=seed)
     for _, _, data in graph.edges(data=True):
-        data['weight'] = seed.randint(0, 10)
+        data["weight"] = seed.randint(0, 10)
     _, model = naive(graph)
     return model
 
@@ -32,7 +32,9 @@ def empty_edge(graph: nx):
     for u, v, d in graph.edges(data=True):
         edge_name = naming.undirected_edge_name(u, v)
         weight = d["weight"]
-        edge_variables[edge_name] = model.addVar(lb=0, ub=1, obj=weight, name=edge_name, vtype='B')
+        edge_variables[edge_name] = model.addVar(
+            lb=0, ub=1, obj=weight, name=edge_name, vtype="B"
+        )
 
     model.setMaximize()
 
@@ -51,18 +53,29 @@ def naive(graph: nx):
     for u, v, d in graph.edges(data=True):
         edge_name = naming.undirected_edge_name(u, v)
         weight = d["weight"]
-        edge_variables[edge_name] = model.addVar(lb=0, ub=1, obj=weight, name=edge_name, vtype="B")
-        if weight < 0: all_non_negative = False
+        edge_variables[edge_name] = model.addVar(
+            lb=0, ub=1, obj=weight, name=edge_name, vtype="B"
+        )
+        if weight < 0:
+            all_non_negative = False
 
     model.setMaximize()
 
     for u, v, d in graph.edges(data=True):
         edge_name = naming.undirected_edge_name(u, v)
-        model.addCons(node_variables[u] + node_variables[v] + edge_variables[edge_name] <= 2)
-        model.addCons(-node_variables[u] - node_variables[v] + edge_variables[edge_name] <= 0)
+        model.addCons(
+            node_variables[u] + node_variables[v] + edge_variables[edge_name] <= 2
+        )
+        model.addCons(
+            -node_variables[u] - node_variables[v] + edge_variables[edge_name] <= 0
+        )
         if not all_non_negative:
-            model.addCons(node_variables[u] - node_variables[v] - edge_variables[edge_name] <= 0)
-            model.addCons(-node_variables[u] + node_variables[v] - edge_variables[edge_name] <= 0)
+            model.addCons(
+                node_variables[u] - node_variables[v] - edge_variables[edge_name] <= 0
+            )
+            model.addCons(
+                -node_variables[u] + node_variables[v] - edge_variables[edge_name] <= 0
+            )
 
     return (node_variables, edge_variables), model
 
@@ -75,10 +88,12 @@ def triangle(graph: nx):
     for u, v in itertools.combinations(graph.nodes(), 2):
         edge_name = naming.undirected_edge_name(u, v)
         if graph.has_edge(u, v):
-            weight = graph.get_edge_data(u, v)['weight']
+            weight = graph.get_edge_data(u, v)["weight"]
         else:
             weight = 0
-        edge_variables[edge_name] = model.addVar(lb=0, ub=1, obj=weight, name=edge_name, vtype="B")
+        edge_variables[edge_name] = model.addVar(
+            lb=0, ub=1, obj=weight, name=edge_name, vtype="B"
+        )
 
     model.setMaximize()
 

@@ -5,23 +5,21 @@ def test_late_tasks_formulation():
     main_params = number_of_facilities, number_of_tasks, time_steps = 3, 10, 100
     params = p, C, c, R, d = generate_params(*main_params[:-1], seed=0)[:-1]
 
-    model = hooker_late_tasks_formulation(
-        *main_params, *params
-    )
+    model = hooker_late_tasks_formulation(*main_params, *params)
     assert (
-            model.getNVars()
-            == number_of_facilities * number_of_tasks * time_steps + number_of_tasks
+        model.getNVars()
+        == number_of_facilities * number_of_tasks * time_steps + number_of_tasks
     )
     constraints_lowerbound = (
-            number_of_tasks * time_steps
-            + number_of_tasks
-            + number_of_facilities * time_steps
+        number_of_tasks * time_steps
+        + number_of_tasks
+        + number_of_facilities * time_steps
     )
     constraints_upperbound = (
-            number_of_tasks * time_steps
-            + number_of_tasks
-            + number_of_facilities * time_steps
-            + number_of_facilities * number_of_tasks * time_steps
+        number_of_tasks * time_steps
+        + number_of_tasks
+        + number_of_facilities * time_steps
+        + number_of_facilities * number_of_tasks * time_steps
     )
     assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
     assert model.getObjectiveSense() == "minimize"
@@ -36,25 +34,25 @@ def test_heinz_formulation():
     y_vars_lowerbound = number_of_facilities * number_of_tasks
     y_vars_upperbound = number_of_facilities * number_of_tasks * time_steps
     assert (
-            x_vars_count + y_vars_lowerbound
-            <= model.getNVars()
-            <= x_vars_count + y_vars_upperbound
+        x_vars_count + y_vars_lowerbound
+        <= model.getNVars()
+        <= x_vars_count + y_vars_upperbound
     )
     constraints_lowerbound = (
-            number_of_facilities
-            + number_of_facilities * number_of_tasks
-            + number_of_tasks
-            + number_of_tasks
-            + number_of_facilities * number_of_tasks
-            + number_of_facilities * number_of_tasks
+        number_of_facilities
+        + number_of_facilities * number_of_tasks
+        + number_of_tasks
+        + number_of_tasks
+        + number_of_facilities * number_of_tasks
+        + number_of_facilities * number_of_tasks
     )
     constraints_upperbound = (
-            number_of_facilities
-            + number_of_facilities * number_of_tasks
-            + number_of_tasks * time_steps
-            + number_of_tasks * (time_steps * (time_steps - 1) // 2)
-            + number_of_facilities * number_of_tasks
-            + number_of_facilities * number_of_tasks * time_steps
+        number_of_facilities
+        + number_of_facilities * number_of_tasks
+        + number_of_tasks * time_steps
+        + number_of_tasks * (time_steps * (time_steps - 1) // 2)
+        + number_of_facilities * number_of_tasks
+        + number_of_facilities * number_of_tasks * time_steps
     )
     assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
     assert model.getObjectiveSense() == "minimize"
@@ -74,18 +72,35 @@ def test_hooker_simple_instance():
     hooker_model = hooker_late_tasks_formulation(*simple_instance_params()[:-1])
     hooker_model.hideOutput()
     hooker_model.optimize()
-    assert hooker_model.getStatus() == 'optimal'
+    assert hooker_model.getStatus() == "optimal"
     assert hooker_model.getObjVal() == 0
 
 
 def test_heinz_simple_instance():
-    n_resources, n_tasks, time_steps, processing_times, capacities, assignment_costs, \
-    release_times, deadlines, resource_requirements = simple_instance_params()
-    heinz_model = heinz_formulation(n_resources, n_tasks, processing_times, capacities, assignment_costs,
-                                    release_times, deadlines, resource_requirements)
+    (
+        n_resources,
+        n_tasks,
+        time_steps,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_times,
+        deadlines,
+        resource_requirements,
+    ) = simple_instance_params()
+    heinz_model = heinz_formulation(
+        n_resources,
+        n_tasks,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_times,
+        deadlines,
+        resource_requirements,
+    )
     heinz_model.hideOutput()
     heinz_model.optimize()
-    assert heinz_model.getStatus() == 'optimal'
+    assert heinz_model.getStatus() == "optimal"
     assert heinz_model.getObjVal() == 1
 
 
@@ -117,4 +132,14 @@ def simple_instance_params():
     # and add 1 late task to the hooker formulation
     deadlines = {0: 2}
     resource_requirements = {(0, 0): 1}
-    return n_resources, n_tasks, time_steps, processing_times, capacities, assignment_costs, release_times, deadlines, resource_requirements
+    return (
+        n_resources,
+        n_tasks,
+        time_steps,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_times,
+        deadlines,
+        resource_requirements,
+    )

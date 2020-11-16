@@ -4,13 +4,15 @@ import itertools
 from geco.mips.set_cover import *
 
 
-@pytest.mark.parametrize("m,seed", itertools.product([10, 100, 200], [0, 1, 1337, 53115]))
+@pytest.mark.parametrize(
+    "m,seed", itertools.product([10, 100, 200], [0, 1, 1337, 53115])
+)
 def test_yang_set_cover_creation(m, seed):
     params = yang_parameter(m, seed=seed)
     model = set_cover(*params)
     assert model.getNVars() == 10 * m
     assert model.getNConss() == m
-    assert model.getObjectiveSense() == 'minimize'
+    assert model.getObjectiveSense() == "minimize"
 
 
 def test_set_cover_solution_1():

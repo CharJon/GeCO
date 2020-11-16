@@ -6,8 +6,8 @@ from networkx.utils import py_random_state
 @py_random_state(1)
 def yang_instance(m, seed=0):
     """Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
-            "Learning Generalized Strong Branching for Set Covering,
-            Set Packing, and 0-1 Knapsack Problems", 2020.
+    "Learning Generalized Strong Branching for Set Covering,
+    Set Packing, and 0-1 Knapsack Problems", 2020.
     """
     return set_cover(*yang_parameter(m, seed))
 
@@ -15,8 +15,8 @@ def yang_instance(m, seed=0):
 @py_random_state(1)
 def yang_parameter(m, seed=0):
     """Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
-        "Learning Generalized Strong Branching for Set Covering,
-        Set Packing, and 0-1 Knapsack Problems", 2020.
+    "Learning Generalized Strong Branching for Set Covering,
+    Set Packing, and 0-1 Knapsack Problems", 2020.
     """
     n = 10 * m
 
@@ -34,7 +34,10 @@ def set_cover(costs, sets):
     model = scip.Model("Set Cover")
 
     # add variables and their cost
-    variables = [model.addVar(lb=0, ub=1, obj=c, name=f"v_{i}", vtype="B") for i, c in enumerate(costs)]
+    variables = [
+        model.addVar(lb=0, ub=1, obj=c, name=f"v_{i}", vtype="B")
+        for i, c in enumerate(costs)
+    ]
 
     # add constraints
     for s in sets:
