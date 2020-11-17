@@ -1,10 +1,3 @@
-"""Parts of this code are heavily based on the Code available in https://github.com/ds4dm/learn2branch
-which was used for
- "Exact Combinatorial Optimization with Graph Convolutional Neural Networks" (2019)
-  Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
-  Advances in Neural Information Processing Systems 32 (2019)
-"""
-
 import itertools
 
 import numpy as np
@@ -25,11 +18,8 @@ def capacitated_facility_location(
     n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities
 ):
     """
-    Generate a Capacited Facility Location problem following
-        Cornuejols G, Sridharan R, Thizy J-M (1991)
-        A Comparison of Heuristics and Relaxations for the Capacitated Plant Location Problem.
-        European Journal of Operations Research 50:280-297.
-    Returns a SCIP model.
+    Generate a Capacited Facility Location problem following [1].
+
     Parameters
     ----------
     n_customers: int
@@ -44,6 +34,16 @@ def capacitated_facility_location(
         Fixed costs of operating each facility.
     capacities: numpy array [int]
         Capacities of each facility.
+
+    Returns
+    -------
+     A pyscipopt model.
+
+    References
+    ----------
+    .. [1] Cornuejols G, Sridharan R, Thizy J-M (1991)
+        A Comparison of Heuristics and Relaxations for the Capacitated Plant Location Problem.
+        European Journal of Operations Research 50:280-297.
     """
     total_demand = demands.sum()
 
@@ -95,6 +95,19 @@ def capacitated_facility_location(
 
 @py_random_state(-1)
 def cornuejols_instance_params(n_customers, n_facilities, ratio, seed):
+    """This code is heavily based on the code available in
+     https://github.com/ds4dm/learn2branch which was used in [1] and
+     the generation techniques in [2].
+
+     References
+    ----------
+    .. [1] "Exact Combinatorial Optimization with Graph Convolutional Neural Networks" (2019)
+      Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
+      Advances in Neural Information Processing Systems 32 (2019)
+    .. [2] Cornuejols G, Sridharan R, Thizy J-M (1991)
+        A Comparison of Heuristics and Relaxations for the Capacitated Plant Location Problem.
+        European Journal of Operations Research 50:280-297.
+    """
     # locations for customers
     c_x = np.array([seed.random() for _ in range(n_customers)])
     c_y = np.array([seed.random() for _ in range(n_customers)])
