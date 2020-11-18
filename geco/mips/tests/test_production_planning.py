@@ -1,3 +1,7 @@
+import itertools
+
+import pytest
+
 from geco.mips.production_planning import *
 
 
@@ -21,8 +25,13 @@ def test_tang_simple_instance():
     assert model.getObjVal() == 20 + 20 + 1
 
 
-def test_seeding():
-    T = 100
-    params1 = tang_params(T, seed=1)
-    params2 = tang_params(T, seed=2)
-    assert params1 != params2
+@pytest.mark.parametrize(
+    "T,seed1,seed2",
+    itertools.product([10, 100, 200], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+)
+def test_seeding(T, seed1, seed2):
+    params1 = tang_params(T, seed=seed1)
+    params2 = tang_params(T, seed=seed2)
+    same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
+    different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
+    assert same_seeds_produce_same_params or different_seeds_produce_different_params
