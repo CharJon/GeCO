@@ -70,4 +70,6 @@ def test_seeding(n, seed1, seed2):
     graph = nx.generators.complete_graph(n)
     weights1 = tang_weights(graph, seed=seed1)
     weights2 = tang_weights(graph, seed=seed2)
-    assert seed1 == seed2 or weights1 != weights2
+    same_seeds_produce_same_params = seed1 == seed2 and weights1 == weights2
+    different_seeds_produce_different_params = seed1 != seed2 and weights1 != weights2
+    assert same_seeds_produce_same_params or different_seeds_produce_different_params

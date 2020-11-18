@@ -69,8 +69,9 @@ def test_heinz_formulation():
 def test_param_generation_seeding(n_resources, n_tasks, seed1, seed2):
     params1 = generate_params(n_resources, n_tasks, seed=seed1)
     params2 = generate_params(n_resources, n_tasks, seed=seed2)
-
-    assert seed1 == seed2 or params1 != params2
+    same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
+    different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
+    assert same_seeds_produce_same_params or different_seeds_produce_different_params
 
 
 def test_hooker_simple_instance():
