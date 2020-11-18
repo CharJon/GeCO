@@ -15,6 +15,7 @@ dependencies:
   - pyscipopt
   - networkx
   - pip:
+      - black
       - git+https://github.com/rhgrant10/tsplib95.git
       - dwave_networkx
       - git+https://github.com/CharJon/GeCO

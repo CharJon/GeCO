@@ -6,6 +6,7 @@ Every tests should check the following:
 - Objective sense
 - The solution for some simple instances
 - Different seeds should create different instances
+- The same seed should create the same instance
 
 # Generators
 
