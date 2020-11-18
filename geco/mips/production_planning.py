@@ -2,24 +2,31 @@ import pyscipopt as scip
 from networkx.utils import py_random_state
 
 
-@py_random_state(2)
-def tang_instance(T, instance_params=None, seed=0):
-    """Generates a production planning instance as described in A.2 in
-    Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
+@py_random_state(-1)
+def tang_instance(T, seed=0):
+    """Generates a production planning instance as described in A.2 in [1]
+
+    Parameters
+    ----------
+        T: int
+         Time horizon
+        seed: int, optional
+         Seed for randomization
+
+    Returns
+    -------
+        model: SCIP model of the generated instance
+
+    References
+    ----------
+    .. [1] Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
     programming: Learning to cut. arXiv preprint arXiv:1906.04859.
 
-    Args:
-        T (int): Time horizon
-        instance_params (tuple): tuple of params as returned by tang_params
-        seed (int, optional): seed for randomization
-
-    Returns:
-        model: SCIP model of the generated instance
     """
     return production_planning(T, *tang_params(T, seed), name="Tang Production Planning")
 
 
-@py_random_state(1)
+@py_random_state(-1)
 def tang_params(T, seed=0):
     initial_storage = 0
     final_storage = 20
@@ -37,6 +44,34 @@ def tang_params(T, seed=0):
 
 
 def production_planning(T, M, initial_storage, final_storage, p, h, q, d, name="Production Planning"):
+    """
+    Generates a production planning MIP instance
+
+    Parameters
+    ----------
+    T: int
+        Time horizon.
+    M: int
+        Maximum lot size at any time step.
+    initial_storage: int
+        Initial available storage.
+    final_storage: int
+        Storage available at the last time step.
+    p: list[int]
+        Unit production cost at each time step.
+    h: list[int]
+        Unit inventory cost at each time step.
+    q: list[int]
+        Fixed production cost at each time step.
+    d: list[int]
+        Demand at each time step.
+    name: str
+        Name to be given to the generated model
+
+    Returns
+    -------
+        A pyscipopt model of the instance.
+    """
     model = scip.Model(name)
     # add variables and their cost
     production_vars = []
