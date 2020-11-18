@@ -31,7 +31,8 @@ def test_set_cover_solution_2():
 
 
 @pytest.mark.parametrize(
-    "m,seed1,seed2", itertools.product([10, 100, 200], [0, 1, 1337, 53115], [0, 1, 1337, 53115])
+    "m,seed1,seed2",
+    itertools.product([10, 100, 200], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
 )
 def test_yang_parameter(m, seed1, seed2):
     params1 = yang_parameter(m, seed=seed1)
