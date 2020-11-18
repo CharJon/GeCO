@@ -16,13 +16,23 @@ def test_tang():
 def test_tang_simple_instance():
     T = 1
     initial_storage, final_storage, p, h, q, d = 0, 20, [1, 1], [1, 1], [1, 1], [0, 0]
-    M = 20  # change to less than 20 to make the solution infeasible
+
+    # test feasible case
+    M = 20
     params = M, initial_storage, final_storage, p, h, q, d
     model = production_planning(T, *params)
     model.hideOutput()
     model.optimize()
     assert model.getStatus() == 'optimal'
     assert model.getObjVal() == 20 + 20 + 1
+
+    # test infeasible case
+    M = 19
+    params = M, initial_storage, final_storage, p, h, q, d
+    model = production_planning(T, *params)
+    model.hideOutput()
+    model.optimize()
+    assert model.getStatus() == 'infeasible'
 
 
 @pytest.mark.parametrize(
