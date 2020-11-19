@@ -23,7 +23,9 @@ def tang_instance(T, seed=0):
     programming: Learning to cut. arXiv preprint arXiv:1906.04859.
 
     """
-    return production_planning(T, *tang_params(T, seed), name="Tang Production Planning")
+    return production_planning(
+        T, *tang_params(T, seed), name="Tang Production Planning"
+    )
 
 
 @py_random_state(-1)
@@ -43,7 +45,9 @@ def tang_params(T, seed=0):
     return M, initial_storage, final_storage, p, h, q, d
 
 
-def production_planning(T, M, initial_storage, final_storage, p, h, q, d, name="Production Planning"):
+def production_planning(
+    T, M, initial_storage, final_storage, p, h, q, d, name="Production Planning"
+):
     """
     Generates a production planning MIP instance
 
@@ -92,7 +96,9 @@ def production_planning(T, M, initial_storage, final_storage, p, h, q, d, name="
 
     # add constraints
     for i in range(1, T + 1):
-        model.addCons(storage_vars[i - 1] + production_vars[i] == d[i] + storage_vars[i])
+        model.addCons(
+            storage_vars[i - 1] + production_vars[i] == d[i] + storage_vars[i]
+        )
         model.addCons(production_vars[i] <= M * produce_or_not_vars[i])
 
     model.addCons(storage_vars[0] == initial_storage)

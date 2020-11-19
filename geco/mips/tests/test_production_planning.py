@@ -10,7 +10,7 @@ def test_tang():
     model = tang_instance(T)
     assert model.getNVars() == (T + 1) * 3 - 1
     assert model.getNConss() == 2 * T + 2
-    assert model.getObjectiveSense() == 'minimize'
+    assert model.getObjectiveSense() == "minimize"
 
 
 def test_tang_simple_instance():
@@ -23,7 +23,7 @@ def test_tang_simple_instance():
     model = production_planning(T, *params)
     model.hideOutput()
     model.optimize()
-    assert model.getStatus() == 'optimal'
+    assert model.getStatus() == "optimal"
     assert model.getObjVal() == 20 + 20 + 1
 
     # test infeasible case
@@ -32,7 +32,7 @@ def test_tang_simple_instance():
     model = production_planning(T, *params)
     model.hideOutput()
     model.optimize()
-    assert model.getStatus() == 'infeasible'
+    assert model.getStatus() == "infeasible"
 
 
 @pytest.mark.parametrize(
