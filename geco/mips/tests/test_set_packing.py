@@ -13,6 +13,15 @@ def test_yang():
     assert model.getObjectiveSense() == "maximize"
 
 
+def test_yang_simple_instance():
+    params = m, n, costs, nonzero_vars_for_constraints = 1, 1, [5], [[0]]
+    model = set_packing(*params)
+    model.hideOutput()
+    model.optimize()
+    assert model.getStatus() == "optimal"
+    assert model.getObjVal() == 5
+
+
 @pytest.mark.parametrize(
     "m,seed1,seed2",
     itertools.product([10, 100, 1000], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
