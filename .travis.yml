@@ -16,4 +16,6 @@ install:
   - conda activate GeCO
 script:
   - black --check geco/
-  - pytest
+  - coverage run -m pytest
+after_success:
+  - codecov # submit coverage
