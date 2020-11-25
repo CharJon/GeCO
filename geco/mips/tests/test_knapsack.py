@@ -1,4 +1,5 @@
 import itertools
+import types
 
 import pytest
 
@@ -39,7 +40,7 @@ def test_yang_knapsack_solution_2():
     "n,seed1,seed2",
     itertools.product([3, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
 )
-def test_seeding(n, seed1, seed2):
+def test_yang_seeding(n, seed1, seed2):
     params1 = yang_parameter(n, seed=seed1)
     params2 = yang_parameter(n, seed=seed2)
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
@@ -72,3 +73,23 @@ def test_pisinger_creation_of_all():
         assert model.getNVars() == n
         assert model.getNConss() == 1
         assert model.getObjectiveSense() == "maximize"
+
+
+@pytest.mark.parametrize(
+    "n,R,distribution,seed1,seed2",
+    itertools.product([3, 10, 15], [10, 100], [
+        uncorrelated_distribution,
+        weakly_correlated_distribution,
+        strongly_correlated_distribution,
+        inverse_strongly_correlated_distribution,
+        almost_strongly_correlated_distribution,
+        subset_sum_distribution,
+        uncorrelated_with_similar_weights_distribution,
+    ], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+)
+def test_pisinger_seeding(n, R, distribution: types.FunctionType, seed1, seed2):
+    params1 = generate_from_distribution(n, **distribution(R=R, seed=seed1))
+    params2 = generate_from_distribution(n, **distribution(R=R, seed=seed2))
+    same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
+    different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
+    assert same_seeds_produce_same_params or different_seeds_produce_different_params

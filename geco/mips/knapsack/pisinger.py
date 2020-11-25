@@ -6,11 +6,13 @@ DOI:https://doi.org/10.1016/j.cor.2004.03.002
 """
 
 import math
-import random
+
+from networkx.utils import py_random_state
 
 from geco.mips.knapsack.generic import knapsack
 
 
+@py_random_state(-1)
 def _correlated_knapsack_template(
         number_of_items, capacity, profit_generator, weight_generator, profit_first, seed
 ):
@@ -33,14 +35,13 @@ def _correlated_knapsack_template(
     --------
         model: SCIP model of the knapsack instance
     """
-    random.seed(seed)
-    profits, weights = _generate_from_distribution(
+    profits, weights = generate_from_distribution(
         number_of_items, profit_generator, weight_generator, profit_first
     )
     return knapsack(profits, weights, capacity)
 
 
-def _generate_from_distribution(
+def generate_from_distribution(
         number_of_items, profit_generator, weight_generator, profit_first
 ):
     if profit_first:
@@ -58,126 +59,138 @@ def _generate_from_distribution(
 """
 
 
-def uncorrelated_distribution(R):
+@py_random_state(-1)
+def uncorrelated_distribution(R, seed=0):
     return {
-        "weight_generator": lambda p: random.uniform(1, R),
-        "profit_generator": lambda w: random.uniform(1, R),
+        "weight_generator": lambda p: seed.uniform(1, R),
+        "profit_generator": lambda w: seed.uniform(1, R),
         "profit_first": True,
     }
 
 
+@py_random_state(-1)
 def uncorrelated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
-        number_of_items=n, capacity=c, seed=seed, **uncorrelated_distribution(R)
+        number_of_items=n, capacity=c, seed=seed, **uncorrelated_distribution(R, seed)
     )
 
-
-def weakly_correlated_distribution(R):
+@py_random_state(-1)
+def weakly_correlated_distribution(R, seed=0):
     return {
-        "weight_generator": lambda p: random.uniform(1, R),
-        "profit_generator": lambda w: max(1, random.uniform(w - R / 10, w + R / 10)),
+        "weight_generator": lambda p: seed.uniform(1, R),
+        "profit_generator": lambda w: max(1, seed.uniform(w - R / 10, w + R / 10)),
         "profit_first": False,
     }
 
 
+@py_random_state(-1)
 def weakly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
-        **weakly_correlated_distribution(R),
+        **weakly_correlated_distribution(R, seed),
     )
 
 
-def strongly_correlated_distribution(R):
+@py_random_state(-1)
+def strongly_correlated_distribution(R, seed=0):
     return {
-        "weight_generator": lambda p: random.uniform(1, R),
+        "weight_generator": lambda p: seed.uniform(1, R),
         "profit_generator": lambda w: w + R / 10,
         "profit_first": False,
     }
 
 
+@py_random_state(-1)
 def strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
-        **strongly_correlated_distribution(R),
+        **strongly_correlated_distribution(R, seed),
     )
 
 
-def inverse_strongly_correlated_distribution(R):
+@py_random_state(-1)
+def inverse_strongly_correlated_distribution(R, seed=0):
     return {
         "weight_generator": lambda p: p + R / 10,
-        "profit_generator": lambda w: random.uniform(1, R),
+        "profit_generator": lambda w: seed.uniform(1, R),
         "profit_first": True,
     }
 
 
+@py_random_state(-1)
 def inverse_strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
-        **inverse_strongly_correlated_distribution(R),
+        **inverse_strongly_correlated_distribution(R, seed),
     )
 
 
-def almost_strongly_correlated_distribution(R):
+@py_random_state(-1)
+def almost_strongly_correlated_distribution(R, seed=0):
     return {
-        "weight_generator": lambda p: random.uniform(1, R),
-        "profit_generator": lambda w: random.uniform(
+        "weight_generator": lambda p: seed.uniform(1, R),
+        "profit_generator": lambda w: seed.uniform(
             w + R / 10 - R / 500, w + R / 10 - R / 500
         ),
         "profit_first": False,
     }
 
 
+@py_random_state(-1)
 def almost_strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
-        **almost_strongly_correlated_distribution(R),
+        **almost_strongly_correlated_distribution(R, seed),
     )
 
 
-def subset_sum_distribution(R):
+@py_random_state(-1)
+def subset_sum_distribution(R, seed=0):
     return {
-        "weight_generator": lambda p: random.uniform(1, R),
+        "weight_generator": lambda p: seed.uniform(1, R),
         "profit_generator": lambda w: w,
         "profit_first": False,
     }
 
 
+@py_random_state(-1)
 def subset_sum(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
-        number_of_items=n, capacity=c, seed=seed, **subset_sum_distribution(R)
+        number_of_items=n, capacity=c, seed=seed, **subset_sum_distribution(R, seed)
     )
 
 
-def uncorrelated_with_similar_weights_distribution(R):
+@py_random_state(-1)
+def uncorrelated_with_similar_weights_distribution(R, seed=0):
     return {
-        "weight_generator": lambda p: random.uniform(100_000, 100_100),
-        "profit_generator": lambda w: random.uniform(1, 1000),
+        "weight_generator": lambda p: seed.uniform(100_000, 100_100),
+        "profit_generator": lambda w: seed.uniform(1, 1000),
         "profit_first": False,
     }
 
 
+@py_random_state(-1)
 def uncorrelated_with_similar_weights(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
-        **uncorrelated_with_similar_weights_distribution(R),
+        **uncorrelated_with_similar_weights_distribution(R, seed),
     )
 
 
+@py_random_state(-1)
 def spanner(v, m, n, distribution, capacity, R=1000, seed=0):
-    random.seed(seed)
-
     # generate the spanner set of v items
-    profits, weights = _generate_from_distribution(v, **distribution(R))
+    profits, weights = generate_from_distribution(v, **distribution(R, seed))
 
     # normalize the spanner set # TODO: this might require a list instead of a map
     spanner_profits = [p / m + 1 for p in profits]
@@ -188,8 +201,8 @@ def spanner(v, m, n, distribution, capacity, R=1000, seed=0):
     weights = []
     spanner_set_indices = list(range(v))
     for _ in range(n):
-        idx = random.choice(spanner_set_indices)
-        multiplier = random.uniform(1, m)
+        idx = seed.choice(spanner_set_indices)
+        multiplier = seed.uniform(1, m)
         profit, weight = (
             multiplier * spanner_profits[idx],
             multiplier * spanner_weights[idx],
@@ -200,34 +213,37 @@ def spanner(v, m, n, distribution, capacity, R=1000, seed=0):
     return knapsack(profits, weights, capacity)
 
 
+@py_random_state(-1)
 def profit_ceiling(n, c, d=3, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
         profit_generator=lambda w: d * math.ceil(w / d),
-        weight_generator=lambda p: random.uniform(1, R),
+        weight_generator=lambda p: seed.uniform(1, R),
         profit_first=False,
     )
 
 
+@py_random_state(-1)
 def circle(n, c, d=2 / 3, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
         profit_generator=lambda w: d * math.sqrt(4 * (R ** 2) - (w - 2 * R) ** 2),
-        weight_generator=lambda p: random.uniform(1, R),
+        weight_generator=lambda p: seed.uniform(1, R),
         profit_first=False,
     )
 
 
+@py_random_state(-1)
 def multiple_strongly_correlated(n, c, k1, k2, d, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
         seed=seed,
         profit_generator=lambda w: w + k1 if w % d == 0 else w + k2,
-        weight_generator=lambda p: random.uniform(1, R),
+        weight_generator=lambda p: seed.uniform(1, R),
         profit_first=False,
     )
