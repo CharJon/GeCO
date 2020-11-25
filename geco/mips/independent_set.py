@@ -31,7 +31,7 @@ def independent_set(graph: nx.Graph, name: str = "Independent Set") -> scip.Mode
         for node in graph.nodes
     }
 
-    for u, v in itertools.combinations(graph.nodes, 2):
+    for u, v in graph.edges:
         model.addCons(vars[str(u)] + vars[str(v)] <= 1)
 
     model.setMaximize()
