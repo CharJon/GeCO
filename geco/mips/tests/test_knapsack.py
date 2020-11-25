@@ -2,7 +2,7 @@ import itertools
 
 import pytest
 
-from geco.mips.knapsack import *
+from geco.mips.knapsack.yang import *
 
 
 @pytest.mark.parametrize(
