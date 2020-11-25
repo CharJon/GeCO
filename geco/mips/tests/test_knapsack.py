@@ -77,15 +77,21 @@ def test_pisinger_creation_of_all():
 
 @pytest.mark.parametrize(
     "n,R,distribution,seed1,seed2",
-    itertools.product([3, 10, 15], [10, 100], [
-        uncorrelated_distribution,
-        weakly_correlated_distribution,
-        strongly_correlated_distribution,
-        inverse_strongly_correlated_distribution,
-        almost_strongly_correlated_distribution,
-        subset_sum_distribution,
-        uncorrelated_with_similar_weights_distribution,
-    ], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+    itertools.product(
+        [3, 10, 15],
+        [10, 100],
+        [
+            uncorrelated_distribution,
+            weakly_correlated_distribution,
+            strongly_correlated_distribution,
+            inverse_strongly_correlated_distribution,
+            almost_strongly_correlated_distribution,
+            subset_sum_distribution,
+            uncorrelated_with_similar_weights_distribution,
+        ],
+        [0, 1, 1337, 53115],
+        [0, 1, 1337, 53115],
+    ),
 )
 def test_pisinger_seeding(n, R, distribution: types.FunctionType, seed1, seed2):
     params1 = generate_from_distribution(n, **distribution(R=R, seed=seed1))

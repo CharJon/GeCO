@@ -14,7 +14,7 @@ from geco.mips.knapsack.generic import knapsack
 
 @py_random_state(-1)
 def _correlated_knapsack_template(
-        number_of_items, capacity, profit_generator, weight_generator, profit_first, seed
+    number_of_items, capacity, profit_generator, weight_generator, profit_first, seed
 ):
     """A template for generating knapsack instances given a relation between the weights and the profits
 
@@ -42,7 +42,7 @@ def _correlated_knapsack_template(
 
 
 def generate_from_distribution(
-        number_of_items, profit_generator, weight_generator, profit_first
+    number_of_items, profit_generator, weight_generator, profit_first
 ):
     if profit_first:
         profits = [profit_generator(None) for _ in range(number_of_items)]
@@ -73,6 +73,7 @@ def uncorrelated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n, capacity=c, seed=seed, **uncorrelated_distribution(R, seed)
     )
+
 
 @py_random_state(-1)
 def weakly_correlated_distribution(R, seed=0):
