@@ -2,7 +2,12 @@ import itertools
 
 import pytest
 
+from geco.mips.knapsack.pisinger import *
 from geco.mips.knapsack.yang import *
+
+"""
+Yang Generators Tests
+"""
 
 
 @pytest.mark.parametrize(
@@ -40,3 +45,30 @@ def test_seeding(n, seed1, seed2):
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
     different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
     assert same_seeds_produce_same_params or different_seeds_produce_different_params
+
+
+"""
+Pisinger Generators Tests
+"""
+
+
+def test_pisinger_creation_of_all():
+    n = 100
+    c = 20
+    models = [
+        uncorrelated(n, c),
+        weakly_correlated(n, c),
+        strongly_correlated(n, c),
+        inverse_strongly_correlated(n, c),
+        almost_strongly_correlated(n, c),
+        subset_sum(n, c),
+        uncorrelated_with_similar_weights(n, c),
+        profit_ceiling(n, c),
+        circle(n, c),
+        multiple_strongly_correlated(n, c, 7, 10, 3),
+        spanner(10, 100, 100, uncorrelated_distribution, 500),
+    ]
+    for model in models:
+        assert model.getNVars() == n
+        assert model.getNConss() == 1
+        assert model.getObjectiveSense() == "maximize"
