@@ -136,4 +136,4 @@ def gasse_instance(n: int, p: float, seed=0) -> scip.Model:
       Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
       Advances in Neural Information Processing Systems 32 (2019)
     """
-    return clique_independent_set(gasse_params(n, p, seed))
+    return clique_independent_set(gasse_params(n, p, seed), name="Gasse Independent Set")
