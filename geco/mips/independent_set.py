@@ -54,15 +54,17 @@ def _get_cliques(graph: nx.Graph) -> list:
     cliques = []
 
     # sort nodes in descending order of degree
-    leftover_nodes = sorted(list(graph.nodes), key=lambda node: - graph.degree[node])
+    leftover_nodes = sorted(list(graph.nodes), key=lambda node: -graph.degree[node])
 
     while leftover_nodes:
         clique_center, leftover_nodes = leftover_nodes[0], leftover_nodes[1:]
         clique = {clique_center}
         neighbors = set(graph.neighbors(clique_center)).intersection(leftover_nodes)
-        densest_neighbors = sorted(neighbors, key=lambda node: - graph.degree[node])
+        densest_neighbors = sorted(neighbors, key=lambda node: -graph.degree[node])
         for neighbor in densest_neighbors:
-            if all([neighbor in graph.neighbors(clique_node) for clique_node in clique]):
+            if all(
+                [neighbor in graph.neighbors(clique_node) for clique_node in clique]
+            ):
                 clique.add(neighbor)
         cliques.append(clique)
         leftover_nodes = [node for node in leftover_nodes if node not in clique]
@@ -136,4 +138,6 @@ def gasse_instance(n: int, p: float, seed=0) -> scip.Model:
       Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
       Advances in Neural Information Processing Systems 32 (2019)
     """
-    return clique_independent_set(gasse_params(n, p, seed), name="Gasse Independent Set")
+    return clique_independent_set(
+        gasse_params(n, p, seed), name="Gasse Independent Set"
+    )

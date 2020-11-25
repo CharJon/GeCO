@@ -65,7 +65,8 @@ def test_gasse(n, p, seed):
 
 
 @pytest.mark.parametrize(
-    "n,p,seed1,seed2", itertools.product([10, 50], [0.5, 0.9], [0, 1, 1337, 53115], [0, 1, 1337, 53115])
+    "n,p,seed1,seed2",
+    itertools.product([10, 50], [0.5, 0.9], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
 )
 def test_gasse_seeding(n, p, seed1, seed2):
     graph1 = gasse_params(n, p, seed=seed1)
