@@ -18,7 +18,7 @@ def test_tang_simple_feasible():
     initial_storage, final_storage, p, h, q, d = 0, 20, [1, 1], [1, 1], [1, 1], [0, 0]
     M = 20
     params = M, initial_storage, final_storage, p, h, q, d
-    model = production_planning(T, *params)
+    model = uncapacitated_lot_sizing(T, *params)
     model.hideOutput()
     model.optimize()
     assert model.getStatus() == "optimal"
@@ -30,7 +30,7 @@ def test_tang_simple_infeasible():
     initial_storage, final_storage, p, h, q, d = 0, 20, [1, 1], [1, 1], [1, 1], [0, 0]
     M = 19
     params = M, initial_storage, final_storage, p, h, q, d
-    model = production_planning(T, *params)
+    model = uncapacitated_lot_sizing(T, *params)
     model.hideOutput()
     model.optimize()
     assert model.getStatus() == "infeasible"
