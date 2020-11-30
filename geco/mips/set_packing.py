@@ -31,11 +31,11 @@ def yang_instance(m, seed=0):
 def yang_parameters(m, seed=0):
     n = 5 * m
     costs = [seed.randint(1, 100) for _ in range(n)]
-    nonzero_vars_for_constraint = [
+    num_nonzero_vars_for_constraint = [
         seed.randint(2 * n // 25 + 1, 3 * n // 25 - 1) for _ in range(m)
     ]
     nonzero_vars_for_constraint = [
-        seed.sample(range(n), k=num) for num in nonzero_vars_for_constraint
+        seed.sample(range(n), k=num) for num in num_nonzero_vars_for_constraint
     ]
     return n, costs, nonzero_vars_for_constraint
 
