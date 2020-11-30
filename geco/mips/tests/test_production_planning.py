@@ -13,11 +13,9 @@ def test_tang():
     assert model.getObjectiveSense() == "minimize"
 
 
-def test_tang_simple_instance():
+def test_tang_simple_feasible():
     T = 1
     initial_storage, final_storage, p, h, q, d = 0, 20, [1, 1], [1, 1], [1, 1], [0, 0]
-
-    # test feasible case
     M = 20
     params = M, initial_storage, final_storage, p, h, q, d
     model = production_planning(T, *params)
@@ -26,7 +24,10 @@ def test_tang_simple_instance():
     assert model.getStatus() == "optimal"
     assert model.getObjVal() == 20 + 20 + 1
 
-    # test infeasible case
+
+def test_tang_simple_infeasible():
+    T = 1
+    initial_storage, final_storage, p, h, q, d = 0, 20, [1, 1], [1, 1], [1, 1], [0, 0]
     M = 19
     params = M, initial_storage, final_storage, p, h, q, d
     model = production_planning(T, *params)
