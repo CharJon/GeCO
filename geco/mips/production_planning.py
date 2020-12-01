@@ -49,7 +49,7 @@ def uncapacitated_lot_sizing(
     T, M, initial_storage, final_storage, p, h, q, d, name="Production Planning"
 ):
     """
-    Generates a uncapacitated lot-sizing MIP instance instance as in 2.1 of [1]
+    Generates an uncapacitated lot-sizing MIP instance instance as in 2.1 of [1]
 
     Parameters
     ----------
