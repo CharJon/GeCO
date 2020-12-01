@@ -25,18 +25,19 @@ def tang(n, m, binary=False, seed=0):
 
 @py_random_state(-1)
 def tang_params(n, m, binary, seed=0):
+    costs = [seed.randint(1, 10) for _ in range(n)]
+
     if binary:
-        costs = [seed.randint(1, 10) for _ in range(n)]
         constraint_coefficients = [
             [seed.randint(5, 30) for _ in range(n)] for _ in range(m)
         ]
         limits = [seed.randint(10 * n, 20 * n) for _ in range(m)]
     else:
-        costs = [seed.randint(1, 10) for _ in range(n)]
         constraint_coefficients = [
             [seed.randint(0, 5) for _ in range(n)] for _ in range(m)
         ]
         limits = [seed.randint(9 * n, 10 * n) for _ in range(m)]
+
     return costs, constraint_coefficients, limits
 
 
