@@ -20,14 +20,23 @@ def tang(n, m, binary=False, seed=0):
     .. [1] Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
     programming: Learning to cut. arXiv preprint arXiv:1906.04859.
     """
-    return packing(n, m, *tang_params(n, m, seed), binary, name="Tang Packing")
+    return packing(n, m, *tang_params(n, m, binary, seed), binary, name="Tang Packing")
 
 
 @py_random_state(-1)
-def tang_params(n, m, seed=0):
-    costs = [seed.randint(1, 10) for _ in range(n)]
-    constraint_coefficients = [[seed.randint(0, 5) for _ in range(n)] for _ in range(m)]
-    limits = [seed.randint(9 * n, 10 * n) for _ in range(m)]
+def tang_params(n, m, binary, seed=0):
+    if binary:
+        costs = [seed.randint(1, 10) for _ in range(n)]
+        constraint_coefficients = [
+            [seed.randint(5, 30) for _ in range(n)] for _ in range(m)
+        ]
+        limits = [seed.randint(10 * n, 20 * n) for _ in range(m)]
+    else:
+        costs = [seed.randint(1, 10) for _ in range(n)]
+        constraint_coefficients = [
+            [seed.randint(0, 5) for _ in range(n)] for _ in range(m)
+        ]
+        limits = [seed.randint(9 * n, 10 * n) for _ in range(m)]
     return costs, constraint_coefficients, limits
 
 

@@ -35,14 +35,18 @@ def test_tang_simple_instance():
 
 
 @pytest.mark.parametrize(
-    "n,m,seed1,seed2",
+    "n,m,binary,seed1,seed2",
     itertools.product(
-        [3, 10, 100], [3, 10, 100], [0, 1, 1337, 53115], [0, 1, 1337, 53115]
+        [3, 10, 100],
+        [3, 10, 100],
+        [True, False],
+        [0, 1, 1337, 53115],
+        [0, 1, 1337, 53115],
     ),
 )
-def test_seeding(n, m, seed1, seed2):
-    params1 = tang_params(n, m, seed=seed1)
-    params2 = tang_params(n, m, seed=seed2)
+def test_seeding(n, m, binary, seed1, seed2):
+    params1 = tang_params(n, m, binary, seed=seed1)
+    params2 = tang_params(n, m, binary, seed=seed2)
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
     different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
     assert same_seeds_produce_same_params or different_seeds_produce_different_params
