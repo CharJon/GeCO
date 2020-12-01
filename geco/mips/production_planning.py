@@ -23,7 +23,7 @@ def tang_instance(T, seed=0):
     programming: Learning to cut. arXiv preprint arXiv:1906.04859.
 
     """
-    return production_planning(
+    return uncapacitated_lot_sizing(
         T, *tang_params(T, seed), name="Tang Production Planning"
     )
 
@@ -45,11 +45,11 @@ def tang_params(T, seed=0):
     return M, initial_storage, final_storage, p, h, q, d
 
 
-def production_planning(
+def uncapacitated_lot_sizing(
     T, M, initial_storage, final_storage, p, h, q, d, name="Production Planning"
 ):
     """
-    Generates a production planning MIP instance
+    Generates an uncapacitated lot-sizing MIP instance instance as in 2.1 of [1]
 
     Parameters
     ----------
@@ -75,6 +75,12 @@ def production_planning(
     Returns
     -------
         A pyscipopt model of the instance.
+
+    References
+    ----------
+    .. [1] Pochet, Y. and Wolsey, L. A. (2006). Production planning by
+    mixed integer programming. Springer Science & Business Media.
+
     """
     model = scip.Model(name)
     # add variables and their cost
