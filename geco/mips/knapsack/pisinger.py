@@ -12,9 +12,8 @@ from networkx.utils import py_random_state
 from geco.mips.knapsack.generic import knapsack
 
 
-@py_random_state(-1)
 def _correlated_knapsack_template(
-    number_of_items, capacity, profit_generator, weight_generator, profit_first, seed
+    number_of_items, capacity, profit_generator, weight_generator, profit_first
 ):
     """A template for generating knapsack instances given a relation between the weights and the profits
 
@@ -28,8 +27,6 @@ def _correlated_knapsack_template(
             takes a profit and generates a weight
         profit_first: bool
             defines if the profits are to be generated first
-        seed: int, random state or None
-            randomization seed
 
     Returns:
     --------
@@ -71,7 +68,7 @@ def uncorrelated_distribution(R, seed=0):
 @py_random_state(-1)
 def uncorrelated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
-        number_of_items=n, capacity=c, seed=seed, **uncorrelated_distribution(R, seed)
+        number_of_items=n, capacity=c, **uncorrelated_distribution(R, seed)
     )
 
 
@@ -89,7 +86,6 @@ def weakly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         **weakly_correlated_distribution(R, seed),
     )
 
@@ -108,7 +104,6 @@ def strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         **strongly_correlated_distribution(R, seed),
     )
 
@@ -127,7 +122,6 @@ def inverse_strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         **inverse_strongly_correlated_distribution(R, seed),
     )
 
@@ -148,7 +142,6 @@ def almost_strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         **almost_strongly_correlated_distribution(R, seed),
     )
 
@@ -165,7 +158,7 @@ def subset_sum_distribution(R, seed=0):
 @py_random_state(-1)
 def subset_sum(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
-        number_of_items=n, capacity=c, seed=seed, **subset_sum_distribution(R, seed)
+        number_of_items=n, capacity=c, **subset_sum_distribution(R, seed)
     )
 
 
@@ -183,7 +176,6 @@ def uncorrelated_with_similar_weights(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         **uncorrelated_with_similar_weights_distribution(R, seed),
     )
 
@@ -219,7 +211,6 @@ def profit_ceiling(n, c, d=3, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         profit_generator=lambda w: d * math.ceil(w / d),
         weight_generator=lambda p: seed.uniform(1, R),
         profit_first=False,
@@ -231,7 +222,6 @@ def circle(n, c, d=2 / 3, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         profit_generator=lambda w: d * math.sqrt(4 * (R ** 2) - (w - 2 * R) ** 2),
         weight_generator=lambda p: seed.uniform(1, R),
         profit_first=False,
@@ -243,7 +233,6 @@ def multiple_strongly_correlated(n, c, k1, k2, d, R=1000, seed=0):
     return _correlated_knapsack_template(
         number_of_items=n,
         capacity=c,
-        seed=seed,
         profit_generator=lambda w: w + k1 if w % d == 0 else w + k2,
         weight_generator=lambda p: seed.uniform(1, R),
         profit_first=False,
