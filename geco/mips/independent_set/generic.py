@@ -110,36 +110,3 @@ def clique_independent_set(graph: nx.Graph, name: str = "Clique Independent Set"
     model.setMaximize()
 
     return model
-
-
-def gasse_params(n: int, p: float, seed=0) -> nx.Graph:
-    return nx.generators.erdos_renyi_graph(n, p, seed)
-
-
-def gasse_instance(n: int, p: float, seed=0) -> scip.Model:
-    """
-    Generates a maximum independent set instance as described in [1].
-
-    Parameters
-    ----------
-    n: int
-        number of nodes.
-    p: float
-        edge probability
-    seed: int, random state or None
-        randomization seed
-
-    Returns
-    -------
-    model: scip.Model
-        pyscipopt model of the instance.
-
-    References
-    ----------
-    .. [1] "Exact Combinatorial Optimization with Graph Convolutional Neural Networks" (2019)
-      Maxime Gasse, Didier Chételat, Nicola Ferroni, Laurent Charlin and Andrea Lodi
-      Advances in Neural Information Processing Systems 32 (2019)
-    """
-    return clique_independent_set(
-        gasse_params(n, p, seed), name="Gasse Independent Set"
-    )
