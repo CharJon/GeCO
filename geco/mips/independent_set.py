@@ -22,6 +22,7 @@ def independent_set(graph: nx.Graph, name: str = "Independent Set") -> scip.Mode
     ----------
     .. [1] https://www.princeton.edu/~aaa/Public/Teaching/ORF523/S16/ORF523_S16_Lec11_gh.pdf
     """
+    graph = nx.relabel.convert_node_labels_to_integers(graph)
     model = scip.Model(name)
 
     vars = {
@@ -93,6 +94,7 @@ def clique_independent_set(graph: nx.Graph, name: str = "Clique Independent Set"
     .. [1] David Bergman, Andre A. Cire, Willem-Jan Van Hoeve, and John Hooker. Decision diagrams
     for optimization. Springer, 2016.
     """
+    graph = nx.relabel.convert_node_labels_to_integers(graph)
     model = scip.Model(name)
 
     cliques = _get_cliques(graph)
