@@ -20,7 +20,13 @@ class Generator:
 
 
 class CommonSubstructureGenerator:
-    def __init__(self, generating_function, base_params, expansion_function, extra_parameter_generator):
+    def __init__(
+        self,
+        generating_function,
+        base_params,
+        expansion_function,
+        extra_parameter_generator,
+    ):
         self.backbone = generating_function(*base_params)
         self.expansion_function = expansion_function
         self.extra_parameters_generator = extra_parameter_generator
@@ -29,4 +35,6 @@ class CommonSubstructureGenerator:
         return self
 
     def __next__(self):
-        return self.expansion_function(self.backbone, *self.extra_parameters_generator())
+        return self.expansion_function(
+            self.backbone, *self.extra_parameters_generator()
+        )
