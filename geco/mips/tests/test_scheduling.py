@@ -27,9 +27,14 @@ def test_late_tasks_formulation():
     assert model.getObjectiveSense() == "minimize"
 
 
-def test_heinz_formulation():
-    main_params = number_of_facilities, number_of_tasks = 3, 20
-    params = p, C, c, R, d, r = generate_params(*main_params, seed=0)
+@pytest.mark.xfail
+@pytest.mark.parametrize(
+    "number_of_facilities,number_of_tasks,seed",
+    itertools.product([1, 2, 3], [5, 10, 15], [0, 1, 1337, 53115]),
+)
+def test_heinz_formulation(number_of_facilities, number_of_tasks, seed):
+    main_params = number_of_facilities, number_of_tasks
+    params = p, C, c, R, d, r = generate_params(*main_params, seed)
     time_steps = int(max(d.values()) - min(R))
     model = heinz_formulation(*main_params, *params)
     x_vars_count = number_of_facilities * number_of_tasks
