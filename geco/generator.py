@@ -21,12 +21,14 @@ class Generator:
 
 
 @py_random_state(-1)
-def common_substructure_generator(instance_generation_function,
-                                  instance_params_generation_function,
-                                  base_params,
-                                  new_params,
-                                  expand_params_function,
-                                  seed=0):
+def common_substructure_generator(
+    instance_generation_function,
+    instance_params_generation_function,
+    base_params,
+    new_params,
+    expand_params_function,
+    seed=0,
+):
     """
     Generates instances that have common substructure
 
@@ -51,4 +53,6 @@ def common_substructure_generator(instance_generation_function,
     """
     while True:
         base_result = instance_params_generation_function(*base_params, seed=seed)
-        yield instance_generation_function(*expand_params_function(new_params, base_result, seed=seed))
+        yield instance_generation_function(
+            *expand_params_function(new_params, base_result, seed=seed)
+        )

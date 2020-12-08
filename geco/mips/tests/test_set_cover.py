@@ -94,7 +94,13 @@ def test_sun_at_least_two_elements_in_set(n, m, seed):
 
 @pytest.mark.parametrize(
     "n,base_n,base_m,seed1,seed2",
-    itertools.product([10, 100, 200], [1, 5, 9], [10, 100, 200], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+    itertools.product(
+        [10, 100, 200],
+        [1, 5, 9],
+        [10, 100, 200],
+        [0, 1, 1337, 53115],
+        [0, 1, 1337, 53115],
+    ),
 )
 def test_expand_sun_params(n, base_n, base_m, seed1, seed2):
     base_costs1, base_sets1 = sun_params(base_n, base_m, seed1)

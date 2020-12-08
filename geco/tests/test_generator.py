@@ -16,16 +16,17 @@ def test_generator():
 
 
 @pytest.mark.parametrize(
-    "n,m,seed",
-    itertools.product([10, 100, 200], [10, 100, 200], [0, 1, 1337, 53115])
+    "n,m,seed", itertools.product([10, 100, 200], [10, 100, 200], [0, 1, 1337, 53115])
 )
 def test_common_substructure_generator_set_cover(n, m, seed):
-    gen = common_substructure_generator(instance_generation_function=set_cover,
-                                        params_generation_function=sun_params,
-                                        base_params=(n, m),
-                                        new_params=(n + 10, m),
-                                        expand_params_function=expand_sun_params,
-                                        seed=seed)
+    gen = common_substructure_generator(
+        instance_generation_function=set_cover,
+        params_generation_function=sun_params,
+        base_params=(n, m),
+        new_params=(n + 10, m),
+        expand_params_function=expand_sun_params,
+        seed=seed,
+    )
     for model in itertools.islice(gen, 10):
         assert model.getNVars() == n + 10
         assert model.getNConss() == m
