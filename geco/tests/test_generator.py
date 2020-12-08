@@ -21,7 +21,7 @@ def test_generator():
 def test_common_substructure_generator_set_cover(n, m, seed):
     gen = common_substructure_generator(
         instance_generation_function=set_cover,
-        params_generation_function=sun_params,
+        instance_params_generation_function=sun_params,
         base_params=(n, m),
         new_params=(n + 10, m),
         expand_params_function=expand_sun_params,
