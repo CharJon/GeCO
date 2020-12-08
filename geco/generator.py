@@ -1,4 +1,5 @@
 import numpy as np
+from networkx.utils import py_random_state
 
 
 class Generator:
@@ -19,22 +20,35 @@ class Generator:
         self.rng.seed(seed)
 
 
-class CommonSubstructureGenerator:
-    def __init__(
-        self,
-        generating_function,
-        base_params,
-        expansion_function,
-        extra_parameter_generator,
-    ):
-        self.backbone = generating_function(*base_params)
-        self.expansion_function = expansion_function
-        self.extra_parameters_generator = extra_parameter_generator
+@py_random_state(-1)
+def common_substructure_generator(instance_generation_function,
+                                  instance_params_generation_function,
+                                  base_params,
+                                  new_params,
+                                  expand_params_function,
+                                  seed=0):
+    """
+    Generates instances that have common substructure
 
-    def __iter__(self):
-        return self
+    Parameters
+    ----------
+    instance_generation_function:
+        base function that defines MIP
+    instance_params_generation_function:
+        function to generate parameters for instance_generation_function
+    base_params:
+        parameters for the common substructure
+    new_params:
+        parameters for the required expanded instance
+    expand_params_function:
+        function to expand instance params using new_params
+    seed: int, random object or None
+        for randomization
 
-    def __next__(self):
-        return self.expansion_function(
-            self.backbone, *self.extra_parameters_generator()
-        )
+    Returns
+    -------
+        generator object
+    """
+    while True:
+        base_result = instance_params_generation_function(*base_params, seed=seed)
+        yield instance_generation_function(*expand_params_function(new_params, base_result, seed=seed))

@@ -38,7 +38,9 @@ def sun_params(n, m, seed=0):
 
 
 @py_random_state(-1)
-def expand_sun_params(n, base_costs, base_sets, seed=0):
+def expand_sun_params(new_params, base_result, seed=0):
+    n, *_ = new_params
+    base_costs, base_sets = base_result
     assert n > len(base_costs)
 
     costs = list(base_costs)

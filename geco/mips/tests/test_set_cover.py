@@ -3,8 +3,7 @@ import itertools
 
 import pytest
 
-from geco.mips.set_cover.sun import *
-from geco.mips.set_cover.yang import *
+from geco.mips.set_cover import *
 
 """
 Generic Tests
@@ -100,8 +99,8 @@ def test_sun_at_least_two_elements_in_set(n, m, seed):
 def test_expand_sun_params(n, base_n, base_m, seed1, seed2):
     base_costs1, base_sets1 = sun_params(base_n, base_m, seed1)
     base_costs2, base_sets2 = sun_params(base_n, base_m, seed2)
-    params1 = costs1, sets1 = expand_sun_params(n, base_costs1, base_sets1, seed1)
-    params2 = costs2, sets2 = expand_sun_params(n, base_costs2, base_sets2, seed1)
+    params1 = costs1, sets1 = expand_sun_params((n,), (base_costs1, base_sets1), seed1)
+    params2 = costs2, sets2 = expand_sun_params((n,), (base_costs2, base_sets2), seed2)
 
     # test seeding
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
