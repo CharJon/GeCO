@@ -46,6 +46,4 @@ def common_substructure_generator(
         generator object
     """
     while True:
-        yield instance_generation_function(
-            *expand_params_function(backbone, seed=seed)
-        )
+        yield instance_generation_function(*expand_params_function(backbone, seed=seed))

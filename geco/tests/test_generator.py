@@ -22,7 +22,9 @@ def test_common_substructure_generator_set_cover(n, m, seed):
     gen = common_substructure_generator(
         instance_generation_function=set_cover,
         backbone=sun_params(n, m),
-        expand_params_function=lambda backbone, seed: expand_sun_params((n + 10, m), backbone, seed=seed),
+        expand_params_function=lambda backbone, seed: expand_sun_params(
+            (n + 10, m), backbone, seed=seed
+        ),
         seed=seed,
     )
     for model in itertools.islice(gen, 10):
