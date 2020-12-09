@@ -29,16 +29,87 @@ def _sun_sets(n, m, seed, initial_sets=None):
 
 @py_random_state(-1)
 def sun_instance(n, m, seed=0):
+    """
+    Generates instance for set cover generation as described in [1].
+
+    Parameters
+    ----------
+    n: int
+        number of elements
+    m: int
+        number of set constraints
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+        costs: list[int]
+            element costs in objective function
+        sets: list[set]
+            definition of element requirement for each set
+    References
+    ----------
+    .. [1] Haoran Sun, Wenbo Chen, Hui Li, & Le Song (2021).
+         Improving Learning to Branch via Reinforcement Learning. In Submitted to
+         International Conference on Learning
+    """
     return set_cover(*sun_params(n, m, seed))
 
 
 @py_random_state(-1)
 def sun_params(n, m, seed=0):
+    """
+    Generates instance params for set cover generation as described in [1].
+
+    Parameters
+    ----------
+    n: int
+        number of elements
+    m: int
+        number of set constraints
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+        costs: list[int]
+            element costs in objective function
+        sets: list[set]
+            definition of element requirement for each set
+    References
+    ----------
+    .. [1] Haoran Sun, Wenbo Chen, Hui Li, & Le Song (2021).
+         Improving Learning to Branch via Reinforcement Learning. In Submitted to
+         International Conference on Learning
+    """
     return _sun_costs(n, seed), _sun_sets(n, m, seed, initial_sets=None)
 
 
 @py_random_state(-1)
 def expand_sun_params(new_params, base_result, seed=0):
+    """
+    Implements the expansion from an existing set cover instance as described in [1]
+
+    Parameters
+    ----------
+    new_params: tuple
+        new params for sun_params
+    base_result: tuple
+        tuple of (costs, sets) that represent instance params of backbone
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+     model: scip.Model
+         expanded model
+
+    References
+    __________
+    .. [1] Haoran Sun, Wenbo Chen, Hui Li, & Le Song (2021).
+     Improving Learning to Branch via Reinforcement Learning. In Submitted to
+     International Conference on Learning
+    """
     n, *_ = new_params
     base_costs, base_sets = base_result
     assert n > len(base_costs)
