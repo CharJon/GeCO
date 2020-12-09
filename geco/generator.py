@@ -23,9 +23,7 @@ class Generator:
 @py_random_state(-1)
 def common_substructure_generator(
     instance_generation_function,
-    instance_params_generation_function,
-    base_params,
-    new_params,
+    backbone,
     expand_params_function,
     seed=0,
 ):
@@ -36,14 +34,10 @@ def common_substructure_generator(
     ----------
     instance_generation_function:
         base function that defines MIP
-    instance_params_generation_function:
-        function to generate parameters for instance_generation_function
-    base_params:
-        parameters for the common substructure
-    new_params:
-        parameters for the required expanded instance
+    backbone:
+        instance parameters of the common substructure
     expand_params_function:
-        function to expand instance params using new_params
+        function to expand instance params given a backbone and a seed
     seed: int, random object or None
         for randomization
 
@@ -52,7 +46,6 @@ def common_substructure_generator(
         generator object
     """
     while True:
-        base_result = instance_params_generation_function(*base_params, seed=seed)
         yield instance_generation_function(
-            *expand_params_function(new_params, base_result, seed=seed)
+            *expand_params_function(backbone, seed=seed)
         )
