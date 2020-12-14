@@ -12,7 +12,7 @@ def generate(generating_function, seed=0):
     generating_function:
         A function that accepts a seed and returns an instance.
     seed: int, random state or None
-            seed for randomization
+        seed for randomization.
 
     Returns
     -------
@@ -32,9 +32,9 @@ def generate_n(generating_function, n, seed=0):
     generating_function:
         A function that accepts a seed and returns an instance.
     n: int
-        Number of instances to generate
+        Number of instances to generate.
     seed: int, random state or None
-            seed for randomization
+        seed for randomization.
 
     Returns
     -------
