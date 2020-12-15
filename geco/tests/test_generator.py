@@ -6,13 +6,6 @@ from geco.generator import *
 from geco.mips.facility_location import cornuejols_instance
 
 
-def test_generator_class():
-    gen = Generator(cornuejols_instance, n_customers=10, n_facilities=3, ratio=2)
-    gen.seed(0)
-    for model in itertools.islice(gen, 10):
-        assert type(model) == scip.Model
-
-
 def test_generate():
     gen = generate(lambda seed: cornuejols_instance(10, 5, 2, seed))
     for model in itertools.islice(gen, 10):

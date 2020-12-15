@@ -1,4 +1,3 @@
-import numpy as np
 from networkx.utils import py_random_state
 
 
@@ -42,21 +41,3 @@ def generate_n(generating_function, n, seed=0):
     """
     for i in range(n):
         yield i, generating_function(seed)
-
-
-class Generator:
-    def __init__(self, generating_function, **parameter):
-        self.generate_instance = generating_function
-        self.parameter = parameter
-        self.rng = np.random.RandomState()
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        return self.generate_instance(
-            **self.parameter, seed=self.rng.randint(2 ** 32 - 1)
-        )
-
-    def seed(self, seed: int):
-        self.rng.seed(seed)
