@@ -27,6 +27,7 @@ def test_generate_n():
         obj_coeffs_2 = [v.getObj() for v in model2.getVars()]
         assert obj_coeffs_1 != obj_coeffs_2
 
+
 @pytest.mark.parametrize(
     "n,m,seed", itertools.product([10, 100, 200], [10, 100, 200], [0, 1, 1337, 53115])
 )
