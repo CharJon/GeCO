@@ -24,7 +24,7 @@ def test_yang_simple_instance():
 
 @pytest.mark.parametrize(
     "m,seed1,seed2",
-    itertools.product([10, 100, 1000], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
+    itertools.product([10, 100], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
 )
 def test_yang_seeding(m, seed1, seed2):
     params1 = yang_parameters(m, seed=seed1)

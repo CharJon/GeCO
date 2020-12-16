@@ -41,3 +41,29 @@ def generate_n(generating_function, n, seed=0):
     """
     for i in range(n):
         yield i, generating_function(seed)
+
+
+@py_random_state(-1)
+def common_substructure_generator(
+    instance_generation_function, backbone, expand_params_function, seed=0,
+):
+    """
+    Generates instances that have common substructure
+
+    Parameters
+    ----------
+    instance_generation_function:
+        base function that defines MIP
+    backbone:
+        instance parameters of the common substructure
+    expand_params_function:
+        function to expand instance params given a backbone and a seed
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+        generator object
+    """
+    while True:
+        yield instance_generation_function(*expand_params_function(backbone, seed=seed))
