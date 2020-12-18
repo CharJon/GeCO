@@ -2,3 +2,8 @@
 
 # GeCO
 Generators for Combinatorial Optimization
+
+## Implemented Generators
+### MIPS
+- Capacitated facility location
+- Scheduling
