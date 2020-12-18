@@ -45,7 +45,10 @@ def generate_n(generating_function, n, seed=0):
 
 @py_random_state(-1)
 def common_substructure_generator(
-    instance_generation_function, backbone, expand_params_function, seed=0,
+    instance_generation_function,
+    backbone,
+    expand_params_function,
+    seed=0,
 ):
     """
     Generates instances that have common substructure

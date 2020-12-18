@@ -84,7 +84,9 @@ def weakly_correlated_distribution(R, seed=0):
 @py_random_state(-1)
 def weakly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
-        number_of_items=n, capacity=c, **weakly_correlated_distribution(R, seed),
+        number_of_items=n,
+        capacity=c,
+        **weakly_correlated_distribution(R, seed),
     )
 
 
@@ -100,7 +102,9 @@ def strongly_correlated_distribution(R, seed=0):
 @py_random_state(-1)
 def strongly_correlated(n, c, R=1000, seed=0):
     return _correlated_knapsack_template(
-        number_of_items=n, capacity=c, **strongly_correlated_distribution(R, seed),
+        number_of_items=n,
+        capacity=c,
+        **strongly_correlated_distribution(R, seed),
     )
 
 
