@@ -1,0 +1,33 @@
+package:
+  name: geco
+  version: 0.1.0
+
+source:
+  git_url: https://github.com/CharJon/GeCO
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - python
+    - setuptools
+  run:
+    - python
+    - pip
+    - numpy
+    - scipy
+    - jupyter
+    - pytest
+    - pandas
+    - tqdm
+    - pyscipopt
+    - networkx
+    - codecov
+    - pip:
+        - black
+        - git+https://github.com/rhgrant10/tsplib95.git
+        - dwave_networkx
+        - git+https://github.com/CharJon/GeCO
+about:
+  summary: Generators for Combinatorial Optimization
