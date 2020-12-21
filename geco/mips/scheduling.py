@@ -98,7 +98,7 @@ def generate_hookers_instances():
     for n, t, seed in itertools.product(number_of_tasks, time_steps, seeds):
         params = 3, n, t, seed
         yield params, hooker_late_tasks_formulation(
-            *params[:-1], *generate_params(*params[:-1])[:-1], seed=seed
+            *params[:-1], *generate_params(*params[:-1])[:-1]
         )
 
 
