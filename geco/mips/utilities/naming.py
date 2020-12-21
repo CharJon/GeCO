@@ -7,9 +7,3 @@ def undirected_edge_name(u, v) -> str:
         u_i, v_i = v_i, u_i
     return f"({u_i},{v_i})"
 
-
-def is_edge(var) -> bool:
-    """
-    checks variable name if it represents and edge or not
-    """
-    return "," in str(var)
