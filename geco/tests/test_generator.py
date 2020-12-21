@@ -3,7 +3,7 @@ import itertools
 import pytest
 
 from geco.generator import *
-from geco.mips.facility_location import cornuejols_instance
+from geco.mips.facility_location.cornuejols import cornuejols_instance
 from geco.mips.set_cover import *
 
 
