@@ -9,7 +9,7 @@ with open("LICENSE") as f:
 setup(
     name="GeCO",
     version="0.1.0",
-    description="Generator for Combinatorial Optimization",
+    description="Generators for Combinatorial Optimization",
     long_description=readme_text,
     url="https://github.com/CharJon/GeCO",
     license=license_text,
