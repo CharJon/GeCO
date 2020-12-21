@@ -115,22 +115,6 @@ def test_heinz_simple_instance():
     assert heinz_model.getObjVal() == 1
 
 
-def get_keys(iterable):
-    """
-    Given a list or a dict returns keys(indices)
-
-    Returns
-    -------
-    an iterable of keys
-    """
-    if isinstance(iterable, list):
-        return range(len(iterable))
-    elif isinstance(iterable, dict):
-        return iterable.keys()
-    else:
-        raise ValueError("iterable given should be of type list or dict")
-
-
 def simple_instance_params():
     n_resources = 1
     n_tasks = 1
