@@ -26,8 +26,10 @@ def test_triangle():
         data["weight"] = 1
     _, model = triangle(graph)
     n = len(graph.nodes)
-    assert model.getNVars() == n * (n-1) / 2
-    assert model.getNConss() == n * (n-1) * (n-2) / 3  # 2 constraints for each triple of nodes
+    assert model.getNVars() == n * (n - 1) / 2
+    assert (
+        model.getNConss() == n * (n - 1) * (n - 2) / 3
+    )  # 2 constraints for each triple of nodes
     model.hideOutput()
     model.optimize()
     assert model.getStatus() == "optimal"

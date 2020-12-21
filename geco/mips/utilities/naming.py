@@ -6,4 +6,3 @@ def undirected_edge_name(u, v) -> str:
     if u_i > v_i:
         u_i, v_i = v_i, u_i
     return f"({u_i},{v_i})"
-
