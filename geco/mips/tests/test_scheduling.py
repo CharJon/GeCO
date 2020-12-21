@@ -8,23 +8,12 @@ def test_late_tasks_formulation():
     params = p, C, c, R, d = generate_params(*main_params[:-1], seed=0)[:-1]
 
     model = hooker_late_tasks_formulation(*main_params, *params)
-    assert (
-        model.getNVars()
-        == number_of_facilities * number_of_tasks * time_steps + number_of_tasks
-    )
-    constraints_lowerbound = (
-        number_of_tasks * time_steps
-        + number_of_tasks
-        + number_of_facilities * time_steps
-    )
-    constraints_upperbound = (
-        number_of_tasks * time_steps
-        + number_of_tasks
-        + number_of_facilities * time_steps
-        + number_of_facilities * number_of_tasks * time_steps
-    )
-    assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
-    assert model.getObjectiveSense() == "minimize"
+    check_hookers_instance(model, number_of_facilities, number_of_tasks, time_steps)
+
+
+def test_hooker_generation():
+    for params, model in generate_hookers_instances():
+        check_hookers_instance(model, *params[:-1])
 
 
 @pytest.mark.xfail
@@ -138,3 +127,23 @@ def simple_instance_params():
         deadlines,
         resource_requirements,
     )
+
+
+def check_hookers_instance(model, number_of_facilities, number_of_tasks, time_steps):
+    assert (
+        model.getNVars()
+        == number_of_facilities * number_of_tasks * time_steps + number_of_tasks
+    )
+    constraints_lowerbound = (
+        number_of_tasks * time_steps
+        + number_of_tasks
+        + number_of_facilities * time_steps
+    )
+    constraints_upperbound = (
+        number_of_tasks * time_steps
+        + number_of_tasks
+        + number_of_facilities * time_steps
+        + number_of_facilities * number_of_tasks * time_steps
+    )
+    assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
+    assert model.getObjectiveSense() == "minimize"
