@@ -12,7 +12,7 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  - conda env create -n GeCO --file conda-env.yml
+  - conda env create -n GeCO --file conda-dev-env.yml
   - conda activate GeCO
 script:
   - black --check geco/
