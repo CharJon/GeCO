@@ -14,6 +14,7 @@ dependencies:
   - pyscipopt
   - networkx
   - pytest
+  - black
   - codecov
   - pip:
       - git+https://github.com/rhgrant10/tsplib95.git
