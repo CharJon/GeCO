@@ -21,17 +21,19 @@ def test_empty_edge():
 
 
 def test_triangle():
-    graph = nx.generators.complete_graph(3)
+    graph = nx.generators.cycle_graph(4)
     for _, _, data in graph.edges(data=True):
         data["weight"] = 1
     _, model = triangle(graph)
-    m = len(graph.edges)
-    assert model.getNVars() == m
-    assert model.getNConss() == 2
+    n = len(graph.nodes)
+    assert model.getNVars() == n * (n - 1) / 2
+    assert (
+        model.getNConss() == n * (n - 1) * (n - 2) / 3
+    )  # 2 constraints for each triple of nodes
     model.hideOutput()
     model.optimize()
     assert model.getStatus() == "optimal"
-    assert model.getObjVal() == 2
+    assert model.getObjVal() == 4
 
 
 def test_naive_negative():

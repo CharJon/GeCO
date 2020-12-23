@@ -118,8 +118,4 @@ def triangle(graph: nx):
 
 def _get_edge_variable(u, v, edge_variables):
     edge_name = naming.undirected_edge_name(u, v)
-    alternative_edge_name = naming.undirected_edge_name(v, u)
-    if edge_name in edge_variables:
-        return edge_variables[edge_name]
-    else:
-        return edge_variables[alternative_edge_name]
+    return edge_variables[edge_name]
