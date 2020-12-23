@@ -5,5 +5,12 @@ Generators for Combinatorial Optimization
 
 ## Implemented Generators
 ### MIPS
-- Capacitated facility location
+- Capacitated Facility Location
 - Scheduling
+- Knapsack
+- Set Packing
+- Set Cover
+- Production Planning
+- Maximum Independent Set 
+- Maximum Cut
+- Packing 
