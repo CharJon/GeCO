@@ -4,7 +4,6 @@ with open("README.md", "r", encoding="utf-8") as f:
     readme_text = f.read()
 
 
-print(readme_text)
 setup(
     name="GeCO",
     version="0.1.0",
