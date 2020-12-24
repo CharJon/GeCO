@@ -15,10 +15,10 @@ install:
   - conda env create -n GeCO --file conda-dev-env.yml
   - conda activate GeCO
 script:
-- black --check geco/
-- coverage run -m pytest
+  - black --check geco/
+  - coverage run -m pytest
 after_success:
-- codecov
+  - codecov
 deploy:
   provider: pypi
   username: __token__
