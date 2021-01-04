@@ -1,13 +1,12 @@
 import functools
 import json
 import multiprocessing
-import tempfile
 
 import tqdm
 
 import geco.aux.scip as aux_scip
 from geco.generator import *
-from geco.mips.facility_location import *
+from geco.mips.facility_location.cornuejols import cornuejols_instance
 
 
 def solve_capfac2(num_instances, j=1):
@@ -20,6 +19,7 @@ def solve_capfac2(num_instances, j=1):
         m.writeProblem(name)
         instances.append(name)
 
+    solve = functools.partial(aux_scip.solve, solver=[aux_scip.solve_one_vanillafullstrong])
     with multiprocessing.Pool(processes=j) as p:
         ds = []
         for d in tqdm.tqdm(p.imap_unordered(solve, instances), total=len(instances)):
