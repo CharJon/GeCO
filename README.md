@@ -36,7 +36,7 @@ This, as all generators inside the `mips` subpackage, return a `PySCIPOpt` model
 As you might have noticed the generator function has a seed parameter, as a matter of fact this is common through out all generators that exhibit random behavior, it is used to preserve the random state, in order to get a random instance each time you can use `seed=None`.
 
 ### Multiple instance generation
-You might want to generate more than one instance, we have created helpful generator functions in the [`generator.py`](geco/generator.py).
+In case you want to generate more than one instance, we have created some helpful generator functions in the [`generator.py`](geco/generator.py).
 
 To generate n instances you can use the `generate_n` function, an example to generate 10 Yang knapsack instances would be 
 ```python3
