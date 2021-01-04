@@ -1,5 +1,10 @@
 # Contribution Guide
-To contribute: fork this repo, clone the forked repo make the changes in a branch then create a pull request to this repo. 
+To contribute: 
+   1. Fork this repo.
+   2. Clone the forked repo.
+   3. Make the changes in a branch.
+   4. Push to your forked repo.
+   5. Create a pull request to this repo. 
 
 ## Development Environment
 Install dependencies and activate conda development environment
