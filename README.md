@@ -4,7 +4,7 @@
 Generators for Combinatorial Optimization
 
 ## Installation
-The code heavily depends on the python interface of SCIP: [PySCIPOPT](https://github.com/scipopt/PySCIPOpt). 
+The code heavily depends on the python interface of SCIP: [PySCIPOpt](https://github.com/scipopt/PySCIPOpt). 
 The easiest way to install it is using conda
 ```bash
 conda install -c scipopt pyscipopt
@@ -16,10 +16,10 @@ Then, once you have `pyscipopt` installed, you are ready to install the `geco` p
 pip install geco
 ```
 
-That's it now you are ready to generate some instances!
+That's it, now you are ready to generate some instances!
 
 ## Example
-Assue you want a knapsack instance like in the Yang [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html). 
+Assume you want a knapsack instance like in the Yang [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html). 
 
 You start by looking through the knapsack module/pakcage, then searching for a function with the name `FIRSTAUTHOR_instance`. 
 In this case we find a [`yang.py`](geco/mips/knapsack/yang.py) file in the `mips/knapsack` package.
@@ -30,7 +30,7 @@ from geco import knapsack
 
 knapsack.yang_instance(5, seed=1)
 ```
-This, as all generators inside the `mips` subpackage, return a PySCIPOPT model that makes use of the SCIP mixed integer programming solver, refer to their docs to learn how to set params, solve the instance and a lot more.
+This, as all generators inside the `mips` subpackage, return a `PySCIPOpt` model that makes use of the SCIP mixed integer programming solver, refer to their docs to learn how to set params, solve the instance and a lot more.
 
 ### Randomization
 As you might have noticed the generator function has a seed parameter, as a matter of fact this is common through out all generators that exhibit random behavior, it is used to preserve the random state, in order to get a random instance each time you can use `seed=None`.
