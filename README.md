@@ -59,3 +59,6 @@ All the following instances are implemented following some of the generation tec
 - Maximum Independent Set 
 - Maximum Cut
 - Packing 
+
+# Contributing
+If you want to add some new generator, fix a big or enhance the repository in some way, please refer to our [guide](CONTRIBUTING.md).
