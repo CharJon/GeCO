@@ -27,6 +27,19 @@ def branching_parameter(m: scip.Model, cuts_at_root=True):
     m.setHeuristics(scip.SCIP_PARAMSETTING.OFF)
 
 
+def solve_problem_default(file, time_limit=None):
+    m = scip.Model()
+    m.readProblem(file)
+    m.hideOutput()
+    if time_limit:
+        m.setParam("limits/time", time_limit)
+    m.optimize()
+    if m.getStatus() == "optimal":
+        with open(f"/tmp/{file.split('/')[-1]}", 'w') as sf:
+            m.writeBestSol(sf.name)
+            return sf.name
+
+
 def add_optimal_solution(m: scip.Model, time_limit=None):
     with tempfile.NamedTemporaryFile(suffix=".lp", dir="/dev/shm") as pf:
         m.writeProblem(pf.name)
@@ -58,10 +71,60 @@ def stats(m: scip.Model):
         "solving_time": m.getSolvingTime(),
         "num_nodes": m.getNNodes(),
         "status": m.getStatus(),
-        "primal_bound": m.getObjVal(),
+        "primal_bound_": m.getPrimalbound(),
         "dual_bound": m.getDualbound(),
         "root_dual_bound": m.getDualboundRoot(),
-        "_primal_bound_": m.getPrimalbound(),
+        "obj_val": m.getObjVal()
         # "primal_root": None
     }
     return d
+
+
+def solve_one_vanillafullstrong(problem_file, solution_file, node_limit=None):
+    model = scip.Model()
+    model.hideOutput()
+    model.readProblem(problem_file)
+    model.readSol(solution_file)
+    set_vanillafullstrongbranching(model)
+    branching_parameter(model)
+    if node_limit:
+        model.setParam('limits/totalnodes', node_limit)
+    model.optimize()
+    return {"branching": "vanillafullstrong", "settings": "isolate_branching", **stats(model)}
+
+
+def solve_one_default(problem_file, solution_file, node_limit=None):
+    model = scip.Model()
+    model.hideOutput()
+    model.readProblem(problem_file)
+    model.readSol(solution_file)
+    branching_parameter(model)
+    if node_limit:
+        model.setParam('limits/totalnodes', node_limit)
+    model.optimize()
+    return {"branching": "default", "settings": "isolate_branching", **stats(model)}
+
+
+def solve_one_full_default(problem_file, solution_file, node_limit=None):
+    model = scip.Model()
+    model.hideOutput()
+    model.readProblem(problem_file)
+    branching_parameter(model)
+    if node_limit:
+        model.setParam('limits/totalnodes', node_limit)
+    model.optimize()
+    return {"branching": "default", "settings": "default", **stats(model)}
+
+
+def solve(instance, solver):
+    problem = scip.Model()
+    problem.readProblem(instance)
+    with tempfile.NamedTemporaryFile('w', prefix='/dev/shm/', suffix='.lp') as ntf:
+        problem.writeProblem(ntf.name)
+        # solve problem and solution
+        optimal_solution = solve_problem_default(ntf.name)
+
+        d = []
+        for s in solver:
+            d.append(s(ntf.name, optimal_solution))
+        return d
