@@ -30,5 +30,5 @@ is implemented, if not create a new module.
    - The same seed should create the same instance.
 
 ## Creating an Issue
-Adding an issue is still a contribution! if you find something wrong or that can be added and you don't have the time to do it 
+Adding an issue is still a contribution! If you find something wrong or that can be added and you don't have the time to do it 
 create an issue and we will try our best to solve it. 
