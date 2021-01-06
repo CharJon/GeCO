@@ -19,9 +19,9 @@ pip install geco
 That's it, now you are ready to generate some instances!
 
 ## Example
-Assume you want a knapsack instance like in the Yang [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html). 
+Assume you want a knapsack instance like in the Yang et al. [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html). 
 
-You start by looking through the knapsack module/pakcage, then searching for a function with the name `FIRSTAUTHOR_instance`. 
+You start by looking through the knapsack module/package, then searching for a function with the name `FIRSTAUTHOR_instance`. 
 In this case we find a [`yang.py`](geco/mips/knapsack/yang.py) file in the `mips/knapsack` package.
 
 To generate an instance with 5 items you would run
