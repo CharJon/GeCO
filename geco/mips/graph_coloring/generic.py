@@ -140,9 +140,9 @@ def representatives(graph, name="Representatives Graph Coloring"):
 
     # add constraint (9)
     for u in graph.nodes:
-        non_adjacent_vertices = graph.non_neighbors(u)
+        non_adjacent_vertices = graph.nodes - graph.neighbors(u) - {u}
         for v, w in graph.edges:
-            if v not in non_adjacent_vertices and w not in non_adjacent_vertices:
+            if v in non_adjacent_vertices and w in non_adjacent_vertices:
                 uv = undirected_edge_name(u, v)
                 uw = undirected_edge_name(u, w)
                 uu = undirected_edge_name(u, u)
