@@ -126,7 +126,7 @@ def representatives(graph, name="Representatives Graph Coloring"):
         if not graph.has_edge(u, v) or u == v:
             edge_name = undirected_edge_name(u, v)
             obj = 1 if u == v else 0
-            x[edge_name] = model.addVar(
+            x[u, v] = model.addVar(
                 lb=0, ub=1, obj=obj, name=f"x_{u}_{v}", vtype="B"
             )
 
@@ -134,7 +134,7 @@ def representatives(graph, name="Representatives Graph Coloring"):
     for v in graph.nodes:
         non_adjacent_vertices = (graph.nodes - graph.neighbors(v)).union({v})
         model.addCons(
-            scip.quicksum(x[undirected_edge_name(u, v)] for u in non_adjacent_vertices)
+            scip.quicksum(x[u, v] for u in non_adjacent_vertices)
             >= 1
         )
 
@@ -143,7 +143,7 @@ def representatives(graph, name="Representatives Graph Coloring"):
         non_adjacent_vertices = graph.nodes - graph.neighbors(u) - {u}
         for v, w in graph.edges:
             if v in non_adjacent_vertices and w in non_adjacent_vertices:
-                uv = undirected_edge_name(u, v)
+                model.addCons(x[u, v] + x[u, w] <= x[u, u])
                 uw = undirected_edge_name(u, w)
                 uu = undirected_edge_name(u, u)
                 model.addCons(x[uv] + x[uw] <= x[uu])
