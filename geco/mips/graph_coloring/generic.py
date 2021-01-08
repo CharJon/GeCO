@@ -4,7 +4,7 @@ from geco.mips.utilities.naming import undirected_edge_name
 
 
 def assignment(
-        graph, color_upperbound, name="Assignment Graph Coloring", with_variables=False
+    graph, color_upperbound, name="Assignment Graph Coloring", with_variables=False
 ):
     """
     Generates a graph coloring ILP formulation (ASS-S) as described in [1].
@@ -62,7 +62,7 @@ def assignment(
 
 
 def assignment_asymmetric(
-        graph, color_upperbound, name="Assignment Extended Graph Coloring"
+    graph, color_upperbound, name="Assignment Extended Graph Coloring"
 ):
     """
     Generates a graph coloring ILP formulation (ASS) as described in [1] which
@@ -125,17 +125,12 @@ def representatives(graph, name="Representatives Graph Coloring"):
     for (u, v) in itertools.product(graph.nodes, graph.nodes):
         if not graph.has_edge(u, v) or u == v:
             obj = 1 if u == v else 0
-            x[u, v] = model.addVar(
-                lb=0, ub=1, obj=obj, name=f"x_{u}_{v}", vtype="B"
-            )
+            x[u, v] = model.addVar(lb=0, ub=1, obj=obj, name=f"x_{u}_{v}", vtype="B")
 
     # add constraint (8)
     for v in graph.nodes:
         non_adjacent_vertices = (graph.nodes - graph.neighbors(v)).union({v})
-        model.addCons(
-            scip.quicksum(x[u, v] for u in non_adjacent_vertices)
-            >= 1
-        )
+        model.addCons(scip.quicksum(x[u, v] for u in non_adjacent_vertices) >= 1)
 
     # add constraint (9)
     for u in graph.nodes:
@@ -257,7 +252,7 @@ def partial_ordering(graph, color_upperbound, name="Partial Ordering Graph Color
 
 
 def hybrid_partial_ordering(
-        graph, color_upperbound, name="Hybrid Partial Ordering Graph Coloring"
+    graph, color_upperbound, name="Hybrid Partial Ordering Graph Coloring"
 ):
     """
     Generates a graph coloring ILP formulation (POP2) as described in [1].

@@ -5,7 +5,7 @@ import networkx as nx
 def _test_cycle_instance_output(model):
     model.hideOutput()
     model.optimize()
-    assert model.getStatus() == 'optimal'
+    assert model.getStatus() == "optimal"
     assert model.getObjVal() == 3
 
 
