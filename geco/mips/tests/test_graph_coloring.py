@@ -71,7 +71,7 @@ def test_partial_ordering():
 
     # test variables and constraints
     assert model.getNVars() == 2 * n * H
-    assert n <= model.getNConss() == 2 * n + 4 * n * (H-1)
+    assert n <= model.getNConss() == 2 * n + 4 * n * (H - 1)
 
     _test_cycle_instance_output(model)
 
@@ -84,6 +84,6 @@ def test_hybrid_partial_ordering():
 
     # test variables and constraints
     assert model.getNVars() == 3 * n * H
-    assert n <= model.getNConss() == 2 * n + 3 * n * (H-1) + n * H
+    assert n + n * H <= model.getNConss() == 2 * n + 3 * n * (H - 1) + n * H + n * H
 
     _test_cycle_instance_output(model)

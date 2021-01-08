@@ -124,7 +124,6 @@ def representatives(graph, name="Representatives Graph Coloring"):
     x = {}
     for (u, v) in itertools.product(graph.nodes, graph.nodes):
         if not graph.has_edge(u, v) or u == v:
-            edge_name = undirected_edge_name(u, v)
             obj = 1 if u == v else 0
             x[u, v] = model.addVar(
                 lb=0, ub=1, obj=obj, name=f"x_{u}_{v}", vtype="B"
@@ -144,9 +143,6 @@ def representatives(graph, name="Representatives Graph Coloring"):
         for v, w in graph.edges:
             if v in non_adjacent_vertices and w in non_adjacent_vertices:
                 model.addCons(x[u, v] + x[u, w] <= x[u, u])
-                uw = undirected_edge_name(u, w)
-                uu = undirected_edge_name(u, u)
-                model.addCons(x[uv] + x[uw] <= x[uu])
 
     model.setMinimize()
     return model
@@ -296,6 +292,10 @@ def hybrid_partial_ordering(
     }
 
     model, y, z = _partial_ordering_base_model(graph, colors, model)
+
+    # add constraint (14)
+    for v, c in itertools.product(graph.nodes, colors):
+        model.addCons(x[v, c] == 1 - (y[c, v] + z[v, c]))
 
     # add constraint (23)
     for (u, v), c in itertools.product(graph.edges, colors):
