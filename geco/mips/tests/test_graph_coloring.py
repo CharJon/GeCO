@@ -96,11 +96,14 @@ def test_benchmark():
     # Graph is from here: https://sites.google.com/site/graphcoloring/vertex-coloring
     test_graph_file = "data/local/1-FullIns_3.col"
     g = nx.Graph()
+
     with open(test_graph_file, "r") as g_file:
         for cur_line in g_file:
             if cur_line.startswith("e"):
                 _, u, v = cur_line.split(" ")
                 g.add_edge(*map(int, (u, v)))
+
+    g = nx.convert_node_labels_to_integers(g, 0)
 
     H = 5
     models = [
