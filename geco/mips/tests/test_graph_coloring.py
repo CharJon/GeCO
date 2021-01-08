@@ -1,5 +1,7 @@
-from geco.mips.graph_coloring.generic import *
 import networkx as nx
+import pytest
+
+from geco.mips.graph_coloring.generic import *
 
 
 def _test_cycle_instance_output(model):
@@ -87,3 +89,27 @@ def test_hybrid_partial_ordering():
     assert n + n * H <= model.getNConss() == 2 * n + 3 * n * (H - 1) + n * H + n * H
 
     _test_cycle_instance_output(model)
+
+
+@pytest.skip
+def test_benchmark():
+    # Graph is from here: https://sites.google.com/site/graphcoloring/vertex-coloring
+    test_graph_file = "data/local/1-FullIns_3.col"
+    g = nx.Graph()
+    with open(test_graph_file, "r") as g_file:
+        for cur_line in g_file:
+            if cur_line.startswith("e"):
+                _, u, v = cur_line.split(" ")
+                g.add_edge(*map(int, (u, v)))
+
+    H = 5
+    models = [
+        representatives(g),
+        assignment(g, H),
+        assignment_asymmetric(g, H),
+        partial_ordering(g, H),
+        hybrid_partial_ordering(g, H),
+    ]
+    for m in models:
+        m.optimize()
+        assert m.getStatus() == "optimal" and m.getObjVal() == 4
