@@ -2,9 +2,23 @@ import tempfile
 import requests
 import pyscipopt as scip
 import os
+import pandas as pd
 
 INSTANCES_DIR = tempfile.gettempdir() + "/geco/miplib/instances/"
 MIPLIB_INSTANCE_URL = "https://miplib.zib.de/WebData/instances/"
+
+
+def load_instances(filters={}):
+    df = pd.read_csv("https://miplib.zib.de/682e24aa-7f32-4c54-9a0d-7f5500f6197c", header=0)
+    for key, value in filters.items():
+        df = df[df[key] == value]
+
+    for instance in df["Instance  Ins."]:
+        full_instance_name = instance + ".mps.gz"
+        yield (
+           load_instance(full_instance_name)
+        )
+
 
 def load_instance(instance_name):
     if not instance_cached(instance_name):
