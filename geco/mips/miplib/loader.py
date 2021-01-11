@@ -8,7 +8,9 @@ INSTANCES_DIR = tempfile.gettempdir() + "/geco/miplib/instances/"
 MIPLIB_INSTANCE_URL = "https://miplib.zib.de/WebData/instances/"
 
 
-def load_instances(filters={}, instances_csv=None):
+def load_instances(filters=None, instances_csv=None):
+    if filters is None:
+        filters = {}
     if instances_csv:
         df = pd.read_csv(instances_csv, header=0)
     else:
