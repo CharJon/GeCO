@@ -8,10 +8,14 @@ INSTANCES_DIR = tempfile.gettempdir() + "/geco/miplib/instances/"
 MIPLIB_INSTANCE_URL = "https://miplib.zib.de/WebData/instances/"
 
 
-def load_instances(filters={}):
-    df = pd.read_csv(
-        "https://miplib.zib.de/682e24aa-7f32-4c54-9a0d-7f5500f6197c", header=0
-    )
+def load_instances(filters={}, instances_csv=None):
+    if instances_csv:
+        df = pd.read_csv(
+            instances_csv, header=0
+        )
+    else:
+        raise NotImplemented("Dynamic loading of instances csv is not implemented yet.")
+
     for key, value in filters.items():
         df = df[df[key] == value]
 
@@ -21,7 +25,7 @@ def load_instances(filters={}):
 
 
 def load_instance(instance_name):
-    if not instance_cached(instance_name):
+    if not _instance_cached(instance_name):
         _download_instance(instance_name)
     problem_path = INSTANCES_DIR + instance_name
     model = scip.Model()
@@ -38,7 +42,7 @@ def _download_instance(instance_name):
         f.write(content)
 
 
-def instance_cached(instance_name):
+def _instance_cached(instance_name):
     return os.path.exists(_instance_path(instance_name))
 
 
