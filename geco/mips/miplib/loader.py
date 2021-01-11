@@ -48,3 +48,24 @@ def _instance_cached(instance_name):
 
 def _instance_path(instance_name):
     return INSTANCES_DIR + instance_name
+
+
+def easy_instances(instances_csv):
+    return load_instances(
+        filters={"Status  Sta.": "easy"},
+        instances_csv=instances_csv
+    )
+
+
+def hard_instances(instances_csv):
+    return load_instances(
+        filters={"Status  Sta.": "hard"},
+        instances_csv=instances_csv
+    )
+
+
+def open_instances(instances_csv):
+    return load_instances(
+        filters={"Status  Sta.": "open"},
+        instances_csv=instances_csv
+    )
