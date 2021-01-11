@@ -19,7 +19,7 @@ def load_instances(filters={}, instances_csv=None):
 
     for instance in df["Instance  Ins."]:
         full_instance_name = instance + ".mps.gz"
-        yield (load_instance(full_instance_name))
+        yield load_instance(full_instance_name)
 
 
 def load_instance(instance_name):
