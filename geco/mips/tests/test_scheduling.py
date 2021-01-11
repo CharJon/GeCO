@@ -5,7 +5,7 @@ from geco.mips.scheduling import *
 
 def test_late_tasks_formulation():
     main_params = number_of_facilities, number_of_tasks, time_steps = 3, 10, 100
-    params = p, C, c, R, d = generate_params(*main_params[:-1], seed=0)[:-1]
+    params = p, C, c, R, d = generate_hooker_params(*main_params[:-1], seed=0)[:-1]
 
     model = hooker_late_tasks_formulation(*main_params, *params)
     check_hookers_instance(model, number_of_facilities, number_of_tasks, time_steps)
@@ -18,41 +18,55 @@ def test_hooker_generation():
 
 @pytest.mark.parametrize(
     "number_of_facilities,number_of_tasks,seed",
-    itertools.product([1, 2, 3], [5, 10, 15], [0, 1, 1337, 53115]),
+    itertools.product([3], [20], [0, 1, 1337, 53115]),
 )
 def test_heinz_formulation(number_of_facilities, number_of_tasks, seed):
     main_params = number_of_facilities, number_of_tasks
-    params = p, C, c, R, d, r = generate_params(*main_params, seed)
-    time_steps = int(max(d.values()) - min(R))
+    params = p, C, c, R, d, r = generate_hooker_params(*main_params, seed)
+    time_steps = int(max(d) - min(R))
     model = heinz_formulation(*main_params, *params)
     x_vars_count = number_of_facilities * number_of_tasks
     y_vars_lowerbound = 0
     y_vars_upperbound = number_of_facilities * number_of_tasks * time_steps
     assert (
-        x_vars_count + y_vars_lowerbound
-        <= model.getNVars()
-        <= x_vars_count + y_vars_upperbound
+            x_vars_count + y_vars_lowerbound
+            <= model.getNVars()
+            <= x_vars_count + y_vars_upperbound
     )
     constraints_lowerbound = (
-        number_of_facilities
-        + number_of_facilities * number_of_tasks
-        + number_of_tasks
-        + number_of_tasks
-        + number_of_facilities * number_of_tasks
-        + number_of_facilities * number_of_tasks
+            number_of_facilities
+            + number_of_facilities * number_of_tasks
+            + number_of_tasks
+            + number_of_tasks
+            + number_of_facilities * number_of_tasks
+            + number_of_facilities * number_of_tasks
     )
     constraints_upperbound = (
-        number_of_facilities
-        + number_of_facilities * number_of_tasks
-        + number_of_tasks * time_steps
-        + number_of_tasks * (time_steps * (time_steps - 1) // 2)
-        + number_of_facilities * number_of_tasks
-        + number_of_facilities * number_of_tasks * time_steps
+            number_of_facilities
+            + number_of_facilities * number_of_tasks
+            + number_of_tasks * time_steps
+            + number_of_tasks * (time_steps * (time_steps - 1) // 2)
+            + number_of_facilities * number_of_tasks
+            + number_of_facilities * number_of_tasks * time_steps
     )
     assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
     assert model.getObjectiveSense() == "minimize"
 
     model.optimize()
+
+    model.hideOutput()
+    model.optimize()
+    if model.getStatus == "optimal":
+        print("Success")
+    else:
+        print("Inf")
+
+
+def test_heinz_formulation_small():
+    for model in generate_small_heinz_instances():
+        model.hideOutput()
+        model.optimize()
+        assert model.getStatus() == "optimal"
 
 
 @pytest.mark.parametrize(
@@ -60,8 +74,8 @@ def test_heinz_formulation(number_of_facilities, number_of_tasks, seed):
     itertools.product([1, 2, 3], [5, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
 )
 def test_param_generation_seeding(n_resources, n_tasks, seed1, seed2):
-    params1 = generate_params(n_resources, n_tasks, seed=seed1)
-    params2 = generate_params(n_resources, n_tasks, seed=seed2)
+    params1 = generate_hooker_params(n_resources, n_tasks, seed=seed1)
+    params2 = generate_hooker_params(n_resources, n_tasks, seed=seed2)
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
     different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
     assert same_seeds_produce_same_params or different_seeds_produce_different_params
@@ -130,19 +144,19 @@ def simple_instance_params():
 
 def check_hookers_instance(model, number_of_facilities, number_of_tasks, time_steps):
     assert (
-        model.getNVars()
-        == number_of_facilities * number_of_tasks * time_steps + number_of_tasks
+            model.getNVars()
+            == number_of_facilities * number_of_tasks * time_steps + number_of_tasks
     )
     constraints_lowerbound = (
-        number_of_tasks * time_steps
-        + number_of_tasks
-        + number_of_facilities * time_steps
+            number_of_tasks * time_steps
+            + number_of_tasks
+            + number_of_facilities * time_steps
     )
     constraints_upperbound = (
-        number_of_tasks * time_steps
-        + number_of_tasks
-        + number_of_facilities * time_steps
-        + number_of_facilities * number_of_tasks * time_steps
+            number_of_tasks * time_steps
+            + number_of_tasks
+            + number_of_facilities * time_steps
+            + number_of_facilities * number_of_tasks * time_steps
     )
     assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
     assert model.getObjectiveSense() == "minimize"

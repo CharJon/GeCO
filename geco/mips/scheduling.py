@@ -9,14 +9,14 @@ from networkx.utils import py_random_state
 
 
 def hooker_late_tasks_formulation(
-    number_of_facilities,
-    number_of_tasks,
-    time_steps,
-    processing_times,
-    capacities,
-    assignment_costs,
-    release_dates,
-    deadlines,
+        number_of_facilities,
+        number_of_tasks,
+        time_steps,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_dates,
+        deadlines,
 ):
     """Generates late tasks mip formulation described in section 4 in
     Hooker, John. (2005). Planning and Scheduling to Minimize Tardiness. 314-327. 10.1007/11564751_25.
@@ -42,7 +42,7 @@ def hooker_late_tasks_formulation(
     # assignment vars
     x = {}
     for j, i, t in itertools.product(
-        range(number_of_tasks), range(number_of_facilities), time_steps
+            range(number_of_tasks), range(number_of_facilities), time_steps
     ):
         var = model.addVar(lb=0, ub=1, obj=0, name=f"x_{j}_{i}_{t}", vtype="B")
         x[j, i, t] = var
@@ -81,7 +81,7 @@ def hooker_late_tasks_formulation(
 
     # constraint (d)
     for i, j, t in itertools.product(
-        range(number_of_facilities), range(number_of_tasks), time_steps
+            range(number_of_facilities), range(number_of_tasks), time_steps
     ):
         if t < release_dates[j] or t > len(time_steps) - processing_times[j, i]:
             model.addCons(x[j, i, t] == 0)
@@ -98,19 +98,16 @@ def generate_hookers_instances():
     for n, t, seed in itertools.product(number_of_tasks, time_steps, seeds):
         params = 3, n, t, seed
         yield params, hooker_late_tasks_formulation(
-            *params[:-1], *generate_params(*params[:-1])[:-1]
+            *params[:-1], *generate_hooker_params(*params[:-1])[:-1]
         )
 
 
-@py_random_state(2)
-def generate_params(number_of_facilities, number_of_tasks, seed=0):
+@py_random_state(-1)
+def generate_hooker_params(number_of_facilities, number_of_tasks, seed=0):
     processing_times = {}
 
     for j, i in itertools.product(range(number_of_tasks), range(number_of_facilities)):
-        if number_of_tasks < 22:
-            processing_times[j, i] = seed.randint(2, 20 + 5 * i)
-        else:
-            processing_times[j, i] = seed.randint(5, 20 + 5 * i)
+        processing_times[j, i] = seed.randint(2, 20 + 5 * i)
 
     capacities = [10] * number_of_facilities
 
@@ -122,10 +119,8 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
 
     release_times = [0] * number_of_tasks
 
-    deadlines = {}
     beta = 20 / 9
-    for j in range(number_of_tasks):
-        deadlines[j] = seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks)
+    deadlines = [seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks) for _ in range(number_of_tasks)]
 
     resource_requirements = {}
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
@@ -142,14 +137,14 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
 
 
 def heinz_formulation(
-    number_of_facilities,
-    number_of_tasks,
-    processing_times,
-    capacities,
-    assignment_costs,
-    release_dates,
-    deadlines,
-    resource_requirements,
+        number_of_facilities,
+        number_of_tasks,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_dates,
+        deadlines,
+        resource_requirements,
 ):
     """Generates MIP formulation according to Model 4 in
     Heinz, J. (2013). Recent Improvements Using Constraint Integer Programming for Resource Allocation and Scheduling.
@@ -165,7 +160,12 @@ def heinz_formulation(
         model: SCIP model of the late tasks instance
     """
     model = scip.Model("Heinz Scheduling")
-    time_steps = range(min(release_dates), int(max(deadlines.values())))
+
+    earliest_release = min(release_dates)
+    latest_deadline = max(deadlines)
+    longest_processing = max(processing_times.values())
+    latest_possible_finish = latest_deadline + longest_processing
+    time_steps = list(range(int(earliest_release), int(latest_possible_finish)))
 
     # objective function
     x = {}
@@ -178,7 +178,7 @@ def heinz_formulation(
     # y vars
     y = {}
     for j, k, t in itertools.product(
-        range(number_of_tasks), range(number_of_facilities), time_steps
+            range(number_of_tasks), range(number_of_facilities), time_steps
     ):
         if release_dates[j] <= t <= deadlines[j] - processing_times[j, k]:
             var = model.addVar(lb=0, ub=1, obj=0, name=f"y_{j}_{k}_{t}", vtype="B")
@@ -190,17 +190,14 @@ def heinz_formulation(
         model.addCons(scip.quicksum(x[j, k] for k in range(number_of_facilities)) == 1)
 
     # constraint (13)
+    test = 0
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
-        model.addCons(
-            scip.quicksum(
-                y[j, k, t]
-                for t in range(
-                    release_dates[j], int(deadlines[j]) - processing_times[j, k]
-                )
-                if t < len(time_steps)
-            )
-            == x[j, k]
-        )
+        ys = list(y[j, k, t]
+                  for t in range(
+            release_dates[j], max(0, int(deadlines[j]) - processing_times[j, k])
+        ))
+        model.addCons(scip.quicksum(ys) == x[j, k])
+        test += 1
 
     # constraint (14)
     for k, t in itertools.product(range(number_of_facilities), time_steps):
@@ -216,7 +213,7 @@ def heinz_formulation(
 
     # constraint (15)
     epsilon = filter(
-        lambda ts: ts[0] < ts[1], itertools.product(release_dates, deadlines.values())
+        lambda ts: ts[0] < ts[1], itertools.product(release_dates, deadlines)
     )
     for k, (t1, t2) in itertools.product(range(number_of_facilities), epsilon):
         model.addCons(
@@ -229,3 +226,46 @@ def heinz_formulation(
         )
 
     return model
+
+
+@py_random_state(-1)
+def generate_heinz_params(number_of_facilities, number_of_tasks, seed=0):
+    processing_times = {}
+
+    for j, i in itertools.product(range(number_of_tasks), range(number_of_facilities)):
+        processing_times[j, i] = seed.randint(2, 20 + 5 * (i-2))
+
+    capacities = [10] * number_of_facilities
+
+    assignment_costs = {}
+    for i in range(number_of_facilities):
+        value = seed.randint(1, 10)
+        for j in range(number_of_tasks):
+            assignment_costs[j, i] = value
+
+    release_times = [0] * number_of_tasks
+
+    beta = 20 / 9
+    deadlines = [seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks) for _ in range(number_of_tasks)]
+
+    resource_requirements = {}
+    for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
+        resource_requirements[j, k] = seed.randint(1, 9)
+
+    return (
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_times,
+        deadlines,
+        resource_requirements,
+    )
+
+
+def generate_small_heinz_instances():
+    number_of_facilities = [3]
+    number_of_tasks = list(range(10, 38 + 1))
+    for n, t in itertools.product(number_of_facilities, number_of_tasks):
+        params = generate_heinz_params(n, t)
+        print(params)
+        yield heinz_formulation(n, t, *params)
