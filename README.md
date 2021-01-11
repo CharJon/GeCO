@@ -62,7 +62,7 @@ Then, you can run the function with the following params
 from geco.mips.miplib import loader
 
 generator = loader.load_instances(
-    filters= {"Status  Sta.": "hard"},
+    filters= {"Status  Sta.": "easy"},
     instances_csv="CSV_FILE_PATH"
 )
 for instance in generator:
