@@ -10,9 +10,7 @@ MIPLIB_INSTANCE_URL = "https://miplib.zib.de/WebData/instances/"
 
 def load_instances(filters={}, instances_csv=None):
     if instances_csv:
-        df = pd.read_csv(
-            instances_csv, header=0
-        )
+        df = pd.read_csv(instances_csv, header=0)
     else:
         raise NotImplemented("Dynamic loading of instances csv is not implemented yet.")
 
@@ -51,21 +49,12 @@ def _instance_path(instance_name):
 
 
 def easy_instances(instances_csv):
-    return load_instances(
-        filters={"Status  Sta.": "easy"},
-        instances_csv=instances_csv
-    )
+    return load_instances(filters={"Status  Sta.": "easy"}, instances_csv=instances_csv)
 
 
 def hard_instances(instances_csv):
-    return load_instances(
-        filters={"Status  Sta.": "hard"},
-        instances_csv=instances_csv
-    )
+    return load_instances(filters={"Status  Sta.": "hard"}, instances_csv=instances_csv)
 
 
 def open_instances(instances_csv):
-    return load_instances(
-        filters={"Status  Sta.": "open"},
-        instances_csv=instances_csv
-    )
+    return load_instances(filters={"Status  Sta.": "open"}, instances_csv=instances_csv)
