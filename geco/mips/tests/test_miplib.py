@@ -14,3 +14,30 @@ def test_load_instances():
     assert len(instances) == 142
     for i in instances:
         assert isinstance(i, scip.Model)
+
+
+@pytest.mark.skip
+def test_easy_instances():
+    instances_csv = "TODO: add this"
+    instances = [i for i in hard_instances(instances_csv)]
+    assert len(instances) == 142
+    for i in instances:
+        assert isinstance(i, scip.Model)
+
+
+@pytest.mark.skip
+def test_hard_instances():
+    instances_csv = "TODO: add this"
+    instances = [i for i in easy_instances(instances_csv)]
+    assert len(instances) == 677
+    for i in instances:
+        assert isinstance(i, scip.Model)
+
+
+@pytest.mark.skip
+def test_open_instances():
+    instances_csv = "TODO: add this"
+    instances = [i for i in open_instances(instances_csv)]
+    assert len(instances) == 246
+    for i in instances:
+        assert isinstance(i, scip.Model)
