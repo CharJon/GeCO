@@ -114,6 +114,7 @@ def test_benchmark():
         hybrid_partial_ordering(g, H),
     ]
     for m in models:
+        m.hideOutput()
         m.optimize()
         assert m.getStatus() == "optimal" and m.getObjVal() == 4
 
@@ -129,5 +130,6 @@ def test_networkx_karate():
         hybrid_partial_ordering(g, H),
     ]
     for m in models:
+        m.hideOutput()
         m.optimize()
         assert m.getStatus() == "optimal" and m.getObjVal() == 5
