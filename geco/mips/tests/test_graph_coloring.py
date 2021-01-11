@@ -91,36 +91,9 @@ def test_hybrid_partial_ordering():
     _test_cycle_instance_output(model)
 
 
-@pytest.mark.skip
-def test_benchmark():
-    # Graph is from here: https://sites.google.com/site/graphcoloring/vertex-coloring
-    test_graph_file = "data/local/1-FullIns_3.col"
-    g = nx.Graph()
-
-    with open(test_graph_file, "r") as g_file:
-        for cur_line in g_file:
-            if cur_line.startswith("e"):
-                _, u, v = cur_line.split(" ")
-                g.add_edge(*map(int, (u, v)))
-
-    g = nx.convert_node_labels_to_integers(g, 0)
-
-    H = 5
-    models = [
-        representatives(g),
-        assignment(g, H),
-        assignment_asymmetric(g, H),
-        partial_ordering(g, H),
-        hybrid_partial_ordering(g, H),
-    ]
-    for m in models:
-        m.hideOutput()
-        m.optimize()
-        assert m.getStatus() == "optimal" and m.getObjVal() == 4
-
-
-def test_networkx_karate():
+def test_node_labeling():
     g = nx.karate_club_graph()
+    g = nx.convert_node_labels_to_integers(g, first_label=1)
     H = 10
     models = [
         representatives(g),

@@ -1,6 +1,6 @@
 import pyscipopt as scip
 import itertools
-from geco.mips.utilities.naming import undirected_edge_name
+import networkx as nx
 
 
 def assignment(
@@ -30,6 +30,7 @@ def assignment(
     """
     model = scip.Model(name)
 
+    graph = nx.convert_node_labels_to_integers(graph, first_label=0)
     colors = range(color_upperbound)
 
     # add variables and their cost
@@ -87,6 +88,8 @@ def assignment_asymmetric(
     .. [2] I.Mendez, P.Zabala "A Branch-and-Cut Algorithm for Graph Coloring"
     """
     model, w, x = assignment(graph, color_upperbound, name, with_variables=True)
+
+    graph = nx.convert_node_labels_to_integers(graph, first_label=0)
     colors = list(range(color_upperbound))
 
     # add constraint (5)
@@ -119,6 +122,8 @@ def representatives(graph, name="Representatives Graph Coloring"):
     .. [1] A.Jabrayilov, P.Mutzel "New Integer Linear Programming Models for the Vertex Coloring Problem"
     """
     model = scip.Model(name)
+
+    graph = nx.convert_node_labels_to_integers(graph, first_label=0)
 
     # add variables and their cost
     x = {}
@@ -165,6 +170,8 @@ def set_covering(graph, subsets, name="Set Covering Graph Coloring"):
     .. [1] A.Jabrayilov, P.Mutzel "New Integer Linear Programming Models for the Vertex Coloring Problem"
     """
     model = scip.Model(name)
+
+    graph = nx.convert_node_labels_to_integers(graph, first_label=0)
 
     x = {
         tuple(s): model.addVar(lb=0, ub=1, obj=1, name=f"x_{s}", vtype="B")
@@ -240,6 +247,7 @@ def partial_ordering(graph, color_upperbound, name="Partial Ordering Graph Color
     """
     model = scip.Model(name)
 
+    graph = nx.convert_node_labels_to_integers(graph, first_label=0)
     colors = list(range(color_upperbound))
 
     model, y, z = _partial_ordering_base_model(graph, colors, model)
@@ -276,6 +284,7 @@ def hybrid_partial_ordering(
     """
     model = scip.Model(name)
 
+    graph = nx.convert_node_labels_to_integers(graph, first_label=0)
     colors = list(range(color_upperbound))
 
     # add variables and their cost
