@@ -13,4 +13,5 @@ Generators for Combinatorial Optimization
 - Production Planning
 - Maximum Independent Set 
 - Maximum Cut
-- Packing 
+- Packing
+- Graph Coloring
