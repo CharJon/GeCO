@@ -46,6 +46,28 @@ for model in generate_n(lambda seed: knapsack.yang_instance(5, seed), 10):
 
 There is also another function `generate` which is more flexible, assuming you don't know exactly how many instance you might require, it works the exact same way it just doesn't stop after `n` instances are generated.
 
+### MIPLIB
+[MIPLIB](https://miplib.zib.de/) 2017 instances can be loaded into a 
+PySCIPOpt model using the following function
+```python
+from geco.mips.miplib import loader
+
+instance = loader.load_instance('INSTANCE_NAME.mps.gz')
+```
+To load many instances following a certain filter, you can use the `load_instances()` function.
+Assume you want a generator for easy MIPLIB instances, you have to first downlaod the
+[csv](https://miplib.zib.de/tag_benchmark.html) file that MIPLIB provides. 
+Then, you can run the function with the following params
+```python
+from geco.mips.miplib import loader
+
+generator = loader.load_instances(
+    filters= {"Status  Sta.": "hard"},
+    instances_csv="CSV_FILE_PATH"
+)
+for instance in generator:
+    # do whatever you want with the instance
+```
 ## Implemented Generators
 All the following instances are implemented following some of the generation techniques found in the literature, please refer to the modules corresponding to the generating function for a reference to where it was introduced. 
 
