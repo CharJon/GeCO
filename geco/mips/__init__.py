@@ -7,3 +7,4 @@ import geco.mips.knapsack as knapsack
 import geco.mips.max_cut as max_cut
 import geco.mips.production_planning as production_planning
 import geco.mips.packing as packing
+import geco.mips.graph_coloring as graph_coloring
