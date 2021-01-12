@@ -38,7 +38,7 @@ def cornuejols_instance(n_customers, n_facilities, ratio, seed=0):
 
 
 @py_random_state(-1)
-def cornuejols_params(n_customers, n_facilities, ratio, seed):
+def cornuejols_params(n_customers, n_facilities, ratio, seed=0):
     """
     Generates a Capacitated Facility Location instance params following [1].
 

@@ -6,7 +6,8 @@ from networkx.utils import py_random_state
 
 
 def capacitated_facility_location(
-    n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities
+        n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities,
+        name="Capacitated Facility Location"
 ):
     """
     Generate a Capacitated Facility Location MIP formulation following [1].
@@ -14,17 +15,19 @@ def capacitated_facility_location(
     Parameters
     ----------
     n_customers: int
-        The desired number of customers.
+        The desired number of customers
     n_facilities: int
-        The desired number of facilities.
+        The desired number of facilities
     transportation_cost: numpy array [float]
         Matrix of transportation costs from customer i to facility j [i,j]
     demands: numpy array [int]
-        Demands of each customer.
+        Demands of each customer
     fixed_costs: numpy array [int]
-        Fixed costs of operating each facility.
+        Fixed costs of operating each facility
     capacities: numpy array [int]
-        Capacities of each facility.
+        Capacities of each facility
+    name: str
+        Name of the model
 
     Returns
     -------
@@ -37,9 +40,9 @@ def capacitated_facility_location(
         A Comparison of Heuristics and Relaxations for the Capacitated Plant Location Problem.
         European Journal of Operations Research 50:280-297.
     """
-    total_demand = demands.sum()
+    model = scip.Model(name)
 
-    model = scip.Model("Capacitated Facility Location")
+    total_demand = demands.sum()
 
     model.setMinimize()
 
