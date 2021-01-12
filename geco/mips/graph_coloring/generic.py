@@ -22,7 +22,8 @@ def assignment(
 
     Returns
     -------
-        A pyscipopt model of the generated instance
+       model: scip.Model
+        pyscipopt model of the generated instance
 
     References
     ----------
@@ -80,6 +81,7 @@ def assignment_asymmetric(
 
     Returns
     -------
+    model: scip.Model
         A pyscipopt model of the generated instance
 
     References
@@ -115,6 +117,7 @@ def representatives(graph, name="Representatives Graph Coloring"):
 
     Returns
     -------
+    model: scip.Model
         A pyscipopt model of the generated instance
 
     References
@@ -163,6 +166,7 @@ def set_covering(graph, subsets, name="Set Covering Graph Coloring"):
 
     Returns
     -------
+    model: scip.Model
         A pyscipopt model of the generated instance
 
     References
@@ -239,6 +243,7 @@ def partial_ordering(graph, color_upperbound, name="Partial Ordering Graph Color
 
     Returns
     -------
+    model: scip.Model
         A pyscipopt model of the generated instance
 
     References
@@ -276,6 +281,7 @@ def hybrid_partial_ordering(
 
     Returns
     -------
+    model: scip.Model
         A pyscipopt model of the generated instance
 
     References
