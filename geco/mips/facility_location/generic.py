@@ -6,8 +6,13 @@ from networkx.utils import py_random_state
 
 
 def capacitated_facility_location(
-        n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities,
-        name="Capacitated Facility Location"
+    n_customers,
+    n_facilities,
+    transportation_cost,
+    demands,
+    fixed_costs,
+    capacities,
+    name="Capacitated Facility Location",
 ):
     """
     Generate a Capacitated Facility Location MIP formulation following [1].
