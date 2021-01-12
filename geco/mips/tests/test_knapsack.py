@@ -40,8 +40,8 @@ def test_yang_knapsack_solution_2():
     itertools.product([3, 10, 15], [0, 1, 1337, 53115], [0, 1, 1337, 53115]),
 )
 def test_yang_seeding(n, seed1, seed2):
-    params1 = yang_parameter(n, seed=seed1)
-    params2 = yang_parameter(n, seed=seed2)
+    params1 = yang_params(n, seed=seed1)
+    params2 = yang_params(n, seed=seed2)
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
     different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
     assert same_seeds_produce_same_params or different_seeds_produce_different_params
