@@ -9,7 +9,7 @@ def capacitated_facility_location(
     n_customers, n_facilities, transportation_cost, demands, fixed_costs, capacities
 ):
     """
-    Generate a Capacited Facility Location problem following [1].
+    Generate a Capacitated Facility Location MIP formulation following [1].
 
     Parameters
     ----------
@@ -28,7 +28,8 @@ def capacitated_facility_location(
 
     Returns
     -------
-     A pyscipopt model.
+    model: scip.Model
+        A pyscipopt model of the generated instance
 
     References
     ----------
