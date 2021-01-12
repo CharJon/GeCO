@@ -86,7 +86,6 @@ def test_heinz_simple_instance():
         deadlines,
         resource_requirements,
     ) = _simple_instance_params()
-    print(params)
     heinz_model = heinz_formulation(
         n_resources,
         n_tasks,
