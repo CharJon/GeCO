@@ -22,7 +22,7 @@ def test_hooker_generation():
 def test_heinz_formulation(number_of_facilities, number_of_tasks, seed):
     main_params = number_of_facilities, number_of_tasks
     p, C, c, R, d, r = heinz_params(*main_params, seed)
-    time_steps = int(max(d.values()) - min(R))
+    time_steps = int(max(d) - min(R))
     model = heinz_instance(*main_params)
     x_vars_count = number_of_facilities * number_of_tasks
     y_vars_lowerbound = 0

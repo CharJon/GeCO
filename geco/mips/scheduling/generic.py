@@ -58,10 +58,8 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
 
     release_times = [0] * number_of_tasks
 
-    deadlines = {}
     beta = 20 / 9
-    for j in range(number_of_tasks):
-        deadlines[j] = seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks)
+    deadlines = [seed.uniform(beta * number_of_tasks / 4, beta * number_of_tasks) for _ in range(number_of_tasks)]
 
     resource_requirements = {}
     for j, k in itertools.product(range(number_of_tasks), range(number_of_facilities)):
