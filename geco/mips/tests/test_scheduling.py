@@ -75,7 +75,7 @@ def test_hooker_simple_instance():
 
 
 def test_heinz_simple_instance():
-    (
+    params = (
         n_resources,
         n_tasks,
         time_steps,
@@ -86,6 +86,7 @@ def test_heinz_simple_instance():
         deadlines,
         resource_requirements,
     ) = _simple_instance_params()
+    print(params)
     heinz_model = heinz_formulation(
         n_resources,
         n_tasks,
@@ -112,7 +113,7 @@ def _simple_instance_params():
     release_times = [0]
     # change the deadline to 0 or 1 to make it infeasible for the heinz formulation
     # and add 1 late task to the hooker formulation
-    deadlines = {0: 2}
+    deadlines = [2]
     resource_requirements = {(0, 0): 1}
     return (
         n_resources,
