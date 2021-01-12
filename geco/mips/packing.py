@@ -3,17 +3,22 @@ from networkx.utils import py_random_state
 
 
 @py_random_state(-1)
-def tang(n, m, binary=False, seed=0):
+def tang_instance(n, m, binary=False, seed=0):
     """Generates a packing instance as described in A.2 in [1].
 
     Parameters:
     ----------
-        n: int
-            number of variables
-        m: int
-            number of constraints
-        seed: int, random state or None
-            seed for randomization
+    n: int
+        number of variables
+    m: int
+        number of constraints
+    seed: integer, random_state, or None
+        Indicator of random number generation state
+
+    Returns
+    -------
+    model: scip.Model
+        A pyscipopt model of the generated instance
 
     References:
     ----------
@@ -25,6 +30,33 @@ def tang(n, m, binary=False, seed=0):
 
 @py_random_state(-1)
 def tang_params(n, m, binary, seed=0):
+    """Generates a packing instance as described in A.2 in [1].
+
+    Parameters:
+    ----------
+    n: int
+        Number of variables
+    m: int
+        Number of constraints
+    binary: bool
+        Use binary variables coefficients or (non-negative) integer variables coefficients
+    seed: integer, random_state, or None
+        Indicator of random number generation state
+
+    Returns
+    -------
+    costs: list[number] of size n
+        Coefficients of objective function
+    constraint_coefficients: list[list[number]] of dimensions (m x n)
+        Coefficients of each variable for each constraint
+    limits: list[number] of size m
+        Limits of each constraint
+
+    References:
+    ----------
+    .. [1] Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
+    programming: Learning to cut. arXiv preprint arXiv:1906.04859.
+    """
     costs = [seed.randint(1, 10) for _ in range(n)]
 
     if binary:
@@ -46,18 +78,23 @@ def packing(n, m, costs, constraint_coefficients, limits, binary, name="Packing"
 
     Parameters:
     ----------
-        n: int
-            number of variables
-        m: int
-            number of constraints
-        costs: list[number] of size n
-            coefficients of objective function
-        constraint_coefficients: list[list[number]] of dimensions (m x n)
-            coefficients of each variable for each constraint
-        limits: list[number] of size m
-            limits of each constraint
-        name: str
-            name of the model
+    n: int
+        Number of variables
+    m: int
+        Number of constraints
+    costs: list[number] of size n
+        Coefficients of objective function
+    constraint_coefficients: list[list[number]] of dimensions (m x n)
+        Coefficients of each variable for each constraint
+    limits: list[number] of size m
+        Limits of each constraint
+    name: str
+        Name of the model
+
+    Returns
+    -------
+    model: scip.Model
+        A pyscipopt model of the generated instance
 
     References:
     ----------
