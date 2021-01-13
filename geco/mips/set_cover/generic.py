@@ -2,6 +2,22 @@ import pyscipopt as scip
 
 
 def set_cover(costs, sets):
+    """
+    Generates basic set cover formulation.
+
+    Parameters
+    ----------
+    costs: list[float]
+        Cost for covering each element
+    sets: list[set]
+        Set constraints for elements
+
+    Returns
+    -------
+    model: scip.Model
+        A pyscipopt model of the generated instance
+
+    """
     model = scip.Model("Set Cover")
 
     # add variables and their cost
