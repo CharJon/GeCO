@@ -1,11 +1,10 @@
 import tempfile
 from urllib.request import urlretrieve
 import pyscipopt as scip
-import os
 import pandas as pd
 
-INSTANCES_DIR = tempfile.gettempdir() + "/geco/miplib/instances/"
 MIPLIB_INSTANCE_URL = "https://miplib.zib.de/WebData/instances/"
+cached_instances = {}
 
 
 def load_instances(filters=None, instances_csv=None):
@@ -27,25 +26,20 @@ def load_instances(filters=None, instances_csv=None):
 def load_instance(instance_name):
     if not _instance_cached(instance_name):
         _download_instance(instance_name)
-    problem_path = INSTANCES_DIR + instance_name
+    problem_path = cached_instances[instance_name]
     model = scip.Model()
     model.readProblem(problem_path)
     return model
 
 
 def _download_instance(instance_name):
-    if not os.path.exists(INSTANCES_DIR):
-        os.makedirs(INSTANCES_DIR)
-    path = _instance_path(instance_name)
+    path = tempfile.NamedTemporaryFile(suffix=".mps.gz").name
     urlretrieve(MIPLIB_INSTANCE_URL + instance_name, path)
+    cached_instances[instance_name] = path
 
 
 def _instance_cached(instance_name):
-    return os.path.exists(_instance_path(instance_name))
-
-
-def _instance_path(instance_name):
-    return INSTANCES_DIR + instance_name
+    return instance_name in cached_instances
 
 
 def easy_instances(instances_csv):
