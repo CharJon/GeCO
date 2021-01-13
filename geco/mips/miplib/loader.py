@@ -1,5 +1,5 @@
 import tempfile
-import requests
+from urllib.request import urlretrieve
 import pyscipopt as scip
 import os
 import pandas as pd
@@ -37,9 +37,7 @@ def _download_instance(instance_name):
     if not os.path.exists(INSTANCES_DIR):
         os.makedirs(INSTANCES_DIR)
     path = _instance_path(instance_name)
-    content = requests.get(MIPLIB_INSTANCE_URL + instance_name).content
-    with open(path, "wb") as f:
-        f.write(content)
+    urlretrieve(MIPLIB_INSTANCE_URL + instance_name, path)
 
 
 def _instance_cached(instance_name):
