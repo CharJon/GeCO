@@ -1,6 +1,19 @@
-import pyscipopt as scip
-from geco.mips.miplib.base import *
 import os
+
+import pandas as pd
+
+from geco.mips.miplib.base import *
+
+
+def test_load_brr():
+    df = pd.read_csv("data/lists/brr.csv", comment='#')
+    loader = Loader()
+    df = df[df["miplib"] == 1]
+    for i in df["instance"]:
+        loader.load_instance(f"{i}.mps.gz")
+    for i in df["instance"]:
+        path = loader.instances_cache[f"{i}.mps.gz"]
+        assert os.path.exists(path)
 
 
 def test_load_instance():
@@ -25,7 +38,7 @@ def test_persistent_directory():
     new_loader = Loader(persistent_directory="./")
     path = new_loader.instances_cache[instance_name]
     assert (
-        instance_name in new_loader.instances_cache
+            instance_name in new_loader.instances_cache
     )  # instance path loaded correctly into cache
     assert os.path.exists(path)  # instance path exists
     os.unlink(instance_name)  # cleanup local directory

@@ -1,0 +1,27 @@
+# Instances used in "Achterberg, T., Koch, T., & Martin, A. (2005). Branching rules revisited. Operations Research Letters, 33(1), 42-54."
+# The miplib column indicates (1) that the instance is part of MIPLIB 2017
+instance,miplib
+aflow30a, 1
+cap6000, 1
+gesa2-o, 0
+mas74, 1
+mas76, 1
+misc07, 1
+pk1, 1
+pp08aCUTS, 0
+qiu, 1
+rout, 1
+vpm2, 0
+ran8x32, 0
+ran10x26, 0
+ran12x21, 0
+ran13x13, 0
+mas284, 0
+prod1, 1
+bc1, 1
+bienst1, 1
+neos2, 1
+neos3, 0
+neos7, 0
+swath1, 1
+swath2, 1
