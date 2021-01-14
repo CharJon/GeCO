@@ -6,7 +6,7 @@ from geco.mips.miplib.base import *
 
 
 def test_load_brr():
-    df = pd.read_csv("data/lists/brr.csv", comment='#')
+    df = pd.read_csv("data/lists/brr.csv", comment="#")
     loader = Loader()
     df = df[df["miplib"] == 1]
     for i in df["instance"]:
@@ -38,7 +38,7 @@ def test_persistent_directory():
     new_loader = Loader(persistent_directory="./")
     path = new_loader.instances_cache[instance_name]
     assert (
-            instance_name in new_loader.instances_cache
+        instance_name in new_loader.instances_cache
     )  # instance path loaded correctly into cache
     assert os.path.exists(path)  # instance path exists
     os.unlink(instance_name)  # cleanup local directory
