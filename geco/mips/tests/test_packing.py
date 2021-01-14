@@ -2,7 +2,7 @@ import itertools
 
 import pytest
 
-from geco.mips.packing import *
+from geco.mips.packing.tang import *
 
 
 def test_tang_integral():
