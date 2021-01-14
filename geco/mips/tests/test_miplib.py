@@ -1,17 +1,14 @@
-import os
-
 import pandas as pd
 
 from geco.mips.miplib.base import *
 
 
-def test_load_brr():
-    df = pd.read_csv("data/lists/brr.csv", comment="#")
+def test_load_list():
+    df = pd.read_csv("data/lists/branching_rules_revisited.csv", comment="#")
     loader = Loader()
     df = df[df["miplib"] == 1]
     for i in df["instance"]:
         loader.load_instance(f"{i}.mps.gz")
-    for i in df["instance"]:
         path = loader.instances_cache[f"{i}.mps.gz"]
         assert os.path.exists(path)
 
