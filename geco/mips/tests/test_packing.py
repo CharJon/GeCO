@@ -7,7 +7,7 @@ from geco.mips.packing import *
 
 def test_tang_integral():
     n, m = 10, 10
-    model = tang(n, m, binary=False)
+    model = tang_instance(n, m, binary=False)
     vars = model.getVars()
     assert len(vars) == n
     assert all(var.vtype() == "INTEGER" for var in vars)
@@ -17,7 +17,7 @@ def test_tang_integral():
 
 def test_tang_binary():
     n, m = 10, 10
-    model = tang(n, m, binary=True)
+    model = tang_instance(n, m, binary=True)
     vars = model.getVars()
     assert len(vars) == n
     assert all(var.vtype() == "BINARY" for var in vars)

@@ -2,20 +2,21 @@ import pyscipopt as scip
 
 
 def knapsack(weights, profits, capacity, name="Knapsack"):
-    """Given profits, weights and capacity. It returns a SCIP model
-        for the corresponding MIP formulation of the knapsack instance
+    """Generates a knapsack MIP formulation.
 
     Parameters:
     ----------
         profits: list[float]
-            list of profits of each item
+            List of profits of each item
         weights: list[float]
-            list of weights of each item
+            List of weights of each item
         capacity: float
-            capacity of knapsack
-    Returns:
-    --------
-        model: SCIP model of the knapsack instance
+            Capacity of knapsack
+
+    Returns
+    -------
+    model: scip.Model
+        A pyscipopt model of the generated instance
     """
     assert len(weights) == len(profits)
     assert capacity >= 0
