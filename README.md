@@ -29,16 +29,15 @@ That's it, now you are ready to generate some instances!
 Assume you want a knapsack instance like in the Yang et
 al. [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html).
 
-You start by looking through the knapsack module/package, then searching for a function with the
-name `FIRSTAUTHOR_instance`. In this case we find a [`yang.py`](geco/mips/knapsack/yang.py) file in the `mips/knapsack`
-package.
+You start by looking through the knapsack package, then searching for a file with the name `FIRSTAUTHOR.py`. 
+In this case we find a [`yang.py`](geco/mips/knapsack/yang.py) file in the `mips/knapsack` package.
 
 To generate an instance with 5 items you would run
 
 ```python3
 from geco import knapsack
 
-knapsack.yang_instance(5, seed=1)
+knapsack.yang_instance(n=5, seed=1)
 ```
 
 This, as all generators inside the `mips` subpackage, return a `PySCIPOpt` model that makes use of the SCIP mixed
@@ -62,7 +61,7 @@ be
 from geco.generator import generate_n
 from geco.mips.knapsack import yang
 
-for model in generate_n(lambda seed: yang.yang_instance(5, seed), 10):
+for model in generate_n(lambda seed: yang.yang_instance(n=5, seed=seed), n=10):
     model.optimize()
 ```
 

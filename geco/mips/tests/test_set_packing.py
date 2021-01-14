@@ -2,7 +2,7 @@ import itertools
 
 import pytest
 
-from geco.mips.set_packing import *
+from geco.mips.set_packing.yang import *
 
 
 def test_yang():
