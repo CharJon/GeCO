@@ -1,43 +1,31 @@
 import pyscipopt as scip
-from geco.mips.miplib.loader import *
-import pytest
+from geco.mips.miplib.base import *
+import os
 
 
 def test_load_instance():
-    instance = load_instance("30n20b8.mps.gz")
+    instance = Loader().load_instance("30n20b8.mps.gz")
     assert isinstance(instance, scip.Model)
 
 
-@pytest.mark.skip(reason="Resolving this requires loading the csv dynamically")
-def test_load_instances():
-    instances = [i for i in load_instances({"Status  Sta.": "hard"})]
-    assert len(instances) == 142
-    for i in instances:
-        assert isinstance(i, scip.Model)
+def test_deletion_of_temp_files():
+    loader = Loader()
+    instance_name = "30n20b8.mps.gz"
+    loader.load_instance(instance_name)
+    path = loader.instances_cache[instance_name]
+    del loader
+    assert not os.path.exists(path)
 
 
-@pytest.mark.skip
-def test_easy_instances():
-    instances_csv = "TODO: add this"
-    instances = [i for i in hard_instances(instances_csv)]
-    assert len(instances) == 142
-    for i in instances:
-        assert isinstance(i, scip.Model)
-
-
-@pytest.mark.skip
-def test_hard_instances():
-    instances_csv = "TODO: add this"
-    instances = [i for i in easy_instances(instances_csv)]
-    assert len(instances) == 677
-    for i in instances:
-        assert isinstance(i, scip.Model)
-
-
-@pytest.mark.skip
-def test_open_instances():
-    instances_csv = "TODO: add this"
-    instances = [i for i in open_instances(instances_csv)]
-    assert len(instances) == 246
-    for i in instances:
-        assert isinstance(i, scip.Model)
+def test_persistent_directory():
+    loader = Loader(persistent_directory="./")
+    instance_name = "30n20b8.mps.gz"
+    loader.load_instance(instance_name)
+    del loader
+    new_loader = Loader(persistent_directory="./")
+    path = new_loader.instances_cache[instance_name]
+    assert (
+        instance_name in new_loader.instances_cache
+    )  # instance path loaded correctly into cache
+    assert os.path.exists(path)  # instance path exists
+    os.unlink(instance_name)  # cleanup local directory
