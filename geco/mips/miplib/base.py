@@ -52,7 +52,7 @@ class Loader:
         for path in os.listdir(self.dir):
             if path.endswith(".mps.gz"):
                 instance_name = path.split("/")[-1]
-                self.instances_cache[instance_name] = path
+                self.instances_cache[instance_name] = self.dir + path
 
     def __del__(self):
         if self.dir is None:
