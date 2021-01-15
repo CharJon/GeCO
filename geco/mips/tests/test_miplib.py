@@ -1,6 +1,16 @@
-import pyscipopt as scip
+import pandas as pd
+
 from geco.mips.miplib.base import *
-import os
+
+
+def test_load_list():
+    df = pd.read_csv("data/lists/branching_rules_revisited.csv", comment="#")
+    loader = Loader()
+    df = df[df["miplib"] == 1]
+    for i in df["instance"]:
+        loader.load_instance(f"{i}.mps.gz")
+        path = loader.instances_cache[f"{i}.mps.gz"]
+        assert os.path.exists(path)
 
 
 def test_load_instance():

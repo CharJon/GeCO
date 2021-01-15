@@ -98,6 +98,3 @@ refer to the modules corresponding to the generating function for a reference to
 
 # Contributing
 If you want to add some new generator, fix a bug or enhance the repository in some way, please refer to our [guide](CONTRIBUTING.md).
-
-If you want to add some new generator, fix a big or enhance the repository in some way, please refer to
-our [guide](CONTRIBUTING.md).
