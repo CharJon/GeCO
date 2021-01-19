@@ -18,8 +18,8 @@ def test_saving_shuffled_instance():
     model = yang_instance(300)
     shuffled_model = shuffle(model, seed=1)
 
-    original_file = tempfile.NamedTemporaryFile(suffix=".lp")
-    shuffled_file = tempfile.NamedTemporaryFile(suffix=".lp")
+    original_file = tempfile.NamedTemporaryFile(suffix=".mps")
+    shuffled_file = tempfile.NamedTemporaryFile(suffix=".mps")
 
     model.writeProblem(original_file.name)
     shuffled_model.writeProblem(shuffled_file.name)
@@ -27,10 +27,7 @@ def test_saving_shuffled_instance():
     with open(original_file.name, 'r') as of, open(shuffled_file.name, 'r') as sf:
         for line1, line2 in zip(of, sf):
             if line1 != line2:
-                print(line1)
-                print(line2)
                 assert True
-                return
-    original_file.close()
-    shuffled_file.close()
-    assert False
+                break
+        else:
+            assert False
