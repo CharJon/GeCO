@@ -4,16 +4,6 @@ from geco.mips.set_cover.yang import yang_instance
 from geco.mips.utilities.generic import *
 
 
-def test_shuffle():
-    model = yang_instance(300)
-    shuffled = shuffle(model, seed=1)
-    model.hideOutput()
-    shuffled.hideOutput()
-    model.optimize()
-    shuffled.optimize()
-    assert model.getNNodes() != shuffled.getNNodes()
-
-
 def test_saving_shuffled_instance():
     model = yang_instance(300)
     shuffled_model = shuffle(model, seed=1)
