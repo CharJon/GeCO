@@ -27,7 +27,7 @@ def shuffle(model, seed, cons=True, vars=True):
     # shuffled = scip.Model(sourceModel=model, problemName=model.getProbName(), origcopy=True)
     assert seed > 0
     shuffled = scip.Model()
-    with tempfile.NamedTemporaryFile(suffix=".lp") as temp:
+    with tempfile.NamedTemporaryFile(suffix=".mps") as temp:
         model.writeProblem(temp.name)
         shuffled.setParam("randomization/permutationseed", seed)
         shuffled.setParam("randomization/permuteconss", cons)
