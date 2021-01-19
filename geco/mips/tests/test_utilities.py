@@ -27,6 +27,8 @@ def test_saving_shuffled_instance():
     with open(original_file.name, 'r') as of, open(shuffled_file.name, 'r') as sf:
         for line1, line2 in zip(of, sf):
             if line1 != line2:
+                print(line1)
+                print(line2)
                 assert True
                 return
     original_file.close()
