@@ -29,4 +29,6 @@ def test_saving_shuffled_instance():
             if line1 != line2:
                 assert True
                 return
+    original_file.close()
+    shuffled_file.close()
     assert False
