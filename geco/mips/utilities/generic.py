@@ -25,7 +25,7 @@ def shuffle(model, seed, cons=True, vars=True):
     # The following line of code does not correctly set the name! Leave commented until it's clear why.
     # shuffled = scip.Model(sourceModel=model, problemName=model.getProbName(), origcopy=True)
     assert seed > 0
-    temp = tempfile.NamedTemporaryFile(suffix='.lp')
+    temp = tempfile.NamedTemporaryFile(suffix=".lp")
     model.writeProblem(temp.name)
     shuffled = scip.Model()
     shuffled.setParam("randomization/permutationseed", seed)

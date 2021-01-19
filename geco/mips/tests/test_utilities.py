@@ -24,7 +24,7 @@ def test_saving_shuffled_instance():
     model.writeProblem(original_file.name)
     shuffled_model.writeProblem(shuffled_file.name)
 
-    with open(original_file.name, 'r') as of, open(shuffled_file.name, 'r') as sf:
+    with open(original_file.name, "r") as of, open(shuffled_file.name, "r") as sf:
         for line1, line2 in zip(of, sf):
             if line1 != line2:
                 assert True
