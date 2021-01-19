@@ -4,22 +4,6 @@ import pyscipopt as scip
 import geco.mips.utilities.naming as naming
 
 
-def empty_edge(graph):
-    model = scip.Model("Odd-Cycle MaxCut")
-
-    edge_variables = {}
-    for u, v, d in graph.edges(data=True):
-        edge_name = naming.undirected_edge_name(u, v)
-        weight = d["weight"]
-        edge_variables[edge_name] = model.addVar(
-            lb=0, ub=1, obj=weight, name=edge_name, vtype="B"
-        )
-
-    model.setMaximize()
-
-    return edge_variables, model
-
-
 def naive(graph):
     model = scip.Model("Naive MaxCut")
 
