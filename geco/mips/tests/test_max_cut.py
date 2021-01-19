@@ -12,15 +12,6 @@ def test_tang():
     assert model.getObjectiveSense() == "maximize"
 
 
-def test_empty_edge():
-    graph = nx.generators.complete_graph(3)
-    for _, _, data in graph.edges(data=True):
-        data["weight"] = 1
-    _, model = empty_edge(graph)
-    assert model.getNVars() == len(graph.edges)
-    assert model.getNConss() == 0
-
-
 def test_triangle():
     graph = nx.generators.cycle_graph(4)
     for _, _, data in graph.edges(data=True):
