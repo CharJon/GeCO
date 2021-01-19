@@ -22,6 +22,7 @@ def shuffle(model, seed, cons=True, vars=True):
         A pyscipopt model of the shuffled instance
     """
     shuffled = scip.Model(sourceModel=model)
+    shuffled.setProbName(model.getProbName())
     shuffled.setParam("randomization/permutationseed", seed)
     shuffled.setParam("randomization/permuteconss", cons)
     shuffled.setParam("randomization/permutevars", vars)
