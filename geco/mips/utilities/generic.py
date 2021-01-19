@@ -11,7 +11,7 @@ def shuffle(model, seed, cons=True, vars=True):
     model: scip.Model
         A pyscipopt model of the to be shuffled instance
     seed: int
-        Used in shuffling
+        Used in shuffling (must be bigger than 0)
     cons: bool
         Whether the columns should be shuffled
     vars: bool
@@ -24,6 +24,7 @@ def shuffle(model, seed, cons=True, vars=True):
     """
     # The following line of code does not correctly set the name! Leave commented until it's clear why.
     # shuffled = scip.Model(sourceModel=model, problemName=model.getProbName(), origcopy=True)
+    assert seed > 0
     temp = tempfile.NamedTemporaryFile(suffix='.lp')
     model.writeProblem(temp.name)
     shuffled = scip.Model()

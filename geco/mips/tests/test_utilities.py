@@ -18,8 +18,8 @@ def test_saving_shuffled_instance():
     model = yang_instance(300)
     shuffled_model = shuffle(model, seed=1)
 
-    original_file = tempfile.NamedTemporaryFile(suffix=".mps")
-    shuffled_file = tempfile.NamedTemporaryFile(suffix=".mps")
+    original_file = tempfile.NamedTemporaryFile(suffix=".lp")
+    shuffled_file = tempfile.NamedTemporaryFile(suffix=".lp")
 
     model.writeProblem(original_file.name)
     shuffled_model.writeProblem(shuffled_file.name)
