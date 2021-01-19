@@ -1,5 +1,6 @@
-import pyscipopt as scip
 import tempfile
+
+import pyscipopt as scip
 
 
 def shuffle(model, seed, cons=True, vars=True):
@@ -25,13 +26,12 @@ def shuffle(model, seed, cons=True, vars=True):
     # The following line of code does not correctly set the name! Leave commented until it's clear why.
     # shuffled = scip.Model(sourceModel=model, problemName=model.getProbName(), origcopy=True)
     assert seed > 0
-    temp = tempfile.NamedTemporaryFile(suffix=".lp")
-    model.writeProblem(temp.name)
     shuffled = scip.Model()
-    shuffled.setParam("randomization/permutationseed", seed)
-    shuffled.setParam("randomization/permuteconss", cons)
-    shuffled.setParam("randomization/permutevars", vars)
-    shuffled.readProblem(temp.name)
-    shuffled.setProbName(model.getProbName())
-    temp.close()
+    with tempfile.NamedTemporaryFile(suffix=".mps") as temp:
+        model.writeProblem(temp.name)
+        shuffled.setParam("randomization/permutationseed", seed)
+        shuffled.setParam("randomization/permuteconss", cons)
+        shuffled.setParam("randomization/permutevars", vars)
+        shuffled.readProblem(temp.name)
+        shuffled.setProbName(model.getProbName())
     return shuffled
