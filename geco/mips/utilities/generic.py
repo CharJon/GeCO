@@ -22,8 +22,8 @@ def shuffle(model, seed, cons=True, vars=True):
         A pyscipopt model of the shuffled instance
     """
     # The following line of code does not correctly set the name! Leave commented until it's clear why.
-    # shuffled = scip.Model(sourceModel=model, problemName=model.getProbName(), origcopy=False)
-    shuffled = scip.Model(sourceModel=model, origcopy=False)
+    # shuffled = scip.Model(sourceModel=model, problemName=model.getProbName(), origcopy=True)
+    shuffled = scip.Model(sourceModel=model, origcopy=True)
     shuffled.setProbName(model.getProbName())
     shuffled.setParam("randomization/permutationseed", seed)
     shuffled.setParam("randomization/permuteconss", cons)
