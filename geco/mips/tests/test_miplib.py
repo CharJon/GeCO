@@ -1,4 +1,5 @@
 import pandas as pd
+import pytest
 
 from geco.mips.miplib.base import *
 
@@ -39,3 +40,18 @@ def test_persistent_directory():
     )  # instance path loaded correctly into cache
     assert os.path.exists(path)  # instance path exists
     os.unlink(instance_name)  # cleanup local directory
+
+
+def test_not_found_error():
+    with pytest.raises(ValueError):
+        Loader().load_instance("neos-941sdfsdf262.mps.gz")
+
+
+def test_miplib_2010():
+    instance = Loader().load_instance("neos-941262.mps.gz")
+    assert isinstance(instance, scip.Model)
+
+
+def test_miplib_2003():
+    instance = Loader().load_instance("vpm2.mps.gz")
+    assert isinstance(instance, scip.Model)
