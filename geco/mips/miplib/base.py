@@ -43,7 +43,7 @@ class Loader:
         if self.dir:
             return self.dir + instance_name
         else:
-            extension = instance_name[instance_name.index("."):]
+            extension = instance_name[instance_name.index(".") :]
             return tempfile.NamedTemporaryFile(suffix=extension).name
 
     def _download_instance(self, instance_name):
