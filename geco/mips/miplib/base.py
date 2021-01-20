@@ -1,11 +1,16 @@
 import tempfile
-from urllib.request import urlretrieve
+from urllib.request import urlretrieve, urlopen
+from urllib.error import URLError
 import pyscipopt as scip
 import os
 
 
 class Loader:
-    INSTANCE_URL = "https://miplib.zib.de/WebData/instances/"
+    INSTANCES_URLS = [
+        "https://miplib.zib.de/WebData/instances/",  # 2017 instances
+        "http://miplib2010.zib.de/download/",  # 2010 instances
+        "http://miplib2010.zib.de/miplib2003/download/",  # 2003 instance
+    ]
 
     def __init__(self, persistent_directory=None):
         """
@@ -38,12 +43,29 @@ class Loader:
         if self.dir:
             return self.dir + instance_name
         else:
-            return tempfile.NamedTemporaryFile(suffix=".mps.gz").name
+            extension = instance_name[instance_name.index(".") :]
+            return tempfile.NamedTemporaryFile(suffix=extension).name
 
     def _download_instance(self, instance_name):
         path = self._generate_path_for_instance(instance_name)
-        urlretrieve(self.INSTANCE_URL + instance_name, path)
-        self.instances_cache[instance_name] = path
+        for url in self.INSTANCES_URLS:
+            download_url = url + instance_name
+            try:
+                response = urlopen(download_url)
+            except URLError:
+                continue
+            if self._successful_response(response):
+                urlretrieve(download_url, path)
+                self.instances_cache[instance_name] = path
+                break
+        else:
+            raise ValueError(
+                "Was not able to find the instance in any of the MIPLIB files"
+            )
+
+    @staticmethod
+    def _successful_response(response):
+        return response.status == 200 and "not_found" not in response.url
 
     def _instance_cached(self, instance_name):
         return instance_name in self.instances_cache
