@@ -57,12 +57,7 @@ def test_solution_not_found_error():
     with pytest.raises(ValueError):
         Loader().load_instance(
             "bharat.mps.gz", with_solution=True
-        )  # one of miplib 2017 open instances
-
-
-def test_miplib_2010():
-    instance = Loader().load_instance("neos-941262.mps.gz")
-    assert isinstance(instance, scip.Model)
+        )  # one of miplib 2017 open instances with no known solution
 
 
 def _check_instance(instance_name, with_solution=False):
