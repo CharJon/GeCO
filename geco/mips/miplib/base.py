@@ -43,8 +43,8 @@ class Loader:
         if self.dir:
             return self.dir + instance_name
         else:
-            extention = instance_name[instance_name.index(".") :]
-            return tempfile.NamedTemporaryFile(suffix=extention).name
+            extension = instance_name[instance_name.index("."):]
+            return tempfile.NamedTemporaryFile(suffix=extension).name
 
     def _download_instance(self, instance_name):
         path = self._generate_path_for_instance(instance_name)
