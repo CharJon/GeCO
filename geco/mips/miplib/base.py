@@ -65,11 +65,7 @@ class Loader:
 
     @staticmethod
     def _successful_response(response):
-        if response.status != 200:
-            return False
-        elif "not_found" in response.url:
-            return False
-        return True
+        return response.status == 200 and "not_found" not in response.url
 
     def _instance_cached(self, instance_name):
         return instance_name in self.instances_cache
