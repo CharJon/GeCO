@@ -1,1 +1,1 @@
-import geco.mips.miplib.base as base
+from geco.mips.miplib.base import *

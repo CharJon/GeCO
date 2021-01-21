@@ -1,1 +1,1 @@
-import geco.mips.graph_coloring.generic as generic
+from geco.mips.graph_coloring.generic import *

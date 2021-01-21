@@ -1,3 +1,3 @@
-import geco.mips.scheduling.generic as generic
-import geco.mips.scheduling.heinz as heinz
-import geco.mips.scheduling.hooker as hooker
+from geco.mips.scheduling.generic import *
+from geco.mips.scheduling.heinz import *
+from geco.mips.scheduling.hooker import *

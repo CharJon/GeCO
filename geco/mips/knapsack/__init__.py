@@ -1,3 +1,3 @@
-import geco.mips.knapsack.generic as generic
-import geco.mips.knapsack.yang as yang
-import geco.mips.knapsack.pisinger as pisinger
+from geco.mips.knapsack.generic import *
+from geco.mips.knapsack.yang import *
+from geco.mips.knapsack.pisinger import *
