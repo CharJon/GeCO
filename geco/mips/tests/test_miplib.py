@@ -42,16 +42,27 @@ def test_persistent_directory():
     os.unlink(instance_name)  # cleanup local directory
 
 
-def test_not_found_error():
+def test_miplib_sources_with_solution():
+    _check_instance("30n20b8.mps.gz", with_solution=True)  # from miplib 2017
+    _check_instance("neos-941262.mps.gz", with_solution=True)  # from miplib 2010
+    _check_instance("vpm2.mps.gz", with_solution=True)  # from miplib 2003
+
+
+def test_instance_not_found_error():
     with pytest.raises(ValueError):
-        Loader().load_instance("neos-941sdfsdf262.mps.gz")
+        Loader().load_instance("i_am_not_an_instance.mps.gz")
 
 
-def test_miplib_2010():
-    instance = Loader().load_instance("neos-941262.mps.gz")
+def test_solution_not_found_error():
+    with pytest.raises(ValueError):
+        Loader().load_instance(
+            "bharat.mps.gz", with_solution=True
+        )  # one of miplib 2017 open instances with no known solution
+
+
+def _check_instance(instance_name, with_solution=False):
+    instance = Loader().load_instance(instance_name, with_solution=with_solution)
     assert isinstance(instance, scip.Model)
-
-
-def test_miplib_2003():
-    instance = Loader().load_instance("vpm2.mps.gz")
-    assert isinstance(instance, scip.Model)
+    if with_solution:
+        sols = instance.getSols()
+        assert len(sols) == 1
