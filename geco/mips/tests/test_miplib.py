@@ -4,11 +4,11 @@ import pytest
 from geco.mips.miplib.base import *
 
 
-def test_load_list():
+def test_load_miplib_list():
     df = pd.read_csv("data/lists/branching_rules_revisited.csv", comment="#")
     loader = Loader()
-    df = df[df["miplib"] == 1]
-    for i in df["instance"]:
+    miplib_only_df = df[df["miplib"] == 1]
+    for i in miplib_only_df["instance"]:
         loader.load_instance(f"{i}.mps.gz")
         path = loader.instances_cache[f"{i}.mps.gz"]
         assert os.path.exists(path)
