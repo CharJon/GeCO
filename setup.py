@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="GeCO",
-    version="1.0.2",
+    version="1.0.3",
     description="Generators for Combinatorial Optimization",
     long_description=readme_text,
     long_description_content_type="text/markdown",
