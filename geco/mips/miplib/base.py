@@ -67,7 +67,7 @@ class Loader:
                 continue
             if self._successful_response(response):
                 return url
-        return False
+        return None
 
     @staticmethod
     def _successful_response(response):
