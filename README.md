@@ -44,7 +44,7 @@ from geco import knapsack
 knapsack_model = knapsack.yang.yang_instance(n=5, seed=1)
 ```
 
-This, as all generators inside the `mips` subpackage, return a `PySCIPOpt` model that makes use of the SCIP mixed
+This, as all generators inside the `mips` subpackage, returns a `PySCIPOpt` model that makes use of the SCIP mixed
 integer programming solver, refer to their docs to learn how to set params, solve the instance and a lot more.
 
 ### Randomization
