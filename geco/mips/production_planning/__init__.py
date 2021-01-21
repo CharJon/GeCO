@@ -1,2 +1,2 @@
-import geco.mips.production_planning.generic as generic
-import geco.mips.production_planning.generic as tang
+from geco.mips.production_planning.generic import *
+from geco.mips.production_planning.generic import *

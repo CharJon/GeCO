@@ -1,2 +1,2 @@
-import geco.mips.packing.generic as generic
-import geco.mips.packing.tang as tang
+from geco.mips.packing.generic import *
+from geco.mips.packing.tang import *

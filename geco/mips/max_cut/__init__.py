@@ -1,2 +1,2 @@
-import geco.mips.max_cut.generic as generic
-import geco.mips.max_cut.tang as tang
+from geco.mips.max_cut.generic import *
+from geco.mips.max_cut.tang import *

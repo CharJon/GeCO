@@ -1,2 +1,2 @@
-import geco.mips.set_packing.generic as generic
-import geco.mips.set_packing.yang as yang
+from geco.mips.set_packing.generic import *
+from geco.mips.set_packing.yang import *
