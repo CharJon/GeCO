@@ -41,7 +41,7 @@ To generate an instance with 5 items you would run
 ```python3
 from geco import knapsack
 
-knapsack.yang_instance(n=5, seed=1)
+knapsack.yang.yang_instance(n=5, seed=1)
 ```
 
 This, as all generators inside the `mips` subpackage, return a `PySCIPOpt` model that makes use of the SCIP mixed
