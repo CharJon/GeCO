@@ -5,7 +5,7 @@
 **Generators for Combinatorial Optimization**
 
 This python package offers functionality to easily create instances for combinatorial optimization problems.
-By making use of well known open source libraries as networkx for graphs and PySCIPOpt for mathematical programming,
+By making use of well known open source libraries as [networkx](https://github.com/networkx/networkx) for graphs and [PySCIPOpt](https://github.com/scipopt/PySCIPOpt) for mathematical programming,
 the created instances can be used directly or saved to disk in a variety of different file formats.
 
 ## Installation
