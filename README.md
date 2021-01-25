@@ -10,7 +10,7 @@ the created instances can be used directly or saved to disk in a variety of diff
 
 ## Installation
 
-The code heavily depends on the python interface of SCIP: [PySCIPOpt](https://github.com/scipopt/PySCIPOpt). The easiest
+The mixed integer programming part of the code heavily depends on the python interface of SCIP: [PySCIPOpt](https://github.com/scipopt/PySCIPOpt). The easiest
 way to install it is using conda
 
 ```bash
