@@ -7,6 +7,20 @@
 This python package offers functionality to easily create instances for combinatorial optimization problems like knapsack or facility location.
 By making use of well known open source libraries such as [NetworkX](https://github.com/networkx/networkx) for graphs and [PySCIPOpt](https://github.com/scipopt/PySCIPOpt) for mathematical programming,
 the created instances can be used directly or saved to disk in a variety of different file formats.
+Releases of GeCO get pushed to [PyPI](https://pypi.org/), which makes it easy to install it into the python distribution of your choice via pip.
+
+## Short Example
+
+Assume you want a knapsack instance like in this [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html) by Yang et al.
+
+To generate an instance with 5 items and save it to disc you would simply run:
+
+```python3
+from geco import knapsack
+
+knapsack_model = knapsack.yang.yang_instance(n=5, seed=1)
+knapsack_model.writeProblem("yang_n5.mps")
+```
 
 ## Installation
 
@@ -28,7 +42,7 @@ pip install geco
 
 That's it, now you are ready to generate some instances!
 
-## Example
+## Extended Example
 
 Assume you want a knapsack instance like in the Yang et
 al. [paper](http://www.optimization-online.org/DB_HTML/2020/02/7626.html).
