@@ -143,6 +143,7 @@ def custom_list(source, with_solution=False, loader=None):
         Whether to return the instance with the known solutions or not
     loader: Loader
         Loader object to download instances with
+
     Returns
     -------
     A generator for the instances
