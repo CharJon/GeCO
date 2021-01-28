@@ -1,13 +1,13 @@
 import pandas as pd
 import pytest
 
-from geco.mips.miplib.base import *
+from geco.mips.loading.miplib import *
 
 
 def test_load_miplib_list():
     df = pd.read_csv("data/lists/branching_rules_revisited.csv", comment="#")
     loader = Loader()
-    miplib_only_df = df[df["miplib"] == 1]
+    miplib_only_df = df[df["loading"] == 1]
     for i in miplib_only_df["instance"]:
         loader.load_instance(f"{i}.mps.gz")
         path = loader.instances_cache[f"{i}.mps.gz"]
@@ -43,9 +43,9 @@ def test_persistent_directory():
 
 
 def test_miplib_sources_with_solution():
-    _check_instance("30n20b8.mps.gz", with_solution=True)  # from miplib 2017
-    _check_instance("neos-941262.mps.gz", with_solution=True)  # from miplib 2010
-    _check_instance("vpm2.mps.gz", with_solution=True)  # from miplib 2003
+    _check_instance("30n20b8.mps.gz", with_solution=True)  # from loading 2017
+    _check_instance("neos-941262.mps.gz", with_solution=True)  # from loading 2010
+    _check_instance("vpm2.mps.gz", with_solution=True)  # from loading 2003
 
 
 def test_instance_not_found_error():
@@ -57,7 +57,7 @@ def test_solution_not_found_error():
     with pytest.raises(ValueError):
         Loader().load_instance(
             "bharat.mps.gz", with_solution=True
-        )  # one of miplib 2017 open instances with no known solution
+        )  # one of loading 2017 open instances with no known solution
 
 
 def _check_instance(instance_name, with_solution=False):
