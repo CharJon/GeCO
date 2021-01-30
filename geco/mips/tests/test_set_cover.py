@@ -125,8 +125,15 @@ OR-Library tests
 """
 
 
-def test_orlib():
-    instance_name = 'scp41.txt'
+def test_scp_orlib():
+    instance_name = "scp41.txt"
     instance = orlib_instance(instance_name)
     assert instance.getNVars() == 1000
     assert instance.getNConss() == 200
+
+
+def test_rail_orlib():
+    instance_name = "rail507.txt"
+    instance = orlib_instance(instance_name)
+    assert instance.getNVars() == 63009
+    assert instance.getNConss() == 507

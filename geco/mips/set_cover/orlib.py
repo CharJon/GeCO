@@ -52,10 +52,14 @@ def _scp_reader(file):
         if not number_of_vars_in_constraint:
             break
         constraint = list(_read_multiline_numbers(file, number_of_vars_in_constraint))
-        constraint = map(lambda x: x - 1, constraint)  # make it zero-indexed
+        constraint = _zero_index(constraint)
         sets.append(constraint)
     assert len(costs) == number_of_vars and len(sets) == number_of_cons
     return set_cover(costs, sets)
+
+
+def _zero_index(numbers):
+    return map(lambda x: x - 1, numbers)
 
 
 def _rail_reader(file):
@@ -75,7 +79,23 @@ def _rail_reader(file):
     ----------
     ..[1] http://people.brunel.ac.uk/~mastjjb/jeb/orlib/scpinfo.html
     """
-    raise NotImplementedError
+    number_of_cons, number_of_vars = _read_numbers(file.readline())
+    costs = []
+    sets = [[] for _ in range(number_of_cons)]
+    col_idx = 0
+    while file:
+        line = file.readline()
+        if not line:
+            break
+        numbers = list(_read_numbers(line))
+        costs.append(numbers[0])
+        rows_covered = _zero_index(numbers[2:])
+        for row in rows_covered:
+            sets[row].append(col_idx)
+        col_idx += 1
+    sets = list(filter(lambda l: len(l) > 0, sets))
+    assert len(costs) == number_of_vars and len(sets) == number_of_cons
+    return set_cover(costs, sets)
 
 
 def orlib_instance(instance_name):
