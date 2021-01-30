@@ -3,9 +3,9 @@ import itertools
 
 import pytest
 
-from geco.mips.set_cover.generic import *
 from geco.mips.set_cover.yang import *
 from geco.mips.set_cover.sun import *
+from geco.mips.set_cover.orlib import *
 
 """
 Generic Tests
@@ -118,3 +118,15 @@ def test_expand_sun_params(n, base_n, base_m, seed1, seed2):
     # test correct size
     assert len(costs1) == len(costs2) == n
     assert len(sets1) == len(sets2) == base_m
+
+
+"""
+OR-Library tests
+"""
+
+
+def test_orlib():
+    instance_name = 'scp41.txt'
+    instance = orlib_instance(instance_name)
+    assert instance.getNVars() == 1000
+    assert instance.getNConss() == 200
