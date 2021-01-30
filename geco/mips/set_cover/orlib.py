@@ -112,7 +112,8 @@ def orlib_instance(instance_name):
     model: scip.Model
         A pyscipopt model of the loaded instance
     """
-    if instance_name[:3] == "scp":  # prefix of set cover files
+    # TODO: assert that instance_name correlated to one of the listed set-cover files
+    if instance_name[:3] == "scp":
         return orlib_load_instance(instance_name, reader=_scp_reader)
     elif instance_name[:4] == "rail":
         return orlib_load_instance(instance_name, reader=_rail_reader)
