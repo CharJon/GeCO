@@ -10,8 +10,6 @@ def _read_number(line):
 
 
 def _read_numbers(line):
-    if len(line) == 0:
-        return []
     return (int(n) for n in line.strip().split(b" "))
 
 
