@@ -1,5 +1,6 @@
 import pandas as pd
 import pytest
+import itertools
 
 from geco.mips.miplib.base import *
 
@@ -66,3 +67,29 @@ def _check_instance(instance_name, with_solution=False):
     if with_solution:
         sols = instance.getSols()
         assert len(sols) == 1
+
+
+def test_custom_list():
+    miplib_2017_list = "https://miplib.zib.de/downloads/collection-v1.test"
+    for instance in itertools.islice(custom_list(miplib_2017_list), 5):
+        assert isinstance(instance, scip.Model)
+
+
+def test_easy_instances():
+    for instance in itertools.islice(easy_instances(), 5):
+        assert isinstance(instance, scip.Model)
+
+
+def test_hard_instances():
+    for instance in itertools.islice(hard_instances(), 5):
+        assert isinstance(instance, scip.Model)
+
+
+def test_open_instances():
+    for instance in itertools.islice(open_instances(), 5):
+        assert isinstance(instance, scip.Model)
+
+
+def test_benchmark_instances():
+    for instance in itertools.islice(benchmark_instances(), 5):
+        assert isinstance(instance, scip.Model)
