@@ -6,13 +6,11 @@ FILES_BASE_URL = "http://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/"
 def read_number(line):
     if not line:
         return None
-    return int(line.strip().split(b" ")[0])
+    return _str_to_number(line.strip().split(b" ")[0])
 
 
 def read_numbers(line):
-    if len(line) == 0:
-        return []
-    return (int(n) for n in line.strip().split(b" "))
+    return (_str_to_number(n) for n in line.strip().split(b" "))
 
 
 def read_multiline_numbers(file, number_to_read):
@@ -27,6 +25,13 @@ def read_multiline_numbers(file, number_to_read):
             numbers_in_line = list(read_numbers(line))
             numbers += numbers_in_line
     return numbers
+
+
+def _str_to_number(string):
+    if b"." in string:
+        return float(string)
+    else:
+        return int(string)
 
 
 def zero_index(numbers):
