@@ -11,7 +11,7 @@ def test_capacitated_facility_location():
     model = capacitated_facility_location(n_customers, n_facilities, *instance_params)
     assert model.getNVars() == n_customers * n_facilities + n_facilities
     assert (
-        model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
+            model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
     )
     assert model.getObjectiveSense() == "minimize"
     model.hideOutput()
@@ -41,5 +41,12 @@ def test_seeding(n_customers, n_facilities, ratio, seed1, seed2):
 def test_orlib_cap_numeric():
     instance_name = "cap41.txt"
     n_customers, n_warehouses = 50, 16
+    instance = orlib_instance(instance_name)
+    assert instance.getNVars() == n_warehouses * n_customers + n_warehouses
+
+
+def test_orlib_cap_alpha():
+    instance_name = "capa2.txt"
+    n_customers, n_warehouses = 1000, 100
     instance = orlib_instance(instance_name)
     assert instance.getNVars() == n_warehouses * n_customers + n_warehouses
