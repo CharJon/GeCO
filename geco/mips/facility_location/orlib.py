@@ -72,7 +72,7 @@ def _cap_alpha_reader(file, capacity):
     allocation_cost_per_warehouse = {}
 
     for _ in range(num_of_warehouses):
-        capacity, fixed_cost = capacity, float(file.readline().strip().split(b' ')[-1])
+        capacity, fixed_cost = capacity, float(file.readline().strip().split(b" ")[-1])
         capacities.append(capacity)
         fixed_costs.append(fixed_cost)
 
@@ -94,9 +94,9 @@ def _cap_alpha_reader(file, capacity):
 
 
 PSET_CAPACITIES = {
-    'a': [8_000, 10_000, 12_000, 14_000],
-    'b': [5_000, 6_000, 7_000, 8_000],
-    'c': [5_000, 5_750, 6_500, 7_250]
+    "a": [8_000, 10_000, 12_000, 14_000],
+    "b": [5_000, 6_000, 7_000, 8_000],
+    "c": [5_000, 5_750, 6_500, 7_250],
 }
 
 
@@ -123,8 +123,10 @@ def orlib_instance(instance_name):
         problem_number = int(instance_name[4])
         problem_set = instance_name[3]
         capacity = PSET_CAPACITIES[problem_set][problem_number - 1]
-        return orlib.orlib_load_instance(instance_name[:4] + ".txt",
-                                         reader=lambda file: _cap_alpha_reader(file, capacity))
+        return orlib.orlib_load_instance(
+            instance_name[:4] + ".txt",
+            reader=lambda file: _cap_alpha_reader(file, capacity),
+        )
     else:
         raise ValueError(
             f'"{instance_name}" is not a valid file name for Capacitated Warehouse Location'
