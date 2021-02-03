@@ -4,7 +4,7 @@ from random import random
 import numpy as np
 from networkx.utils import preserve_random_state
 
-__all__ = ['dwave_pegasus_graph']
+__all__ = ["dwave_pegasus_graph"]
 
 
 def draw_intra_weight():
@@ -15,7 +15,9 @@ def draw_inter_weight():
     return random() * 2 - 1
 
 
-def _initialize_weights_pegasus(pegasus_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight):
+def _initialize_weights_pegasus(
+    pegasus_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
+):
     # 'nice' coordinate indices names (as per d-wave's documentation):
     n = 0
     t, y, x, u, k = range(5)
@@ -33,21 +35,24 @@ def _initialize_weights_pegasus(pegasus_graph, size, draw_inter_weight, draw_int
                 n += 1
                 # edge from one side to the other (internal edge)
                 if _from_nice[u] != _to_nice[u]:
-                    pegasus_graph.add_edge(
-                        _from, _to, weight=draw_intra_weight())
+                    pegasus_graph.add_edge(_from, _to, weight=draw_intra_weight())
                 else:  # odd couplers
-                    pegasus_graph.add_edge(
-                        _from, _to, weight=draw_other_weight())
+                    pegasus_graph.add_edge(_from, _to, weight=draw_other_weight())
             else:
-                pegasus_graph.add_edge(
-                    _from, _to, weight=draw_inter_weight())
+                pegasus_graph.add_edge(_from, _to, weight=draw_inter_weight())
 
 
 @preserve_random_state
-def dwave_pegasus_graph(size, seed=0, draw_inter_weight=draw_inter_weight, draw_intra_weight=draw_intra_weight,
-                        draw_other_weight=draw_inter_weight):
+def dwave_pegasus_graph(
+    size,
+    seed=0,
+    draw_inter_weight=draw_inter_weight,
+    draw_intra_weight=draw_intra_weight,
+    draw_other_weight=draw_inter_weight,
+):
     np.random.seed(seed)
     g = dwave.pegasus_graph(size)
     _initialize_weights_pegasus(
-        g, size, draw_inter_weight, draw_intra_weight, draw_other_weight)
+        g, size, draw_inter_weight, draw_intra_weight, draw_other_weight
+    )
     return g
