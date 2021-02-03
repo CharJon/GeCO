@@ -50,3 +50,8 @@ def test_orlib_cap_alpha():
     n_customers, n_warehouses = 1000, 100
     instance = orlib_instance(instance_name)
     assert instance.getNVars() == n_warehouses * n_customers + n_warehouses
+
+
+def test_orlib_wrong_instance_name():
+    with pytest.raises(ValueError):
+        orlib_instance("asdlkfj.txt")
