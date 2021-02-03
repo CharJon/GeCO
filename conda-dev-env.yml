@@ -1,4 +1,4 @@
-# run: conda env create -n GeCO --file conda-env.yml
+# run: conda env create -n GeCO --file conda-dev-env.yml
 channels:
   - scipopt
   - conda-forge
@@ -9,11 +9,13 @@ dependencies:
   - numpy
   - scipy
   - jupyter
-  - pytest
   - pandas
   - tqdm
   - pyscipopt
   - networkx
+  - pytest
+  - black
+  - codecov
   - pip:
       - git+https://github.com/rhgrant10/tsplib95.git
       - dwave_networkx

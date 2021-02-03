@@ -4,8 +4,7 @@ Every tests should check the following:
 - Number of variables
 - Number of constraints
 - Objective sense
-- The solution for some simple instances
-- Different seeds should create different instances
+- The solution for some simple instances.
 
 # Generators
 
