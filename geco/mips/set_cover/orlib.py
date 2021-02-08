@@ -28,7 +28,6 @@ def _read_multiline_numbers(file, number_to_read):
     return costs
 
 
-
 def _scp_reader(file):
     """
     Reads scp set-cover instances mentioned in [1].
@@ -64,7 +63,7 @@ def _scp_reader(file):
 def _zero_index(numbers):
     return map(lambda x: x - 1, numbers)
 
-  
+
 def _rail_reader(file):
     """
     Reads rail set-cover instances mentioned in [1].
