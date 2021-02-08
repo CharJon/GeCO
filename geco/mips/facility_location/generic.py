@@ -142,7 +142,7 @@ def capacitated_warehouse_location(
     # add customer-facility vars
     for i, j in itertools.product(range(n_customers), range(n_facilities)):
         var = model.addVar(
-            lb=0, ub=1, obj=transportation_cost[i, j], name=f"x_{i}_{j}", vtype="B"
+            lb=0, ub=1, obj=transportation_cost[i, j], name=f"x_{i}_{j}", vtype="C"
         )
         customer_facility_vars[i, j] = var
 
