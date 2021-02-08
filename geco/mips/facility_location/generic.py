@@ -152,12 +152,15 @@ def capacitated_warehouse_location(
         facility_vars.append(var)
 
     # add constraints
+
+    # constraints (2)
     for i in range(n_customers):
         model.addCons(
             scip.quicksum(customer_facility_vars[i, j] for j in range(n_facilities))
             >= 1
         )
 
+    # constraints (3)
     for j in range(n_facilities):
         model.addCons(
             scip.quicksum(
@@ -166,6 +169,9 @@ def capacitated_warehouse_location(
             <= capacities[j] * facility_vars[j]
         )
 
+    # constraints (4) and (5) are skipped because no data of bounds are given in problem data in OR-Library
+
+    # constraints (6)
     for i, j in itertools.product(range(n_customers), range(n_facilities)):
         model.addCons(
             customer_facility_vars[i, j]
