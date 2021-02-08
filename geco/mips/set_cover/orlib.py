@@ -1,6 +1,32 @@
 import pyscipopt as scip
+
 from geco.mips.loading.orlib import *
 from geco.mips.set_cover.generic import set_cover
+from geco.mips.loading.orlib import orlib_load_instance
+from geco.mips.set_cover.generic import set_cover
+
+
+def _read_number(line):
+    if not line:
+        return None
+    return int(line.strip().split(b" ")[0])
+
+
+def _read_numbers(line):
+    return (int(n) for n in line.strip().split(b" "))
+
+
+def _read_multiline_numbers(file, number_to_read):
+    costs = []
+    while file:
+        if len(costs) >= number_to_read:
+            break
+        else:
+            line = file.readline()
+            numbers = list(_read_numbers(line))
+            costs += numbers
+    return costs
+
 
 
 def _scp_reader(file):
@@ -20,6 +46,7 @@ def _scp_reader(file):
     ----------
     ..[1] http://people.brunel.ac.uk/~mastjjb/jeb/orlib/scpinfo.html
     """
+
     number_of_cons, number_of_vars = read_numbers(file.readline())
     costs = read_multiline_numbers(file, number_of_vars)
     sets = []
@@ -34,6 +61,10 @@ def _scp_reader(file):
     return set_cover(costs, sets)
 
 
+def _zero_index(numbers):
+    return map(lambda x: x - 1, numbers)
+
+  
 def _rail_reader(file):
     """
     Reads rail set-cover instances mentioned in [1].
@@ -51,7 +82,9 @@ def _rail_reader(file):
     ----------
     ..[1] http://people.brunel.ac.uk/~mastjjb/jeb/orlib/scpinfo.html
     """
+
     number_of_cons, number_of_vars = read_numbers(file.readline())
+
     costs = []
     sets = [[] for _ in range(number_of_cons)]
     col_idx = 0
@@ -59,9 +92,11 @@ def _rail_reader(file):
         line = file.readline()
         if not line:
             break
+
         numbers = list(read_numbers(line))
         costs.append(numbers[0])
         rows_covered = zero_index(numbers[2:])
+
         for row in rows_covered:
             sets[row].append(col_idx)
         col_idx += 1
