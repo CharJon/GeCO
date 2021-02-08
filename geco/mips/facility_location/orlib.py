@@ -4,8 +4,12 @@ from geco.mips.facility_location.generic import capacitated_warehouse_location
 
 
 def _cap_numeric_reader(file):
+    return capacitated_warehouse_location(**cap_numeric_params(file))
+
+
+def cap_numeric_params(file):
     """
-    Reads cap(NUMBER) Capacitated Warehouse Location instances mentioned in [1].
+    Reads cap(NUMBER) Capacitated Warehouse Location instance params mentioned in [1].
 
     Parameters
     ----------
@@ -13,8 +17,18 @@ def _cap_numeric_reader(file):
 
     Returns
     -------
-    model: scip.Model
-        A pyscipopt model of the loaded instance
+    n_customers: int
+        The desired number of customers
+    n_facilities: int
+        The desired number of facilities
+    transportation_cost: numpy array [float]
+        Matrix of transportation costs from customer i to facility j [i,j]
+    demands: numpy array [int]
+        Demands of each customer
+    fixed_costs: numpy array [int]
+        Fixed costs of operating each facility
+    capacities: numpy array [int]
+        Capacities of each facility
 
     References
     ----------
@@ -38,19 +52,23 @@ def _cap_numeric_reader(file):
         for j, cost in enumerate(allocation_costs):
             allocation_cost_per_warehouse[i, j] = cost
 
-    return capacitated_warehouse_location(
-        n_customers=num_of_customers,
-        n_facilities=num_of_warehouses,
-        transportation_cost=allocation_cost_per_warehouse,
-        demands=demands,
-        capacities=capacities,
-        fixed_costs=fixed_costs,
-    )
+    return {
+        "n_customers": num_of_customers,
+        "n_facilities": num_of_warehouses,
+        "transportation_cost": allocation_cost_per_warehouse,
+        "demands": demands,
+        "capacities": capacities,
+        "fixed_costs": fixed_costs,
+    }
 
 
 def _cap_alpha_reader(file, capacity):
+    return capacitated_warehouse_location(**cap_alpha_params(file, capacity))
+
+
+def cap_alpha_params(file, capacity):
     """
-    Reads cap(LETTER) Capacitated Warehouse Location instances mentioned in [1].
+    Reads cap(LETTER) Capacitated Warehouse Location instance params mentioned in [1].
 
     Parameters
     ----------
@@ -58,8 +76,18 @@ def _cap_alpha_reader(file, capacity):
 
     Returns
     -------
-    model: scip.Model
-        A pyscipopt model of the loaded instance
+    n_customers: int
+        The desired number of customers
+    n_facilities: int
+        The desired number of facilities
+    transportation_cost: numpy array [float]
+        Matrix of transportation costs from customer i to facility j [i,j]
+    demands: numpy array [int]
+        Demands of each customer
+    fixed_costs: numpy array [int]
+        Fixed costs of operating each facility
+    capacities: numpy array [int]
+        Capacities of each facility
 
     References
     ----------
@@ -83,14 +111,14 @@ def _cap_alpha_reader(file, capacity):
         for j, cost in enumerate(allocation_costs):
             allocation_cost_per_warehouse[i, j] = cost
 
-    return capacitated_warehouse_location(
-        n_customers=num_of_customers,
-        n_facilities=num_of_warehouses,
-        transportation_cost=allocation_cost_per_warehouse,
-        demands=demands,
-        capacities=capacities,
-        fixed_costs=fixed_costs,
-    )
+    return {
+        "n_customers": num_of_customers,
+        "n_facilities": num_of_warehouses,
+        "transportation_cost": allocation_cost_per_warehouse,
+        "demands": demands,
+        "capacities": capacities,
+        "fixed_costs": fixed_costs,
+    }
 
 
 PSET_CAPACITIES = {
