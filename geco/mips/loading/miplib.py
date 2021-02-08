@@ -3,15 +3,10 @@ from urllib.request import urlretrieve, urlopen
 from urllib.error import URLError
 import pyscipopt as scip
 import os
+import pandas as pd
 
 
 class Loader:
-    INSTANCES_URLS = [
-        "https://miplib.zib.de/WebData/instances/",  # 2017 instances
-        "http://miplib2010.zib.de/download/",  # 2010 instances
-        "http://miplib2010.zib.de/miplib2003/download/",  # 2003 instance
-    ]
-
     def __init__(self, persistent_directory=None):
         """
         Initializes the MIPLIB loader object
@@ -114,3 +109,47 @@ class Loader:
         if self.dir is None:
             for path in self.instances_cache.values():
                 os.unlink(path)
+
+
+def benchmark_instances():
+    for instance in custom_list("https://miplib.zib.de/downloads/benchmark-v2.test"):
+        yield instance
+
+
+def easy_instances():
+    for instance in custom_list("https://miplib.zib.de/downloads/easy-v9.test"):
+        yield instance
+
+
+def hard_instances():
+    for instance in custom_list("https://miplib.zib.de/downloads/hard-v15.test"):
+        yield instance
+
+
+def open_instances():
+    for instance in custom_list("https://miplib.zib.de/downloads/open-v14.test"):
+        yield instance
+
+
+def custom_list(source, with_solution=False, loader=None):
+    """
+    Returns a generator of instances from the given list
+
+    Parameters
+    ----------
+    source: str
+        Path or URL for the instance list source
+    with_solution: bool
+        Whether to return the instance with the known solutions or not
+    loader: Loader
+        Loader object to download instances with
+
+    Returns
+    -------
+    A generator for the instances
+    """
+    df = pd.read_csv(source, names=["instance"])
+    if loader is None:
+        loader = Loader()
+    for instance in df["instance"]:
+        yield loader.load_instance(instance, with_solution=with_solution)
