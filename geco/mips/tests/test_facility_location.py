@@ -11,7 +11,7 @@ def test_capacitated_facility_location():
     model = capacitated_facility_location(n_customers, n_facilities, *instance_params)
     assert model.getNVars() == n_customers * n_facilities + n_facilities
     assert (
-        model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
+            model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
     )
     assert model.getObjectiveSense() == "minimize"
     model.hideOutput()
@@ -57,7 +57,20 @@ def test_orlib_wrong_instance_name():
         orlib_instance("asdlkfj.txt")
 
 
-def test_some_orlib_solutions():
+@pytest.mark.parametrize(
+    "instance_name",
+    ["cap41",
+     "cap51",
+     "cap61",
+     "cap71",
+     "cap81",
+     "cap91",
+     "cap101",
+     "cap111",
+     "cap121",
+     "cap131"],
+)
+def test_orlib_solution(instance_name):
     import pandas as pd
 
     df = pd.read_csv(
@@ -65,21 +78,9 @@ def test_some_orlib_solutions():
         comment="#",
         names=["name", "solution_value"],
     )
-    some_instances = [
-        "cap41",
-        "cap51",
-        "cap61",
-        "cap71",
-        "cap81",
-        "cap91",
-        "cap101",
-        "cap111",
-        "cap121",
-        "cap131",
-    ]
-    df = df[df.name.isin(some_instances)]
-    for row in df.itertuples():
-        instance = orlib_instance(row.name + ".txt")
-        instance.optimize()
-        assert instance.getStatus() == "optimal"
-        assert pytest.approx(instance.getObjVal()) == row.solution_value
+
+    instance = orlib_instance(instance_name + ".txt")
+    instance.hideOutput()
+    instance.optimize()
+    assert instance.getStatus() == "optimal"
+    assert pytest.approx(instance.getObjVal() == df[df["name"] == instance_name]["solution_value"])
