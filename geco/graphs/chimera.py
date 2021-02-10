@@ -144,21 +144,25 @@ def _initialize_weights_chimera(
             # edge from one side to the other (internal edge)
             if _from_nice[u] != _to_nice[u]:
                 chimera_graph.add_edge(_from, _to, weight=draw_intra_weight())
+            else:  # odd couplers
+                raise NotImplementedError()
         else:
             chimera_graph.add_edge(_from, _to, weight=draw_inter_weight())
 
 
 @py_random_state(-1)
 def dwave_chimera_graph(
-    size,
+    m,
+    n,
+    t,
     draw_inter_weight=draw_inter_weight,
     draw_intra_weight=draw_intra_weight,
     seed=0,
 ):
-    g = dwave.chimera_graph(size)
+    g = dwave.chimera_graph(m, n, t)
     _initialize_weights_chimera(
         chimera_graph=g,
-        size=size,
+        size=m,
         draw_inter_weight=lambda: draw_inter_weight(seed),
         draw_intra_weight=lambda: draw_intra_weight(seed),
     )

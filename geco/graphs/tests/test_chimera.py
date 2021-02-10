@@ -1,35 +1,38 @@
-from geco.graphs.chimera import *
-
 import pytest
 
-
-@pytest.fixture()
-def g1():
-    return chimera_graph(4, 4, 4)
+from geco.graphs.chimera import *
 
 
-@pytest.fixture
-def g2():
-    return chimera_graph(4, 6, 4)
+@pytest.mark.parametrize(
+    "m, n, t",
+    [
+        (4, 4, 4),
+        (4, 6, 4),
+    ],
+)
+def test_chimera(m, n, t):
+    g = chimera_graph(n, m, t)
+    assert g.number_of_nodes() == m * n * t * 2
+    assert g.number_of_edges() == 24 * m * n - (m + n) * t
 
 
-@pytest.fixture
-def g_dwave():
-    return dwave_chimera_graph(4)
+@pytest.mark.parametrize(
+    "m, n, t",
+    [
+        (4, 4, 4),
+        (4, 6, 4),
+    ],
+)
+def test_dwave_chimera(m, n, t):
+    g = dwave_chimera_graph(m, n, t)
+    assert g.number_of_nodes() == m * n * t * 2
+    assert g.number_of_edges() == 24 * m * n - (m + n) * t
 
 
-def test_nodes(g1, g2, g_dwave):
-    # calculated from m * n * t * 2
-    assert g1.number_of_nodes() == 4 * 4 * 4 * 2
-    assert g2.number_of_nodes() == 4 * 6 * 4 * 2
-    assert g_dwave.number_of_nodes() == 4 * 4 * 4 * 2
-
-
-def test_edges(g1, g2, g_dwave):
-    # calculated from 24 * m * n - (m+n) * t
-    assert g1.number_of_edges() == 24 * 4 * 4 - (4 + 4) * 4
-    assert g2.number_of_edges() == 24 * 6 * 4 - (4 + 6) * 4
-    assert g_dwave.number_of_edges() == 24 * 4 * 4 - 8 * 4
+def test_odd_couplers_not_implemented():
+    m, n, t = 2, 4, 2
+    with pytest.raises(NotImplementedError):
+        dwave_chimera_graph(n, m, t)
 
 
 @pytest.mark.parametrize("m", [3, 5, 10])
