@@ -38,14 +38,16 @@ def zero_index(numbers):
     return map(lambda x: x - 1, numbers)
 
 
-def orlib_load_instance(instance_name, reader):
+def orlib_load_instance(instance_name, reader, formulation):
     """
     Parameters
     ----------
     instance_name: str
         Name of instance file
-    reader: function
-        Takes a file-like object and returns the read model
+    reader: function (file) -> params: tuple
+        Takes a file-like object and returns the read parameters
+    formulation: function (params: tuple) -> scip.model
+        Takes a tuple of params and returns the generated model
 
     Returns
     -------
@@ -58,4 +60,5 @@ def orlib_load_instance(instance_name, reader):
     """
 
     content_as_file = urlopen(FILES_BASE_URL + instance_name)
-    return reader(content_as_file)
+    params = reader(content_as_file)
+    return formulation(*params)

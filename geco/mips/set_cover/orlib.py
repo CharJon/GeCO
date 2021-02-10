@@ -28,7 +28,7 @@ def _read_multiline_numbers(file, number_to_read):
     return costs
 
 
-def _scp_reader(file):
+def scp_reader(file):
     """
     Reads scp set-cover instances mentioned in [1].
 
@@ -38,8 +38,10 @@ def _scp_reader(file):
 
     Returns
     -------
-    model: scip.Model
-        A pyscipopt model of the loaded instance
+    costs: list[int]
+        Element costs in objective function
+    sets: list[set]
+        Definition of element requirement for each set
 
     References
     ----------
@@ -57,14 +59,14 @@ def _scp_reader(file):
         constraint = zero_index(constraint)
         sets.append(constraint)
     assert len(costs) == number_of_vars and len(sets) == number_of_cons
-    return set_cover(costs, sets)
+    return costs, sets
 
 
 def _zero_index(numbers):
     return map(lambda x: x - 1, numbers)
 
 
-def _rail_reader(file):
+def rail_reader(file):
     """
     Reads rail set-cover instances mentioned in [1].
 
@@ -74,8 +76,10 @@ def _rail_reader(file):
 
     Returns
     -------
-    model: scip.Model
-        A pyscipopt model of the loaded instance
+    costs: list[int]
+        Element costs in objective function
+    sets: list[set]
+        Definition of element requirement for each set
 
     References
     ----------
@@ -101,7 +105,7 @@ def _rail_reader(file):
         col_idx += 1
     sets = list(filter(lambda l: len(l) > 0, sets))
     assert len(costs) == number_of_vars and len(sets) == number_of_cons
-    return set_cover(costs, sets)
+    return costs, sets
 
 
 def orlib_instance(instance_name):
@@ -120,6 +124,6 @@ def orlib_instance(instance_name):
     """
     # TODO: assert that instance_name correlated to one of the listed set-cover files
     if instance_name[:3] == "scp":
-        return orlib_load_instance(instance_name, reader=_scp_reader)
+        return orlib_load_instance(instance_name, reader=scp_reader, formulation=set_cover)
     elif instance_name[:4] == "rail":
-        return orlib_load_instance(instance_name, reader=_rail_reader)
+        return orlib_load_instance(instance_name, reader=rail_reader, formulation=set_cover)

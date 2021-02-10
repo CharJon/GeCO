@@ -3,11 +3,7 @@ import geco.mips.loading.orlib as orlib
 from geco.mips.facility_location.generic import capacitated_warehouse_location
 
 
-def _cap_numeric_reader(file):
-    return capacitated_warehouse_location(**cap_numeric_params(file))
-
-
-def cap_numeric_params(file):
+def cap_numeric_reader(file):
     """
     Reads cap(NUMBER) Capacitated Warehouse Location instance params mentioned in [1].
 
@@ -62,11 +58,7 @@ def cap_numeric_params(file):
     }
 
 
-def _cap_alpha_reader(file, capacity):
-    return capacitated_warehouse_location(**cap_alpha_params(file, capacity))
-
-
-def cap_alpha_params(file, capacity):
+def cap_alpha_reader(file, capacity):
     """
     Reads cap(LETTER) Capacitated Warehouse Location instance params mentioned in [1].
 
@@ -146,14 +138,16 @@ def orlib_instance(instance_name):
     """
     # TODO: assert that instance_name correlated to one of the listed capacitated warehouse location files
     if instance_name[:3] == "cap" and instance_name[3].isnumeric():
-        return orlib.orlib_load_instance(instance_name, reader=_cap_numeric_reader)
+        return orlib.orlib_load_instance(instance_name, reader=cap_numeric_params,
+                                         formulation=capacitated_warehouse_location)
     elif instance_name[:3] == "cap" and instance_name[3].isalpha():
         problem_number = int(instance_name[4])
         problem_set = instance_name[3]
         capacity = PSET_CAPACITIES[problem_set][problem_number - 1]
         return orlib.orlib_load_instance(
             instance_name[:4] + ".txt",
-            reader=lambda file: _cap_alpha_reader(file, capacity),
+            reader=lambda file: cap_alpha_params(file, capacity),
+            formulation=capacitated_warehouse_location
         )
     else:
         raise ValueError(
