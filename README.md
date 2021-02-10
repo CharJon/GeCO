@@ -91,7 +91,7 @@ might require, it works the exact same way it just doesn't stop after `n` instan
 [MIPLIB](https://miplib.zib.de/) 2017 instances can be loaded into a PySCIPOpt model using the `Loader` class.
 
 ```python
-from geco.mips.miplib.base import Loader
+from geco.mips.loading.miplib import Loader
 
 instance = Loader().load_instance('INSTANCE_NAME.mps.gz')
 ```
@@ -113,6 +113,12 @@ refer to the modules corresponding to the generating function for a reference to
 - Maximum Cut
 - Packing
 - Graph Coloring
+
+### Graphs
+
+- Chimera
+- Selby
+- Pegasus
 
 # Contributing
 If you want to add some new generator, fix a bug or enhance the repository in some way, please refer to our [guide](CONTRIBUTING.md).
