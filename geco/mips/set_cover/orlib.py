@@ -6,28 +6,6 @@ from geco.mips.loading.orlib import orlib_load_instance
 from geco.mips.set_cover.generic import set_cover
 
 
-def _read_number(line):
-    if not line:
-        return None
-    return int(line.strip().split(b" ")[0])
-
-
-def _read_numbers(line):
-    return (int(n) for n in line.strip().split(b" "))
-
-
-def _read_multiline_numbers(file, number_to_read):
-    costs = []
-    while file:
-        if len(costs) >= number_to_read:
-            break
-        else:
-            line = file.readline()
-            numbers = list(_read_numbers(line))
-            costs += numbers
-    return costs
-
-
 def scp_reader(file):
     """
     Reads scp set-cover instances mentioned in [1].
@@ -60,10 +38,6 @@ def scp_reader(file):
         sets.append(constraint)
     assert len(costs) == number_of_vars and len(sets) == number_of_cons
     return costs, sets
-
-
-def _zero_index(numbers):
-    return map(lambda x: x - 1, numbers)
 
 
 def rail_reader(file):
