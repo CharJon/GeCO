@@ -11,7 +11,7 @@ def test_capacitated_facility_location():
     model = capacitated_facility_location(n_customers, n_facilities, *instance_params)
     assert model.getNVars() == n_customers * n_facilities + n_facilities
     assert (
-            model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
+        model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
     )
     assert model.getObjectiveSense() == "minimize"
     model.hideOutput()
@@ -59,16 +59,18 @@ def test_orlib_wrong_instance_name():
 
 @pytest.mark.parametrize(
     "instance_name",
-    ["cap41",
-     "cap51",
-     "cap61",
-     "cap71",
-     "cap81",
-     "cap91",
-     "cap101",
-     "cap111",
-     "cap121",
-     "cap131"],
+    [
+        "cap41",
+        "cap51",
+        "cap61",
+        "cap71",
+        "cap81",
+        "cap91",
+        "cap101",
+        "cap111",
+        "cap121",
+        "cap131",
+    ],
 )
 def test_orlib_solution(instance_name):
     import pandas as pd
@@ -83,4 +85,6 @@ def test_orlib_solution(instance_name):
     instance.hideOutput()
     instance.optimize()
     assert instance.getStatus() == "optimal"
-    assert pytest.approx(instance.getObjVal() == df[df["name"] == instance_name]["solution_value"])
+    assert pytest.approx(
+        instance.getObjVal() == df[df["name"] == instance_name]["solution_value"]
+    )
