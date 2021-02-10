@@ -1,4 +1,5 @@
 # this file is adapted from the values found in http://people.brunel.ac.uk/~mastjjb/jeb/orlib/files/capopt.txt
+name,solution_value
 cap41, 1040444.375
 cap42, 1098000.450
 cap43, 1153000.450

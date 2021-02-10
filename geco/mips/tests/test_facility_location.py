@@ -11,7 +11,7 @@ def test_capacitated_facility_location():
     model = capacitated_facility_location(n_customers, n_facilities, *instance_params)
     assert model.getNVars() == n_customers * n_facilities + n_facilities
     assert (
-        model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
+            model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
     )
     assert model.getObjectiveSense() == "minimize"
     model.hideOutput()
@@ -77,8 +77,7 @@ def test_orlib_solution(instance_name):
 
     df = pd.read_csv(
         "data/lists/orlib_capacitated_warehouse_location_solutions.csv",
-        comment="#",
-        names=["name", "solution_value"],
+        comment="#"
     )
 
     instance = orlib_instance(instance_name + ".txt")
