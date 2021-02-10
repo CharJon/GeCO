@@ -7,11 +7,11 @@ def edgeweight_properties(graph):
     Returns the maximum, minimum edgeweights and the number of edges with 0 weight (in that order)
     in one swipe from a given networkx graph
     """
-    max_weight = - math.inf
+    max_weight = -math.inf
     min_weight = math.inf
     num_of_zero_weights = 0
     for u, v, d in graph.edges(data=True):
-        weight = d['weight']
+        weight = d["weight"]
         if weight > max_weight:
             max_weight = weight
         if weight < min_weight:
@@ -24,7 +24,9 @@ def edgeweight_properties(graph):
 
 def graph_properties(g):
     avg_degree = sum((deg for node, deg in g.degree)) / g.number_of_nodes()
-    density = g.number_of_edges() / ((g.number_of_nodes() * g.number_of_nodes() - g.number_of_nodes()) / 2)
+    density = g.number_of_edges() / (
+        (g.number_of_nodes() * g.number_of_nodes() - g.number_of_nodes()) / 2
+    )
     planar, _ = nx.algorithms.check_planarity(g)
     max_edgeweight, min_edgeweight, num_of_zero_edgeweights = edgeweight_properties(g)
     num_of_connected_components = nx.number_connected_components(g)
@@ -48,5 +50,5 @@ def graph_properties(g):
         "assortativity_coeff": assortativity_coeff,
         "number_of_triangles": number_of_triangles,
         "average_clustering_coeff": average_clustering_coeff,
-        "max_k_core": max_k_core
+        "max_k_core": max_k_core,
     }

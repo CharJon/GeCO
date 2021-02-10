@@ -131,7 +131,7 @@ def selby_c(m, seed=0):
 
 
 def _initialize_weights_chimera(
-        chimera_graph, size, draw_inter_weight, draw_intra_weight
+    chimera_graph, size, draw_inter_weight, draw_intra_weight
 ):
     y, x, u, k = range(4)
 
@@ -152,14 +152,16 @@ def _initialize_weights_chimera(
 
 @py_random_state(-1)
 def dwave_chimera_graph(
-        size,
-        draw_inter_weight=draw_inter_weight,
-        draw_intra_weight=draw_intra_weight,
-        seed=0
+    size,
+    draw_inter_weight=draw_inter_weight,
+    draw_intra_weight=draw_intra_weight,
+    seed=0,
 ):
     g = dwave.chimera_graph(size)
-    _initialize_weights_chimera(chimera_graph=g,
-                                size=size,
-                                draw_inter_weight=lambda: draw_inter_weight(seed),
-                                draw_intra_weight=lambda: draw_intra_weight(seed))
+    _initialize_weights_chimera(
+        chimera_graph=g,
+        size=size,
+        draw_inter_weight=lambda: draw_inter_weight(seed),
+        draw_intra_weight=lambda: draw_intra_weight(seed),
+    )
     return g

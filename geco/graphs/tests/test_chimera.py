@@ -32,9 +32,7 @@ def test_edges(g1, g2, g_dwave):
     assert g_dwave.number_of_edges() == 24 * 4 * 4 - 8 * 4
 
 
-@pytest.mark.parametrize(
-    "m", [3, 5, 10]
-)
+@pytest.mark.parametrize("m", [3, 5, 10])
 def test_selby(m):
     graph = selby_c(m)
     assert graph.number_of_nodes() == m * m * 8
