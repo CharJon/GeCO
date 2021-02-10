@@ -55,3 +55,32 @@ def test_orlib_cap_alpha():
 def test_orlib_wrong_instance_name():
     with pytest.raises(ValueError):
         orlib_instance("asdlkfj.txt")
+
+
+def test_some_orlib_solutions():
+    import pandas as pd
+
+    df = pd.read_csv(
+        "data/lists/orlib_capacitated_warehouse_location_solutions.csv",
+        comment="#",
+        names=["name", "solution_value"],
+    )
+    some_instances = [
+        "cap41",
+        "cap51",
+        "cap61",
+        "cap71",
+        "cap81",
+        "cap91",
+        "cap101",
+        "cap111",
+        "cap121",
+        "cap131",
+    ]
+    df = df[df.name.isin(some_instances)]
+    for row in df.itertuples():
+        print(row.name)
+        instance = orlib_instance(row.name + ".txt")
+        instance.optimize()
+        assert instance.getStatus() == "optimal"
+        assert pytest.approx(instance.getObjVal()) == row.solution_value
