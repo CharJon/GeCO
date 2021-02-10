@@ -124,6 +124,10 @@ def orlib_instance(instance_name):
     """
     # TODO: assert that instance_name correlated to one of the listed set-cover files
     if instance_name[:3] == "scp":
-        return orlib_load_instance(instance_name, reader=scp_reader, formulation=set_cover)
+        return orlib_load_instance(
+            instance_name, reader=scp_reader, formulation=set_cover
+        )
     elif instance_name[:4] == "rail":
-        return orlib_load_instance(instance_name, reader=rail_reader, formulation=set_cover)
+        return orlib_load_instance(
+            instance_name, reader=rail_reader, formulation=set_cover
+        )

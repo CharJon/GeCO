@@ -48,14 +48,14 @@ def cap_numeric_reader(file):
         for j, cost in enumerate(allocation_costs):
             allocation_cost_per_warehouse[i, j] = cost
 
-    return {
-        "n_customers": num_of_customers,
-        "n_facilities": num_of_warehouses,
-        "transportation_cost": allocation_cost_per_warehouse,
-        "demands": demands,
-        "capacities": capacities,
-        "fixed_costs": fixed_costs,
-    }
+    return (
+        num_of_customers,
+        num_of_warehouses,
+        allocation_cost_per_warehouse,
+        demands,
+        fixed_costs,
+        capacities,
+    )
 
 
 def cap_alpha_reader(file, capacity):
@@ -103,14 +103,14 @@ def cap_alpha_reader(file, capacity):
         for j, cost in enumerate(allocation_costs):
             allocation_cost_per_warehouse[i, j] = cost
 
-    return {
-        "n_customers": num_of_customers,
-        "n_facilities": num_of_warehouses,
-        "transportation_cost": allocation_cost_per_warehouse,
-        "demands": demands,
-        "capacities": capacities,
-        "fixed_costs": fixed_costs,
-    }
+    return (
+        num_of_customers,
+        num_of_warehouses,
+        allocation_cost_per_warehouse,
+        demands,
+        fixed_costs,
+        capacities,
+    )
 
 
 PSET_CAPACITIES = {
@@ -138,16 +138,19 @@ def orlib_instance(instance_name):
     """
     # TODO: assert that instance_name correlated to one of the listed capacitated warehouse location files
     if instance_name[:3] == "cap" and instance_name[3].isnumeric():
-        return orlib.orlib_load_instance(instance_name, reader=cap_numeric_params,
-                                         formulation=capacitated_warehouse_location)
+        return orlib.orlib_load_instance(
+            instance_name,
+            reader=cap_numeric_reader,
+            formulation=capacitated_warehouse_location,
+        )
     elif instance_name[:3] == "cap" and instance_name[3].isalpha():
         problem_number = int(instance_name[4])
         problem_set = instance_name[3]
         capacity = PSET_CAPACITIES[problem_set][problem_number - 1]
         return orlib.orlib_load_instance(
             instance_name[:4] + ".txt",
-            reader=lambda file: cap_alpha_params(file, capacity),
-            formulation=capacitated_warehouse_location
+            reader=lambda file: cap_alpha_reader(file, capacity),
+            formulation=capacitated_warehouse_location,
         )
     else:
         raise ValueError(

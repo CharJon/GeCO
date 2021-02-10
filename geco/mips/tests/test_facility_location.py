@@ -79,7 +79,6 @@ def test_some_orlib_solutions():
     ]
     df = df[df.name.isin(some_instances)]
     for row in df.itertuples():
-        print(row.name)
         instance = orlib_instance(row.name + ".txt")
         instance.optimize()
         assert instance.getStatus() == "optimal"
