@@ -57,15 +57,9 @@ def test_orlib_wrong_instance_name():
         orlib_instance("asdlkfj.txt")
 
 
-def test_some_orlib_solutions():
-    import pandas as pd
-
-    df = pd.read_csv(
-        "data/lists/orlib_capacitated_warehouse_location_solutions.csv",
-        comment="#",
-        names=["name", "solution_value"],
-    )
-    some_instances = [
+@pytest.mark.parametrize(
+    "instance_name",
+    [
         "cap41",
         "cap51",
         "cap61",
@@ -76,10 +70,19 @@ def test_some_orlib_solutions():
         "cap111",
         "cap121",
         "cap131",
-    ]
-    df = df[df.name.isin(some_instances)]
-    for row in df.itertuples():
-        instance = orlib_instance(row.name + ".txt")
-        instance.optimize()
-        assert instance.getStatus() == "optimal"
-        assert pytest.approx(instance.getObjVal()) == row.solution_value
+    ],
+)
+def test_orlib_solution(instance_name):
+    import pandas as pd
+
+    df = pd.read_csv(
+        "data/lists/orlib_capacitated_warehouse_location_solutions.csv", comment="#"
+    )
+
+    instance = orlib_instance(instance_name + ".txt")
+    instance.hideOutput()
+    instance.optimize()
+    assert instance.getStatus() == "optimal"
+    assert pytest.approx(
+        instance.getObjVal() == df[df["name"] == instance_name]["solution_value"]
+    )
