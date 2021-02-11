@@ -4,8 +4,21 @@ import math
 
 def edgeweight_properties(graph):
     """
-    Returns the maximum, minimum edgeweights and the number of edges with 0 weight (in that order)
-    in one swipe from a given networkx graph
+    Calculates properties of edge weights.
+
+    Parameters
+    ----------
+    graph: nx.Graph
+        Graph to calculate the properties from
+
+    Returns
+    -------
+    max_weight: number
+        Maximum weights of an edge
+    min_weight: number
+        Minimum weight of an edge
+    num_of_zero_weights: int
+        Number of edges with zero weight
     """
     max_weight = -math.inf
     min_weight = math.inf
@@ -23,6 +36,52 @@ def edgeweight_properties(graph):
 
 
 def graph_properties(g):
+    """
+    Calculates properties of edge weights.
+
+    Parameters
+    ----------
+    graph: nx.Graph
+        Graph to calculate the properties from
+
+    Returns
+    -------
+    num_nodes: int
+        Number of nodes of the graph
+    num_edges: int
+        Number of edges of the graph
+    avg_degree: float
+        Average degree of node
+    density: float
+        Number of edges divided by the number of possible edges
+    planar: bool
+        Whether the graph is planar or not
+    max_edgeweight: float
+        Maximum weights of an edge
+    min_edgeweight: float
+        Minimum weight of an edge
+    num_of_zero_weights: int
+        Number of edges with zero weight
+    num_of_connected_components: int
+        Number of connected components in the graph
+    max_degree: int
+        Maximum degree of a node in the graph
+    assortativity_coeff: float
+        The degree assortativity coefficient as defined in [1]
+    number_of_triangles: int
+        Number of traingles in the graph
+    average_clustering_coeff: float
+        Average clustering coefficient as defined in [2]
+    max_k_core: int
+        Maximum k-core as defined in [3]
+
+    References
+    ----------
+    ..[1] https://networkx.org/documentation/stable//reference/algorithms/generated/networkx.algorithms.assortativity.degree_assortativity_coefficient.html
+    ..[2] https://networkx.org/documentation/networkx-2.4/reference/algorithms/generated/networkx.algorithms.cluster.average_clustering.html
+    ..[3] https://networkx.org/documentation/networkx-1.9/reference/generated/networkx.algorithms.core.core_number.html
+    """
+
     avg_degree = sum((deg for node, deg in g.degree)) / g.number_of_nodes()
     density = g.number_of_edges() / (
         (g.number_of_nodes() * g.number_of_nodes() - g.number_of_nodes()) / 2
