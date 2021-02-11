@@ -6,11 +6,12 @@ from geco.graphs.chimera import *
 
 
 @pytest.mark.parametrize(
-    "m, n, t", itertools.product(
+    "m, n, t",
+    itertools.product(
         [2, 4, 6],
         [2, 4, 6],
         [2, 4, 6],
-    )
+    ),
 )
 def test_chimera(m, n, t):
     g = chimera_graph(n, m, t)
@@ -19,12 +20,12 @@ def test_chimera(m, n, t):
 
 
 @pytest.mark.parametrize(
-    "m, n, t", itertools.product(
+    "m, n, t",
+    itertools.product(
         [4, 6],
         [4, 6],
         [4],
-    )
-
+    ),
 )
 def test_dwave_chimera(m, n, t):
     g = dwave_chimera_graph(m, n, t)

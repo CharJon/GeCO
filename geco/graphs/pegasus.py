@@ -14,7 +14,7 @@ def draw_inter_weight(seed):
 
 
 def _initialize_weights_pegasus(
-        pegasus_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
+    pegasus_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
 ):
     # 'nice' coordinate indices names (as per d-wave's documentation):
     n = 0
@@ -42,11 +42,11 @@ def _initialize_weights_pegasus(
 
 @py_random_state(-1)
 def dwave_pegasus_graph(
-        size,
-        draw_inter_weight=draw_inter_weight,
-        draw_intra_weight=draw_intra_weight,
-        draw_other_weight=draw_inter_weight,
-        seed=0
+    size,
+    draw_inter_weight=draw_inter_weight,
+    draw_intra_weight=draw_intra_weight,
+    draw_other_weight=draw_inter_weight,
+    seed=0,
 ):
     g = dwave.pegasus_graph(size)
     _initialize_weights_pegasus(
