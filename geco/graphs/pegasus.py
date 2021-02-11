@@ -2,21 +2,19 @@ import dwave_networkx as dwave
 from networkx import write_weighted_edgelist
 from random import random
 import numpy as np
-from networkx.utils import preserve_random_state
-
-__all__ = ["dwave_pegasus_graph"]
+from networkx.utils import py_random_state
 
 
-def draw_intra_weight():
-    return random() - 0.5
+def draw_intra_weight(seed):
+    return seed.random() - 0.5
 
 
-def draw_inter_weight():
-    return random() * 2 - 1
+def draw_inter_weight(seed):
+    return seed.random() * 2 - 1
 
 
 def _initialize_weights_pegasus(
-    pegasus_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
+        pegasus_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
 ):
     # 'nice' coordinate indices names (as per d-wave's documentation):
     n = 0
@@ -42,17 +40,20 @@ def _initialize_weights_pegasus(
                 pegasus_graph.add_edge(_from, _to, weight=draw_inter_weight())
 
 
-@preserve_random_state
+@py_random_state(-1)
 def dwave_pegasus_graph(
-    size,
-    seed=0,
-    draw_inter_weight=draw_inter_weight,
-    draw_intra_weight=draw_intra_weight,
-    draw_other_weight=draw_inter_weight,
+        size,
+        draw_inter_weight=draw_inter_weight,
+        draw_intra_weight=draw_intra_weight,
+        draw_other_weight=draw_inter_weight,
+        seed=0
 ):
-    np.random.seed(seed)
     g = dwave.pegasus_graph(size)
     _initialize_weights_pegasus(
-        g, size, draw_inter_weight, draw_intra_weight, draw_other_weight
+        pegasus_graph=g,
+        size=size,
+        draw_inter_weight=lambda: draw_inter_weight(seed),
+        draw_intra_weight=lambda: draw_intra_weight(seed),
+        draw_other_weight=lambda: draw_other_weight(seed),
     )
     return g
