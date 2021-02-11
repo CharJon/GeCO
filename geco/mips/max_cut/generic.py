@@ -1,56 +1,10 @@
 import itertools
-
-import networkx as nx
 import pyscipopt as scip
-from networkx.utils import py_random_state
 
 import geco.mips.utilities.naming as naming
 
 
-@py_random_state(2)
-def tang_instance(n, m, seed=0):
-    """Generates a max-cut instance as described in A.2 in
-    Tang, Y., Agrawal, S., & Faenza, Y. (2019). Reinforcement learning for integer
-    programming: Learning to cut. arXiv preprint arXiv:1906.04859.
-    Args:
-        n (int): number of nodes
-        m (int): number of edges
-        seed (int, random state or None): seed for randomization
-    """
-
-    graph = nx.generators.gnm_random_graph(n, m, seed=seed)
-    weights = tang_weights(graph, seed=0)
-    for (_, _, data), weight in zip(graph.edges(data=True), weights):
-        data["weight"] = weight
-    _, model = naive(graph)
-    return model
-
-
-@py_random_state(1)
-def tang_weights(graph, seed=0):
-    weights = []
-    for _ in graph.edges:
-        weights.append(seed.randint(0, 10))
-    return weights
-
-
-def empty_edge(graph: nx):
-    model = scip.Model("Odd-Cycle MaxCut")
-
-    edge_variables = {}
-    for u, v, d in graph.edges(data=True):
-        edge_name = naming.undirected_edge_name(u, v)
-        weight = d["weight"]
-        edge_variables[edge_name] = model.addVar(
-            lb=0, ub=1, obj=weight, name=edge_name, vtype="B"
-        )
-
-    model.setMaximize()
-
-    return edge_variables, model
-
-
-def naive(graph: nx):
+def naive(graph):
     model = scip.Model("Naive MaxCut")
 
     node_variables = {}
@@ -89,7 +43,7 @@ def naive(graph: nx):
     return (node_variables, edge_variables), model
 
 
-def triangle(graph: nx):
+def triangle(graph):
     model = scip.Model("Triangle MaxCut")
 
     edge_variables = {}

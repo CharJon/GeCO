@@ -5,16 +5,52 @@ from geco.mips.set_cover.generic import set_cover
 
 @py_random_state(-1)
 def yang_instance(m, seed=0):
-    """Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
+    """
+    Generates instance for set cover generation as described in [1].
+
+    Parameters
+    ----------
+    m: int
+        Number of set constraints
+    seed: integer, random_state, or None
+        Indicator of random number generation state
+
+    Returns
+    -------
+    model: scip.Model
+        A pyscipopt model of the generated instance
+
+    References
+    ----------
+    .. [1] Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
     "Learning Generalized Strong Branching for Set Covering,
     Set Packing, and 0-1 Knapsack Problems", 2020.
     """
-    return set_cover(*yang_parameter(m, seed))
+    return set_cover(*yang_params(m, seed))
 
 
 @py_random_state(-1)
-def yang_parameter(m, seed=0):
-    """Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
+def yang_params(m, seed=0):
+    """
+    Generates instance params for set cover generation as described in [1].
+
+    Parameters
+    ----------
+    m: int
+        Number of set constraints
+    seed: integer, random_state, or None
+        Indicator of random number generation state
+
+    Returns
+    -------
+    costs: list[int]
+        Element costs in objective function
+    sets: list[set]
+        Definition of element requirement for each set
+
+    References
+    ----------
+    .. [1] Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
     "Learning Generalized Strong Branching for Set Covering,
     Set Packing, and 0-1 Knapsack Problems", 2020.
     """

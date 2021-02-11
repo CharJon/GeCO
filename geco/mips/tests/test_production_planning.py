@@ -2,7 +2,7 @@ import itertools
 
 import pytest
 
-from geco.mips.production_planning import *
+from geco.mips.production_planning.tang import *
 
 
 def test_tang():

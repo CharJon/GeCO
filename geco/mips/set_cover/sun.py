@@ -35,18 +35,17 @@ def sun_instance(n, m, seed=0):
     Parameters
     ----------
     n: int
-        number of elements
+        Number of elements
     m: int
-        number of set constraints
-    seed: int, random object or None
-        for randomization
+        Number of set constraints
+    seed: integer, random_state, or None
+        Indicator of random number generation state
 
     Returns
     -------
-        costs: list[int]
-            element costs in objective function
-        sets: list[set]
-            definition of element requirement for each set
+    model: scip.Model
+        A pyscipopt model of the generated instance
+
     References
     ----------
     .. [1] Haoran Sun, Wenbo Chen, Hui Li, & Le Song (2021).
@@ -64,18 +63,19 @@ def sun_params(n, m, seed=0):
     Parameters
     ----------
     n: int
-        number of elements
+        Number of elements
     m: int
-        number of set constraints
-    seed: int, random object or None
-        for randomization
+        Number of set constraints
+    seed: integer, random_state, or None
+        Indicator of random number generation state
 
     Returns
     -------
-        costs: list[int]
-            element costs in objective function
-        sets: list[set]
-            definition of element requirement for each set
+    costs: list[int]
+        Element costs in objective function
+    sets: list[set]
+        Definition of element requirement for each set
+
     References
     ----------
     .. [1] Haoran Sun, Wenbo Chen, Hui Li, & Le Song (2021).
@@ -88,21 +88,23 @@ def sun_params(n, m, seed=0):
 @py_random_state(-1)
 def expand_sun_params(new_params, base_result, seed=0):
     """
-    Implements the expansion from an existing set cover instance as described in [1]
+    Implements the expansion from an existing set cover instance as described in [1].
 
     Parameters
     ----------
     new_params: tuple
-        new params for sun_params
+        New params for sun_params
     base_result: tuple
-        tuple of (costs, sets) that represent instance params of backbone
-    seed: int, random object or None
-        for randomization
+        Tuple of (costs, sets) that represent instance params of backbone
+    seed: integer, random_state, or None
+        Indicator of random number generation state
 
     Returns
     -------
-     model: scip.Model
-         expanded model
+    costs: list[int]
+        Element costs in objective function
+    sets: list[set]
+        Definition of element requirement for each set
 
     References
     __________
