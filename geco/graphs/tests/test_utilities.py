@@ -33,7 +33,6 @@ def test_graph_properties(n):
     assert properties["num_of_zero_edgeweights"] == 1
     assert properties["num_of_connected_components"] == 1
     assert properties["max_degree"] == 2
-    # TODO: look for a better way to test this that depends on the number of nodes
     assert -1.0 <= properties["assortativity_coeff"] <= -0.010204081632620635
     assert properties["number_of_triangles"] == 0
     assert properties["max_k_core"] == 1
