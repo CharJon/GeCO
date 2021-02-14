@@ -1,6 +1,6 @@
 import numpy as np
 import networkx as nx
-from networkx.utils import py_random_state
+from networkx.utils import py_random_state, np_random_state
 from numpy.random import random
 import dwave_networkx as dwave
 
@@ -88,7 +88,7 @@ Parameterised graph generators
 """
 
 
-@py_random_state(-1)
+@np_random_state(-1)
 def selby_c(m, seed=0):
     """
     Generate Selby Chimera graph as described in section 7.3 in [1].
@@ -113,16 +113,12 @@ def selby_c(m, seed=0):
     """
 
     def inter_w():
-        return np.random.randint(low=-10, high=10 + 1) / 10.0
+        return seed.randint(low=-10, high=10 + 1) / 10.0
 
     def intra_w():
-        return np.random.randint(low=-5, high=5 + 1) / 10.0
+        return seed.randint(low=-5, high=5 + 1) / 10.0
 
     graph = chimera_graph(m, m, 4, inter=inter_w, intra=intra_w)
-
-    # TODO: turn these asserts into tests
-    assert graph.number_of_nodes() == m * m * 8
-    assert graph.number_of_edges() == 24 * m * m - 8 * m
 
     graph.graph["name"] = f"selby_c{m}"
     graph.graph["seed"] = seed
