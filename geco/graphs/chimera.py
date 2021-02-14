@@ -127,7 +127,7 @@ def selby_c(m, seed=0):
 
 
 def _initialize_weights_chimera(
-    chimera_graph, size, draw_inter_weight, draw_intra_weight
+    chimera_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
 ):
     y, x, u, k = range(4)
 
@@ -136,14 +136,24 @@ def _initialize_weights_chimera(
         _from_nice = c_coor.linear_to_chimera(_from)
         _to_nice = c_coor.linear_to_chimera(_to)
 
-        if _from_nice[y] == _to_nice[y] and _from_nice[x] == _to_nice[x]:
+        if in_same_chimera_tile(_from_nice, _to_nice):
             # edge from one side to the other (internal edge)
-            if _from_nice[u] != _to_nice[u]:
+            if not on_same_side(_from_nice, _to_nice):
                 chimera_graph.add_edge(_from, _to, weight=draw_intra_weight())
             else:  # odd couplers
-                raise NotImplementedError()
+                chimera_graph.add_edge(_from, _to, weight=draw_other_weight())
         else:
             chimera_graph.add_edge(_from, _to, weight=draw_inter_weight())
+
+
+def on_same_side(_from_nice, _to_nice):
+    u = 2
+    return _from_nice[u] == _to_nice[u]
+
+
+def in_same_chimera_tile(_from_nice, _to_nice):
+    y, x = 0, 1
+    return _from_nice[y] == _to_nice[y] and _from_nice[x] == _to_nice[x]
 
 
 @py_random_state(-1)
@@ -153,6 +163,7 @@ def dwave_chimera_graph(
     t,
     draw_inter_weight=draw_inter_weight,
     draw_intra_weight=draw_intra_weight,
+    draw_other_weight=draw_inter_weight,
     seed=0,
 ):
     g = dwave.chimera_graph(m, n, t)
@@ -161,5 +172,6 @@ def dwave_chimera_graph(
         size=m,
         draw_inter_weight=lambda: draw_inter_weight(seed),
         draw_intra_weight=lambda: draw_intra_weight(seed),
+        draw_other_weight=lambda: draw_other_weight(seed),
     )
     return g
