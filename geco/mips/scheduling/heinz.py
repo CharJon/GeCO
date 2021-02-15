@@ -71,16 +71,35 @@ def heinz_instance(number_of_facilities, number_of_tasks, seed=0):
     )
 
 
+@py_random_state(-1)
+def generate_heinz_instances(seed):
+    generated = 0
+
+    num_resources = [2]
+    num_jobs = list(range(10, 38 + 1, 2))
+    for i, j in itertools.product(num_resources, num_jobs):
+        generated += 1
+        yield heinz_instance(i, j, seed)
+
+    num_resources = [3, 4]
+    num_jobs = list(range(10, 32 + 1, 2))
+    for i, j in itertools.product(num_resources, num_jobs):
+        generated += 1
+        yield heinz_instance(i, j, seed)
+
+    assert generated == 39
+
+
 def heinz_formulation(
-    number_of_facilities,
-    number_of_tasks,
-    processing_times,
-    capacities,
-    assignment_costs,
-    release_dates,
-    deadlines,
-    resource_requirements,
-    name="Heinz Scheduling Formulation",
+        number_of_facilities,
+        number_of_tasks,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_dates,
+        deadlines,
+        resource_requirements,
+        name="Heinz Scheduling Formulation",
 ):
     """Generates scheduling MIP formulation according to Model 4 in [1].
 
@@ -130,7 +149,7 @@ def heinz_formulation(
     # y vars
     y = {}
     for j, k, t in itertools.product(
-        range(number_of_tasks), range(number_of_facilities), time_steps
+            range(number_of_tasks), range(number_of_facilities), time_steps
     ):
         if release_dates[j] <= t <= deadlines[j] - processing_times[j, k]:
             var = model.addVar(lb=0, ub=1, obj=0, name=f"y_{j}_{k}_{t}", vtype="B")
