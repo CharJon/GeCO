@@ -240,7 +240,7 @@ def mgw(m=8, faulty=73, seed=0):
         draw_inter_weight=draw,
         draw_intra_weight=draw,
         draw_other_weight=draw,
-        seed=seed
+        seed=seed,
     )
     faulty_nodes = set(seed.choices(range(graph.number_of_nodes()), k=faulty))
     to_be_removed_edges = set()
