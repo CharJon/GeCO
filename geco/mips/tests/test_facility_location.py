@@ -2,6 +2,7 @@ import pytest
 
 from geco.mips.facility_location.cornuejols import *
 from geco.mips.facility_location.generic import *
+from geco.mips.facility_location.orlib import *
 
 
 def test_capacitated_facility_location():
@@ -35,3 +36,53 @@ def test_seeding(n_customers, n_facilities, ratio, seed1, seed2):
     same_seeds_produce_same_params = seed1 == seed2 and not something_different
     different_seeds_produce_different_params = seed1 != seed2 and something_different
     assert same_seeds_produce_same_params or different_seeds_produce_different_params
+
+
+def test_orlib_cap_numeric():
+    instance_name = "cap41.txt"
+    n_customers, n_warehouses = 50, 16
+    instance = orlib_instance(instance_name)
+    assert instance.getNVars() == n_warehouses * n_customers + n_warehouses
+
+
+def test_orlib_cap_alpha():
+    instance_name = "capa2.txt"
+    n_customers, n_warehouses = 1000, 100
+    instance = orlib_instance(instance_name)
+    assert instance.getNVars() == n_warehouses * n_customers + n_warehouses
+
+
+def test_orlib_wrong_instance_name():
+    with pytest.raises(ValueError):
+        orlib_instance("asdlkfj.txt")
+
+
+@pytest.mark.parametrize(
+    "instance_name",
+    [
+        "cap41",
+        "cap51",
+        "cap61",
+        "cap71",
+        "cap81",
+        "cap91",
+        "cap101",
+        "cap111",
+        "cap121",
+        "cap131",
+    ],
+)
+def test_orlib_solution(instance_name):
+    import pandas as pd
+
+    df = pd.read_csv(
+        "data/lists/orlib_capacitated_warehouse_location_solutions.csv", comment="#"
+    )
+
+    instance = orlib_instance(instance_name + ".txt")
+    instance.hideOutput()
+    instance.optimize()
+    assert instance.getStatus() == "optimal"
+    assert pytest.approx(
+        instance.getObjVal() == df[df["name"] == instance_name]["solution_value"]
+    )
