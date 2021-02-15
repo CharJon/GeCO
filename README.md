@@ -116,8 +116,7 @@ refer to the modules corresponding to the generating function for a reference to
 
 ### Graphs
 
-- Chimera
-- Selby
+- Chimera (Selby)
 - Pegasus
 
 # Contributing
