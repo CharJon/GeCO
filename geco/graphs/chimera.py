@@ -27,9 +27,9 @@ def chimera_graph(n, m, t, inter=lambda: 0, intra=lambda: 0):
         Number of cells per column
     t: int
         Number of nodes on each side of a bipartite cell subgraph
-    inter: function () -> number
+    inter: function (seed) -> number
         Function to call for weights of inter-cell edges
-    intra: function () -> number
+    intra: function (seed) -> number
         Function to call for weights of intra-cell edges
 
     Returns
@@ -129,13 +129,10 @@ def selby_c(m, seed=0):
 def _initialize_weights_chimera(
     chimera_graph, size, draw_inter_weight, draw_intra_weight, draw_other_weight
 ):
-    y, x, u, k = range(4)
-
     c_coor = dwave.chimera_coordinates(size)
     for _from, _to in chimera_graph.edges:
         _from_nice = c_coor.linear_to_chimera(_from)
         _to_nice = c_coor.linear_to_chimera(_to)
-
         if in_same_chimera_tile(_from_nice, _to_nice):
             # edge from one side to the other (internal edge)
             if not on_same_side(_from_nice, _to_nice):
@@ -166,6 +163,33 @@ def dwave_chimera_graph(
     draw_other_weight=draw_inter_weight,
     seed=0,
 ):
+    """
+    Generate DWave Chimera graph as described in [1] using dwave_networkx.
+
+    Parameters
+    ----------
+    m: int
+        Number of cells per column
+    n: int
+        Number of cells per row
+    t: int
+        Number of nodes on each side of a bipartite cell subgraph
+    draw_inter_weight: function (seed) -> number
+        Function to call for weights of inter-cell edges
+    draw_intra_weight: function (seed) -> number
+        Function to call for weights of intra-cell edges
+    draw_other_weight: function (seed) -> number
+            Function to call for weights of intra-cell edges
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated Chimera graph
+
+    References
+    ----------
+    ..[1] https://docs.ocean.dwavesys.com/en/latest/concepts/topology.html
+    """
     g = dwave.chimera_graph(m, n, t)
     _initialize_weights_chimera(
         chimera_graph=g,
