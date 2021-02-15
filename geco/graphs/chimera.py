@@ -156,8 +156,8 @@ def in_same_chimera_tile(_from_nice, _to_nice):
 @py_random_state(-1)
 def dwave_chimera_graph(
     m,
-    n,
-    t,
+    n=None,
+    t=4,
     draw_inter_weight=draw_inter_weight,
     draw_intra_weight=draw_intra_weight,
     draw_other_weight=draw_inter_weight,
@@ -180,6 +180,8 @@ def dwave_chimera_graph(
         Function to call for weights of intra-cell edges
     draw_other_weight: function (seed) -> number
             Function to call for weights of intra-cell edges
+    seed: integer, random_state, or None
+        Indicator of random number generation state
 
     Returns
     -------
@@ -190,6 +192,8 @@ def dwave_chimera_graph(
     ----------
     ..[1] https://docs.ocean.dwavesys.com/en/latest/concepts/topology.html
     """
+    if not n:
+        n = m
     g = dwave.chimera_graph(m, n, t)
     _initialize_weights_chimera(
         chimera_graph=g,
@@ -199,3 +203,52 @@ def dwave_chimera_graph(
         draw_other_weight=lambda: draw_other_weight(seed),
     )
     return g
+
+
+@py_random_state(-1)
+def mgw(m=8, faulty=73, seed=0):
+    """
+    Generates McGeoch-Wang instances as described in [1].
+
+
+    Parameters
+    ----------
+    m: int
+        Chimera graph size parameter (produces mxm lattice)
+    faulty: int
+        Number of faulty nodes
+    seed: integer, random_state, or None
+        Indicator of random number generation state
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated Chimera graph
+
+    References
+    ----------
+    ..[1] Michael Juenger, Elisabeth Lobe, Petra Mutzel, Gerhard Reinelt, Franz Rendl, Giovanni Rinaldi,
+        & Tobias Stollenwerk. (2019). Performance of a Quantum Annealer for Ising Ground State Computations
+        on Chimera Graphs.
+    """
+
+    def draw(seed):
+        seed.choice((1, -1))
+
+    graph = dwave.chimera_graph(m=m)
+    nx.relabel.convert_node_labels_to_integers(graph)
+    faulty_nodes = set(seed.choices(range(graph.number_of_nodes()), k=faulty))
+    to_be_removed_edges = set()
+    for u, v in graph.edges():
+        if u in faulty_nodes or v in faulty_nodes:
+            to_be_removed_edges.add((u, v))
+    graph.remove_edges_from(to_be_removed_edges)
+
+    _initialize_weights_chimera(
+        chimera_graph=graph,
+        size=m,
+        draw_inter_weight=lambda: draw(seed),
+        draw_intra_weight=lambda: draw(seed),
+        draw_other_weight=lambda: draw(seed),
+    )
+    return graph
