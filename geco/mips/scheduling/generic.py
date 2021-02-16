@@ -129,17 +129,17 @@ def heinz_formulation(
         the number of facilities to schedule on
     number_of_tasks: int
         the number of tasks to assign to facilities
-    processing_times: dict[int,int]
+    processing_times: dict[(int,int),int]
         time steps to process each task
     capacities: list[int]
         capacity of each facility
-    assignment_costs: dict[int,int]
+    assignment_costs: dict[(int,int),int]
         cost of assigning a task to a facility
     release_dates: list[int]
         time step at which a job is released
     deadlines: dict[int, float]
         deadline (time step) to finish a job
-    resource_requirements: dict[int,int]
+    resource_requirements: dict[(int,int),int]
         resources required for each task assigned to a facility
     name: str
         assigned name to generated instance
