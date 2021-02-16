@@ -1,3 +1,4 @@
+import itertools
 import tempfile
 
 import pyscipopt as scip
@@ -35,3 +36,26 @@ def shuffle(model, seed, cons=True, vars=True):
         shuffled.readProblem(temp.name)
         shuffled.setProbName(model.getProbName())
     return shuffled
+
+
+def expand_parameters(function, **parameter_lists):
+    """
+    Calls a function with every combination of params
+
+    Parameters
+    ----------
+    function: function
+    parameter_lists: dict[str,list]
+        Maps parameter name to all values it might take
+
+    Returns
+    -------
+    generator: Generator
+        Generator of returned values from function with each parameter combination
+    """
+    parameter_names = parameter_lists.keys()
+    all_possible_parameters = itertools.product(*parameter_lists.values())
+    for params in all_possible_parameters:
+        yield function(**{
+            name: val for name, val in zip(parameter_names, params)
+        })
