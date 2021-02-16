@@ -61,7 +61,7 @@ def hooker_instance(number_of_facilities, number_of_tasks, time_steps, seed=0):
     .. [1] Hooker, John. (2005). Planning and Scheduling to Minimize
      Tardiness. 314-327. 10.1007/11564751_25.
     """
-    return hooker_formulation(
+    return late_tasks_formulation(
         number_of_facilities,
         number_of_tasks,
         time_steps,

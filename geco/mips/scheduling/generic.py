@@ -4,7 +4,7 @@ from networkx.utils import py_random_state
 from pyscipopt import scip
 
 
-def hooker_formulation(
+def late_tasks_formulation(
     number_of_facilities,
     number_of_tasks,
     time_steps,

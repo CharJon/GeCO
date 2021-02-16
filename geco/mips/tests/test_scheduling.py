@@ -67,7 +67,7 @@ def test_param_generation_seeding(n_resources, n_tasks, seed1, seed2):
 
 
 def test_hooker_simple_instance():
-    hooker_model = hooker_formulation(*_simple_instance_params()[:-1])
+    hooker_model = late_tasks_formulation(*_simple_instance_params()[:-1])
     hooker_model.hideOutput()
     hooker_model.optimize()
     assert hooker_model.getStatus() == "optimal"
