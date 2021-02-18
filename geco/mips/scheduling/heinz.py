@@ -17,17 +17,17 @@ def heinz_params(number_of_facilities, number_of_tasks, seed=0):
 
     Returns
     -------
-    processing_times: dict[int,int]
+    processing_times: dict[(int,int),int]
         time steps to process each task
     capacities: list[int]
         capacity of each facility
-    assignment_costs: dict[int,int]
+    assignment_costs: dict[(int,int),int]
         cost of assigning a task to a facility
     release_times: list[int]
         time step at which a job is released
-    deadlines: dict[int, float]
+    deadlines: dict[int,int]
         deadline (time step) to finish a job
-    resource_requirements: dict[int,int]
+    resource_requirements: dict[(int,int),int]
         resources required for each task assigned to a facility
 
     References
