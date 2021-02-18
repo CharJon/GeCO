@@ -56,6 +56,4 @@ def expand_parameters(function, **parameter_lists):
     parameter_names = parameter_lists.keys()
     all_possible_parameters = itertools.product(*parameter_lists.values())
     for params in all_possible_parameters:
-        yield function(**{
-            name: val for name, val in zip(parameter_names, params)
-        })
+        yield function(**{name: val for name, val in zip(parameter_names, params)})
