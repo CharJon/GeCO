@@ -82,6 +82,37 @@ def generate_hookers_instances():
 
 @py_random_state(-1)
 def c_params_generator(seed=0):
+    """
+    Generate instance parameters for the c problem set mentioned in [1].
+
+    Parameters
+    ----------
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+    number_of_facilities: int
+        the number of facilities to schedule on
+    number_of_tasks: int
+        the number of tasks to assign to facilities
+    processing_times: dict[(int,int),int]
+        time steps to process each task
+    capacities: list[int]
+        capacity of each facility
+    assignment_costs: dict[(int,int),int]
+        cost of assigning a task to a facility
+    release_times: list[int]
+        time step at which a job is released
+    deadlines: dict[int, int]
+        deadline (time step) to finish a job
+    resource_requirements: dict[(int,int),int]
+        resources required for each task assigned to a facility
+
+    References
+    ----------
+    ..[1] http://public.tepper.cmu.edu/jnh/instances.htm
+    """
     yield from _hooker_base_parameter_generator(
         number_of_facilities_vals=(2, 3, 4),
         number_of_tasks_fn=lambda *_: range(10, 38 + 1, 2),
@@ -98,6 +129,37 @@ def c_params_generator(seed=0):
 
 @py_random_state(-1)
 def e_params_generator(seed=0):
+    """
+    Generate instance parameters for the e problem set mentioned in [1].
+
+    Parameters
+    ----------
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+    number_of_facilities: int
+        the number of facilities to schedule on
+    number_of_tasks: int
+        the number of tasks to assign to facilities
+    processing_times: dict[(int,int),int]
+        time steps to process each task
+    capacities: list[int]
+        capacity of each facility
+    assignment_costs: dict[(int,int),int]
+        cost of assigning a task to a facility
+    release_times: list[int]
+        time step at which a job is released
+    deadlines: dict[int, int]
+        deadline (time step) to finish a job
+    resource_requirements: dict[(int,int),int]
+        resources required for each task assigned to a facility
+
+    References
+    ----------
+    ..[1] http://public.tepper.cmu.edu/jnh/instances.htm
+    """
     yield from _hooker_base_parameter_generator(
         number_of_facilities_vals=range(2, 10 + 1),
         number_of_tasks_fn=lambda fac, num_fac_vals: 5 * (fac + 1),
@@ -116,6 +178,37 @@ def e_params_generator(seed=0):
 
 @py_random_state(-1)
 def de_params_generator(seed=0):
+    """
+    Generate instance parameters for the de problem set mentioned in [1].
+
+    Parameters
+    ----------
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+    number_of_facilities: int
+        the number of facilities to schedule on
+    number_of_tasks: int
+        the number of tasks to assign to facilities
+    processing_times: dict[(int,int),int]
+        time steps to process each task
+    capacities: list[int]
+        capacity of each facility
+    assignment_costs: dict[(int,int),int]
+        cost of assigning a task to a facility
+    release_times: list[int]
+        time step at which a job is released
+    deadlines: dict[int, int]
+        deadline (time step) to finish a job
+    resource_requirements: dict[(int,int),int]
+        resources required for each task assigned to a facility
+
+    References
+    ----------
+    ..[1] http://public.tepper.cmu.edu/jnh/instances.htm
+    """
     def processing_time_generator(fac, num_facs, seed):
         range_start = 2 if num_facs <= 20 else 5  # P1 in the reference website
         return seed.randint(range_start, 30 - fac * 5)
@@ -135,6 +228,37 @@ def de_params_generator(seed=0):
 
 @py_random_state(-1)
 def df_params_generator(seed=0):
+    """
+    Generate instance parameters for the df problem set mentioned in [1].
+
+    Parameters
+    ----------
+    seed: int, random object or None
+        for randomization
+
+    Returns
+    -------
+    number_of_facilities: int
+        the number of facilities to schedule on
+    number_of_tasks: int
+        the number of tasks to assign to facilities
+    processing_times: dict[(int,int),int]
+        time steps to process each task
+    capacities: list[int]
+        capacity of each facility
+    assignment_costs: dict[(int,int),int]
+        cost of assigning a task to a facility
+    release_times: list[int]
+        time step at which a job is released
+    deadlines: dict[int, int]
+        deadline (time step) to finish a job
+    resource_requirements: dict[(int,int),int]
+        resources required for each task assigned to a facility
+
+    References
+    ----------
+    ..[1] http://public.tepper.cmu.edu/jnh/instances.htm
+    """
     def processing_time_generator(fac, num_facs, seed):
         range_start = 2 if num_facs <= 20 else 5  # P1 in the reference website
         return seed.randint(range_start, 30 - fac * 5)
