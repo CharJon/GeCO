@@ -68,5 +68,3 @@ def heinz_instance(number_of_facilities, number_of_tasks, seed=0):
         *heinz_params(number_of_facilities, number_of_tasks, seed),
         name="Heinz Scheduling Instance",
     )
-
-

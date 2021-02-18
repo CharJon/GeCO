@@ -148,7 +148,16 @@ def _check_hookers_instance(model, number_of_facilities, number_of_tasks, time_s
 
 
 def check_params_dimensions(params):
-    number_of_facilities, number_of_tasks, processing_times, capacities, assignment_costs, release_times, deadlines, resource_requirements = params
+    (
+        number_of_facilities,
+        number_of_tasks,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_times,
+        deadlines,
+        resource_requirements,
+    ) = params
     facility_for_task_count = number_of_facilities * number_of_tasks
     assert len(processing_times) == facility_for_task_count
     assert len(assignment_costs) == facility_for_task_count
