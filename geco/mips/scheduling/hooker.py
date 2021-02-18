@@ -120,8 +120,8 @@ def c_params_generator(seed=0):
         capacity_fn=lambda: 10,
         deadlines_fn=lambda facs, tasks, *_: _due_date_helper(1 / 3, facs, tasks),
         resource_requirements_fn=lambda seed: seed.randint(1, 10),
-        processing_times_fn=lambda _, num_facs, seed: seed.randint(
-            num_facs, num_facs * 10
+        processing_times_fn=lambda fac, num_facs, seed: seed.randint(
+            fac + 1, (fac + 1) * 10
         ),
         assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
             2 * (num_facs - fac + 1), 20 * (num_facs - fac + 1)
