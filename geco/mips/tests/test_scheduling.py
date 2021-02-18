@@ -145,3 +145,46 @@ def _check_hookers_instance(model, number_of_facilities, number_of_tasks, time_s
     )
     assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
     assert model.getObjectiveSense() == "minimize"
+
+
+def check_params_dimensions(params):
+    number_of_facilities, number_of_tasks, processing_times, capacities, assignment_costs, release_times, deadlines, resource_requirements = params
+    facility_for_task_count = number_of_facilities * number_of_tasks
+    assert len(processing_times) == facility_for_task_count
+    assert len(assignment_costs) == facility_for_task_count
+    assert len(resource_requirements) == facility_for_task_count
+    assert len(release_times) == number_of_tasks
+    assert len(deadlines) == number_of_tasks
+    assert len(capacities) == number_of_facilities
+
+
+def test_c_params_generation():
+    n = 0
+    for params in c_params_generator():
+        n += 1
+        check_params_dimensions(params)
+    assert n == 3 * 15
+
+
+def test_e_params_generation():
+    n = 0
+    for params in e_params_generator():
+        n += 1
+        check_params_dimensions(params)
+    assert n == 9
+
+
+def test_de_params_generation():
+    n = 0
+    for params in de_params_generator():
+        n += 1
+        check_params_dimensions(params)
+    assert n == 8
+
+
+def test_df_params_generation():
+    n = 0
+    for params in df_params_generator():
+        n += 1
+        check_params_dimensions(params)
+    assert n == 8

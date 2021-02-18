@@ -1,4 +1,5 @@
 import itertools
+from math import ceil
 
 import pyscipopt as scip
 from networkx.utils import py_random_state
@@ -80,31 +81,84 @@ def generate_hookers_instances():
 
 
 @py_random_state(-1)
-def c_instances(seed=0):
-    # TODO: use correct formulation
-    for params in c_params_generator(seed):
-        yield heinz_formulation(*params, name="Hooker C instance")
-
-
-@py_random_state(-1)
 def c_params_generator(seed=0):
     yield from _hooker_base_parameter_generator(
         number_of_facilities_vals=(2, 3, 4),
-        number_of_tasks_vals=range(10, 38 + 1, 2),
-        release_time_fn=lambda: 0,
+        number_of_tasks_fn=lambda *_: range(10, 38 + 1, 2),
+        release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
-        deadlines_fn=lambda facs, tasks, _: 5 * 1 / 3 * tasks * (facs + 1) / facs,
+        deadlines_fn=lambda facs, tasks, _: _due_date_helper(1 / 3, facs, tasks),
         resource_requirements_fn=lambda seed: seed.randint(1, 10),
-        processing_times_fn=lambda facs, seed: seed.randint(facs, facs * 10),
+        processing_times_fn=lambda _, num_facs, seed: seed.randint(num_facs, num_facs * 10),
         assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(2 * (num_facs - fac + 1),
                                                                      20 * (num_facs - fac + 1)),
         seed=seed
     )
 
 
+@py_random_state(-1)
+def e_params_generator(seed=0):
+    yield from _hooker_base_parameter_generator(
+        number_of_facilities_vals=range(2, 10 + 1),
+        number_of_tasks_fn=lambda fac, num_fac_vals: 5 * (fac + 1),
+        release_time_fn=lambda *_: 0,
+        capacity_fn=lambda: 10,
+        deadlines_fn=lambda facs, tasks, seed: seed.randint(_due_date_helper((1 / 4) * (1 / 3), facs, tasks),
+                                                            _due_date_helper(1 / 3, facs, tasks)),
+        resource_requirements_fn=lambda seed: seed.randint(1, 10),
+        processing_times_fn=lambda fac, num_facs, seed: seed.randint(2, int(25 - (fac - 1) * (10 / (num_facs - 1)))),
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
+            int(400 / (25 - (fac - 1) * (10 / (num_facs - 1)))),
+            int(800 / (25 - (fac - 1) * (10 / (num_facs - 1))))),
+        seed=seed
+    )
+
+
+@py_random_state(-1)
+def de_params_generator(seed=0):
+    def processing_time_generator(fac, num_facs, seed):
+        range_start = 2 if num_facs <= 20 else 5  # P1 in the reference website
+        return seed.randint(range_start, 30 - fac * 5)
+
+    yield from _hooker_base_parameter_generator(
+        number_of_facilities_vals=[3],
+        number_of_tasks_fn=lambda *_: range(14, 28 + 1, 2),
+        release_time_fn=lambda *_: 0,
+        capacity_fn=lambda: 10,
+        deadlines_fn=lambda *_: 33,
+        resource_requirements_fn=lambda seed: seed.randint(1, 10),
+        processing_times_fn=lambda fac, num_facs, seed: processing_time_generator,
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(10 + 10 * fac, 40 + 10 * fac),
+        seed=seed
+    )
+
+
+@py_random_state(-1)
+def df_params_generator(seed=0):
+    def processing_time_generator(fac, num_facs, seed):
+        range_start = 2 if num_facs <= 20 else 5  # P1 in the reference website
+        return seed.randint(range_start, 30 - fac * 5)
+
+    yield from _hooker_base_parameter_generator(
+        number_of_facilities_vals=[3],
+        number_of_tasks_fn=lambda *_: range(14, 28 + 1, 2),
+        release_time_fn=lambda facs, tasks, seed: seed.randint(0, _due_date_helper(1 / 2, facs, tasks)),
+        capacity_fn=lambda: 10,
+        deadlines_fn=lambda *_: 33,
+        resource_requirements_fn=lambda seed: seed.randint(1, 10),
+        processing_times_fn=lambda fac, num_facs, seed: processing_time_generator,
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(10 + 10 * fac, 40 + 10 * fac),
+        seed=seed
+    )
+
+
+def _due_date_helper(a, number_of_facilities, number_of_tasks):
+    return ceil(5 * a * number_of_tasks * (number_of_facilities + 1) / number_of_facilities)
+
+
 def _hooker_base_parameter_generator(
     number_of_facilities_vals,
-    number_of_tasks_vals,
+    number_of_tasks_fn,
     release_time_fn,
     capacity_fn,
     deadlines_fn,
@@ -113,26 +167,29 @@ def _hooker_base_parameter_generator(
     assignment_costs_fn,
     seed
 ):
-    for number_of_tasks, number_of_facilities in itertools.product(number_of_tasks_vals, number_of_facilities_vals):
-        release_times = [release_time_fn()] * number_of_tasks
-        capacities = [capacity_fn()] * number_of_facilities
-        deadlines = {j: deadlines_fn(number_of_facilities, number_of_tasks, seed) for j in range(number_of_tasks)}
-        resource_requirements = {(i, j): resource_requirements_fn(seed) for i, j in
-                                 itertools.product(range(number_of_tasks), range(number_of_facilities))}
-        processing_times = {(i, j): processing_times_fn(number_of_facilities, seed) for i, j in
-                            itertools.product(range(number_of_tasks), range(number_of_facilities))}
-        assignment_costs = {
-            (i, j): assignment_costs_fn(j, number_of_facilities, seed)
-            for i, j in
-            itertools.product(range(number_of_tasks), range(number_of_facilities))}
+    for number_of_facilities in number_of_facilities_vals:
+        number_of_tasks_vals = number_of_tasks_fn(number_of_facilities, number_of_facilities_vals)
+        if isinstance(number_of_tasks_vals, int): number_of_tasks_vals = [number_of_tasks_vals]
+        for number_of_tasks in number_of_tasks_vals:
+            release_times = [release_time_fn(number_of_facilities, number_of_tasks, seed)] * number_of_tasks
+            capacities = [capacity_fn()] * number_of_facilities
+            deadlines = {j: deadlines_fn(number_of_facilities, number_of_tasks, seed) for j in range(number_of_tasks)}
+            resource_requirements = {(i, j): resource_requirements_fn(seed) for i, j in
+                                     itertools.product(range(number_of_tasks), range(number_of_facilities))}
+            processing_times = {(i, j): processing_times_fn(j, number_of_facilities, seed) for i, j in
+                                itertools.product(range(number_of_tasks), range(number_of_facilities))}
+            assignment_costs = {
+                (i, j): assignment_costs_fn(j, number_of_facilities, seed)
+                for i, j in
+                itertools.product(range(number_of_tasks), range(number_of_facilities))}
 
-        yield (
-            number_of_facilities,
-            number_of_tasks,
-            processing_times,
-            capacities,
-            assignment_costs,
-            release_times,
-            deadlines,
-            resource_requirements
-        )
+            yield (
+                number_of_facilities,
+                number_of_tasks,
+                processing_times,
+                capacities,
+                assignment_costs,
+                release_times,
+                deadlines,
+                resource_requirements
+            )
