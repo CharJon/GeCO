@@ -118,7 +118,7 @@ def c_params_generator(seed=0):
         number_of_tasks_fn=lambda *_: range(10, 38 + 1, 2),
         release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
-        deadlines_fn=lambda facs, tasks, _: _due_date_helper(1 / 3, facs, tasks),
+        deadlines_fn=lambda facs, tasks, *_: _due_date_helper(1 / 3, facs, tasks),
         resource_requirements_fn=lambda seed: seed.randint(1, 10),
         processing_times_fn=lambda _, num_facs, seed: seed.randint(
             num_facs, num_facs * 10
@@ -168,10 +168,7 @@ def e_params_generator(seed=0):
         number_of_tasks_fn=lambda fac, num_fac_vals: 5 * (fac + 1),
         release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
-        deadlines_fn=lambda facs, tasks, seed: seed.randint(
-            _due_date_helper((1 / 4) * (1 / 3), facs, tasks),
-            _due_date_helper(1 / 3, facs, tasks),
-        ),
+        deadlines_fn=lambda facs, tasks, seed, _: 33,
         resource_requirements_fn=lambda seed: seed.randint(1, 10),
         processing_times_fn=lambda fac, num_facs, seed: seed.randint(
             2, int(25 - (fac - 1) * (10 / (num_facs - 1)))
@@ -227,7 +224,10 @@ def de_params_generator(seed=0):
         number_of_tasks_fn=lambda *_: range(14, 28 + 1, 2),
         release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
-        deadlines_fn=lambda *_: 33,
+        deadlines_fn=lambda facs, tasks, seed, _: seed.randint(
+            _due_date_helper((1 / 4) * (1 / 3), facs, tasks),
+            _due_date_helper(1 / 3, facs, tasks),
+        ),
         resource_requirements_fn=lambda seed: seed.randint(1, 10),
         processing_times_fn=lambda fac, num_facs, seed: processing_time_generator,
         assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
