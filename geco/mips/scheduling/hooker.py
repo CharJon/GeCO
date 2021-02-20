@@ -151,8 +151,8 @@ def _common_hooker_params(number_of_facilities, number_of_tasks, seed):
 def c_params_generator_alternative(number_of_tasks, number_of_facilities, seed=0):
     capacities, resource_requirements = _common_hooker_params(number_of_facilities, number_of_tasks, seed)
 
-    release_dates = [0] * N
-    due_dates = [_due_date_helper(1 / 3, M, N)] * N
+    release_dates = [0] * number_of_tasks
+    due_dates = [_due_date_helper(1 / 3, number_of_facilities, number_of_tasks)] * number_of_tasks
 
     processing_times = {}
     for i in range(number_of_facilities):
