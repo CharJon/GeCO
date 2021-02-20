@@ -157,7 +157,6 @@ def c_params_generator_alternative(N, M, seed=0):
     release_dates = [0] * N
     due_dates = [_due_date_helper(1 / 3, M, N)] * N
 
-    # order is (task, facility)
     processing_times = {}
     for i in range(number_of_facilities):
         for j in range(number_of_tasks):
