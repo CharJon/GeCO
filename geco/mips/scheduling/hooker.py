@@ -1,8 +1,5 @@
-import itertools
 from math import ceil
 
-import pyscipopt as scip
-from networkx.utils import py_random_state
 from geco.mips.scheduling.generic import *
 
 
@@ -128,6 +125,54 @@ def c_params_generator(seed=0):
         ),
         seed=seed,
     )
+
+
+@py_random_state(-1)
+def c_instance_params(seed=0):
+    for n, m in itertools.product(range(2, 4 + 1), range(10, 32 + 1, 2)):
+        yield c_params_generator_alternative(n, m, seed)
+
+    # additional instances with 2 machines only
+    for m in range(10, 38 + 1, 2):
+        yield c_params_generator_alternative(2, m, seed)
+
+
+def _common_hooker_params(number_of_facilities, number_of_tasks, seed):
+    capacities = [10] * number_of_facilities
+    resource_requirements = {}
+    for i in range(number_of_tasks):
+        cur_res_requirement = seed.randint(1, 10)
+        for j in range(number_of_facilities):
+            resource_requirements[i, j] = cur_res_requirement
+    return capacities, resource_requirements
+
+
+@py_random_state(-1)
+def c_params_generator_alternative(N, M, seed=0):
+    number_of_facilities = M
+    number_of_tasks = N
+
+    capacities, resource_requirements = _common_hooker_params(number_of_facilities, number_of_tasks, seed)
+
+    release_dates = [0] * N
+    due_dates = [_due_date_helper(1 / 3, M, N)] * N
+
+    # order is (task, facility)
+    processing_times = {}
+    for i in range(number_of_facilities):
+        for j in range(number_of_tasks):
+            processing_times[j, i] = seed.randint(i, 10 * i)
+
+    processing_costs = {}
+    for i in range(number_of_facilities):
+        for j in range(number_of_tasks):
+            processing_costs[j, i] = seed.randint(2 * (number_of_facilities - i + 1),
+                                                  20 * (number_of_facilities - i + 1))
+
+    return (number_of_facilities, number_of_tasks,
+            capacities, resource_requirements,
+            release_dates, due_dates,
+            processing_times, processing_costs)
 
 
 @py_random_state(-1)
@@ -306,15 +351,15 @@ def _due_date_helper(a, number_of_facilities, number_of_tasks):
 
 
 def _hooker_base_parameter_generator(
-    number_of_facilities_vals,
-    number_of_tasks_fn,
-    release_time_fn,
-    capacity_fn,
-    deadlines_fn,
-    resource_requirements_fn,
-    processing_times_fn,
-    assignment_costs_fn,
-    seed,
+        number_of_facilities_vals,
+        number_of_tasks_fn,
+        release_time_fn,
+        capacity_fn,
+        deadlines_fn,
+        resource_requirements_fn,
+        processing_times_fn,
+        assignment_costs_fn,
+        seed,
 ):
     for number_of_facilities in number_of_facilities_vals:
         number_of_tasks_vals = number_of_tasks_fn(
@@ -324,8 +369,8 @@ def _hooker_base_parameter_generator(
             number_of_tasks_vals = [number_of_tasks_vals]
         for number_of_tasks in number_of_tasks_vals:
             release_times = [
-                release_time_fn(number_of_facilities, number_of_tasks, seed)
-            ] * number_of_tasks
+                                release_time_fn(number_of_facilities, number_of_tasks, seed)
+                            ] * number_of_tasks
             capacities = [capacity_fn()] * number_of_facilities
             deadlines = {
                 j: deadlines_fn(
