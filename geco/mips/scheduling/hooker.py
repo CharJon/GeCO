@@ -148,10 +148,7 @@ def _common_hooker_params(number_of_facilities, number_of_tasks, seed):
 
 
 @py_random_state(-1)
-def c_params_generator_alternative(N, M, seed=0):
-    number_of_facilities = M
-    number_of_tasks = N
-
+def c_params_generator_alternative(number_of_tasks, number_of_facilities, seed=0):
     capacities, resource_requirements = _common_hooker_params(number_of_facilities, number_of_tasks, seed)
 
     release_dates = [0] * N
