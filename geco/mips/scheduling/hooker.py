@@ -119,12 +119,12 @@ def c_params_generator(seed=0):
         release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
         deadlines_fn=lambda facs, tasks, *_: _due_date_helper(1 / 3, facs, tasks),
-        resource_requirements_fn=lambda seed: seed.randint(1, 10),
-        processing_times_fn=lambda fac, num_facs, seed: seed.randint(
+        resource_requirements_fn=lambda seed: seed.randrange(1, 10),
+        processing_times_fn=lambda fac, num_facs, seed: seed.randrange(
             fac + 1, (fac + 1) * 10
         ),
-        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
-            2 * (num_facs - fac + 1), 20 * (num_facs - fac + 1)
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randrange(
+            2 * (num_facs - fac), 20 * (num_facs - fac)
         ),
         seed=seed,
     )
@@ -165,17 +165,17 @@ def e_params_generator(seed=0):
     """
     yield from _hooker_base_parameter_generator(
         number_of_facilities_vals=range(2, 10 + 1),
-        number_of_tasks_fn=lambda fac, num_fac_vals: 5 * (fac + 1),
+        number_of_tasks_fn=lambda num_fac, num_fac_vals: 5 * num_fac,
         release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
         deadlines_fn=lambda facs, tasks, seed, _: 33,
-        resource_requirements_fn=lambda seed: seed.randint(1, 10),
-        processing_times_fn=lambda fac, num_facs, seed: seed.randint(
-            2, int(25 - (fac - 1) * (10 / (num_facs - 1)))
+        resource_requirements_fn=lambda seed: seed.randrange(1, 10),
+        processing_times_fn=lambda fac, num_facs, seed: seed.randrange(
+            2, int(25 - fac * (10 / (num_facs - 1)))
         ),
-        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
-            int(400 / (25 - (fac - 1) * (10 / (num_facs - 1)))),
-            int(800 / (25 - (fac - 1) * (10 / (num_facs - 1)))),
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randrange(
+            int(400 / (25 - fac * (10 / (num_facs - 1)))),
+            int(800 / (25 - fac * (10 / (num_facs - 1)))),
         ),
         seed=seed,
     )
@@ -217,20 +217,20 @@ def de_params_generator(seed=0):
 
     def processing_time_generator(fac, num_facs, seed):
         range_start = 2 if num_facs <= 20 else 5  # P1 in the reference website
-        return seed.randint(range_start, 30 - fac * 5)
+        return seed.randrange(range_start, 30 - fac * 5)
 
     yield from _hooker_base_parameter_generator(
         number_of_facilities_vals=[3],
         number_of_tasks_fn=lambda *_: range(14, 28 + 1, 2),
         release_time_fn=lambda *_: 0,
         capacity_fn=lambda: 10,
-        deadlines_fn=lambda facs, tasks, seed, _: seed.randint(
+        deadlines_fn=lambda facs, tasks, seed, _: seed.randrange(
             _due_date_helper((1 / 4) * (1 / 3), facs, tasks),
             _due_date_helper(1 / 3, facs, tasks),
         ),
-        resource_requirements_fn=lambda seed: seed.randint(1, 10),
-        processing_times_fn=lambda fac, num_facs, seed: processing_time_generator,
-        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
+        resource_requirements_fn=lambda seed: seed.randrange(1, 10),
+        processing_times_fn=processing_time_generator,
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randrange(
             10 + 10 * fac, 40 + 10 * fac
         ),
         seed=seed,
@@ -273,11 +273,11 @@ def df_params_generator(seed=0):
 
     def processing_time_generator(fac, num_facs, seed):
         range_start = 2 if num_facs <= 20 else 5  # P1 in the reference website
-        return seed.randint(range_start, 30 - fac * 5)
+        return seed.randrange(range_start, 30 - fac * 5)
 
     def deadlines_generator(facs, tasks, seed, release_times):
         random_release_time = seed.choice(release_times)
-        return seed.randint(
+        return seed.randrange(
             random_release_time + _due_date_helper(1 / 4 * 1 / 2, facs, tasks),
             random_release_time + _due_date_helper(1 / 2, facs, tasks),
         )
@@ -285,14 +285,14 @@ def df_params_generator(seed=0):
     yield from _hooker_base_parameter_generator(
         number_of_facilities_vals=[3],
         number_of_tasks_fn=lambda *_: range(14, 28 + 1, 2),
-        release_time_fn=lambda facs, tasks, seed: seed.randint(
+        release_time_fn=lambda facs, tasks, seed: seed.randrange(
             0, _due_date_helper(1 / 2, facs, tasks)
         ),
         capacity_fn=lambda: 10,
         deadlines_fn=deadlines_generator,
-        resource_requirements_fn=lambda seed: seed.randint(1, 10),
-        processing_times_fn=lambda fac, num_facs, seed: processing_time_generator,
-        assignment_costs_fn=lambda fac, num_facs, seed: seed.randint(
+        resource_requirements_fn=lambda seed: seed.randrange(1, 10),
+        processing_times_fn=processing_time_generator,
+        assignment_costs_fn=lambda fac, num_facs, seed: seed.randrange(
             10 + 10 * fac, 40 + 10 * fac
         ),
         seed=seed,

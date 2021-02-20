@@ -1,3 +1,5 @@
+import math
+
 import pytest
 
 from geco.mips.scheduling.heinz import *
@@ -167,11 +169,33 @@ def check_params_dimensions(params):
     assert len(capacities) == number_of_facilities
 
 
+def check_params_ranges(params, params_ranges):
+    for param, (start, end) in zip(params, params_ranges):
+        if isinstance(param, int):
+            assert start <= param < end
+        elif isinstance(param, dict):
+            for val in param.values():
+                assert start <= val < end
+
+
 def test_c_params_generation():
     n = 0
     for params in c_params_generator():
         n += 1
         check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (2, 4 + 1),
+                (10, 38 + 1),
+                (1, 10 * 4),
+                (10, 10 + 1),
+                (2, 20 * 4),
+                (0, 0 + 1),
+                (21, 95 + 1),
+                (1, 10),
+            ],
+        )
     assert n == 3 * 15
 
 
@@ -180,6 +204,19 @@ def test_e_params_generation():
     for params in e_params_generator():
         n += 1
         check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (2, 10 + 1),
+                (10, 5 * 10 + 1),
+                (2, 25),
+                (10, 10 + 1),
+                (16, 53),
+                (0, 0 + 1),
+                (33, 33 + 1),
+                (1, 10),
+            ],
+        )
     assert n == 9
 
 
@@ -188,6 +225,19 @@ def test_de_params_generation():
     for params in de_params_generator():
         n += 1
         check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (3, 3 + 1),
+                (14, 28 + 1),
+                (2, 30),
+                (10, 10 + 1),
+                (10, 60),
+                (0, 0 + 1),
+                (6, 95 + 1),
+                (1, 10),
+            ],
+        )
     assert n == 8
 
 
@@ -196,4 +246,17 @@ def test_df_params_generation():
     for params in df_params_generator():
         n += 1
         check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (3, 3 + 1),
+                (14, 28 + 1),
+                (2, 30),
+                (10, 10 + 1),
+                (10, 60),
+                (0, 4 + 1),
+                (2, math.inf),
+                (1, 10),
+            ],
+        )
     assert n == 8
