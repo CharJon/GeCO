@@ -201,7 +201,7 @@ def test_c_params_generation():
 
 def test_e_params_generation():
     n = 0
-    for params in e_params_generator():
+    for params in e_instance_params():
         n += 1
         check_params_dimensions(params)
         check_params_ranges(
@@ -222,7 +222,7 @@ def test_e_params_generation():
 
 def test_de_params_generation():
     n = 0
-    for params in de_params_generator():
+    for params in de_instance_params():
         n += 1
         check_params_dimensions(params)
         check_params_ranges(
@@ -243,7 +243,7 @@ def test_de_params_generation():
 
 def test_df_params_generation():
     n = 0
-    for params in df_params_generator():
+    for params in df_instance_params():
         n += 1
         check_params_dimensions(params)
         check_params_ranges(
