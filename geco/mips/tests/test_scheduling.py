@@ -180,7 +180,7 @@ def check_params_ranges(params, params_ranges):
 
 def test_c_params_generation():
     n = 0
-    for params in c_params_generator():
+    for params in c_instance_params():
         n += 1
         check_params_dimensions(params)
         check_params_ranges(
