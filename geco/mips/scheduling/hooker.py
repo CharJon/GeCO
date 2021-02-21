@@ -213,17 +213,6 @@ def e_params_generator(number_of_facilities, number_of_tasks, seed=0):
         number_of_facilities, number_of_tasks, seed
     )
 
-    """
-        deadlines_fn=lambda facs, tasks, seed, _: 33,
-        resource_requirements_fn=lambda seed: seed.randrange(1, 10),
-        processing_times_fn=lambda fac, num_facs, seed: seed.randrange(
-            2, int(25 - fac * (10 / (num_facs - 1)))
-        ),
-        assignment_costs_fn=lambda fac, num_facs, seed: seed.randrange(
-            int(400 / (25 - fac * (10 / (num_facs - 1)))),
-            int(800 / (25 - fac * (10 / (num_facs - 1)))),
-        ),
-    """
     release_dates = [0] * number_of_tasks
     due_dates = [33] * number_of_tasks
 
@@ -336,7 +325,7 @@ def de_params_generator(number_of_facilities, number_of_tasks, seed=0):
 @py_random_state(-1)
 def df_instance_params(seed=0):
     for n in range(14, 28 + 1, 2):
-        yield de_params_generator(3, n, seed)
+        yield df_params_generator(3, n, seed)
 
 
 @py_random_state(-1)
