@@ -276,3 +276,19 @@ def test_hooker_cost_formulation(number_of_facilities, number_of_tasks):
     )
     assert model.getNVars() == number_of_facilities * number_of_tasks * len(time_steps)
     assert constraints_lower_bound <= model.getNConss() <= constraints_upper_bound
+
+
+@pytest.mark.parametrize("params", c_instance_params())
+def test_heinz_with_c_feasibility(params):
+    model = heinz_formulation(*params)
+    model.hideOutput()
+    model.optimize()
+    assert model.getStatus() == "optimal"
+
+
+@pytest.mark.parametrize("params", c_instance_params())
+def test_hooker_cost_with_c_feasibility(params):
+    model = hooker_cost_formulation(*params)
+    model.hideOutput()
+    model.optimize()
+    assert model.getStatus() == "optimal"
