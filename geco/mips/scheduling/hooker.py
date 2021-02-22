@@ -1,7 +1,8 @@
 import itertools
-from math import ceil
+import math
 
 import pyscipopt as scip
+from geco.mips.scheduling.generic import generate_params
 from networkx.utils import py_random_state
 from geco.mips.scheduling.generic import *
 
@@ -227,8 +228,8 @@ def e_params_generator(number_of_facilities, number_of_tasks, seed=0):
     for i in range(number_of_facilities):
         for j in range(number_of_tasks):
             processing_costs[j, i] = seed.randrange(
-                int(400 / (25 - i * (10 / (number_of_facilities - 1)))),
-                int(800 / (25 - i * (10 / (number_of_facilities - 1)))),
+                math.floor(400 / (25 - i * (10 / (number_of_facilities - 1)))),
+                math.ceil(800 / (25 - i * (10 / (number_of_facilities - 1)))),
             )
 
     return (
@@ -406,6 +407,6 @@ def df_params_generator(number_of_facilities, number_of_tasks, seed=0):
 
 
 def _due_date_helper(a, number_of_facilities, number_of_tasks):
-    return ceil(
+    return math.ceil(
         5 * a * number_of_tasks * (number_of_facilities + 1) / number_of_facilities
     )
