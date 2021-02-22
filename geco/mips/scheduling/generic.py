@@ -51,9 +51,9 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
     capacities = [10] * number_of_facilities
 
     assignment_costs = {}
-    for i in range(number_of_facilities):
+    for j in range(number_of_tasks):
         value = seed.randint(1, 10)
-        for j in range(number_of_tasks):
+        for i in range(number_of_facilities):
             assignment_costs[j, i] = value
 
     release_times = [0] * number_of_tasks
