@@ -71,25 +71,6 @@ def heinz_instance(number_of_facilities, number_of_tasks, seed=0):
     )
 
 
-@py_random_state(-1)
-def generate_heinz_instances(seed):
-    generated = 0
-
-    num_resources = [2]
-    num_jobs = list(range(10, 38 + 1, 2))
-    for i, j in itertools.product(num_resources, num_jobs):
-        generated += 1
-        yield heinz_instance(i, j, seed)
-
-    num_resources = [3, 4]
-    num_jobs = list(range(10, 32 + 1, 2))
-    for i, j in itertools.product(num_resources, num_jobs):
-        generated += 1
-        yield heinz_instance(i, j, seed)
-
-    assert generated == 39
-
-
 def heinz_formulation(
     number_of_facilities,
     number_of_tasks,
@@ -200,11 +181,3 @@ def heinz_formulation(
         )
 
     return model
-
-
-def generate_small_heinz_instances():
-    number_of_facilities = [2]
-    number_of_tasks = list(range(10, 38 + 1))
-    for n, t in itertools.product(number_of_facilities, number_of_tasks):
-        params = heinz_params(n, t)
-        yield heinz_formulation(n, t, *params)
