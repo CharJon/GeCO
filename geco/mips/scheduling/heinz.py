@@ -1,7 +1,5 @@
-import itertools
-
 import pyscipopt as scip
-from networkx.utils import py_random_state
+
 from geco.mips.scheduling.generic import *
 
 
@@ -119,7 +117,7 @@ def heinz_formulation(
     """
     model = scip.Model(name)
 
-    time_steps = range(min(release_dates), int(max(deadlines.values())))
+    time_steps = range(min(release_dates), int(max(deadlines)))
 
     # objective function
     x = {}
@@ -170,7 +168,7 @@ def heinz_formulation(
 
     # constraint (15)
     epsilon = filter(
-        lambda ts: ts[0] < ts[1], itertools.product(release_dates, deadlines.values())
+        lambda ts: ts[0] < ts[1], itertools.product(release_dates, deadlines)
     )
     for k, (t1, t2) in itertools.product(range(number_of_facilities), epsilon):
         model.addCons(

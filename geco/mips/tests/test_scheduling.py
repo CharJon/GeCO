@@ -22,7 +22,7 @@ def test_hooker_generation():
 def test_heinz_formulation(number_of_facilities, number_of_tasks, seed):
     main_params = number_of_facilities, number_of_tasks
     p, C, c, R, d, r = heinz_params(*main_params, seed)
-    time_steps = int(max(d.values()) - min(R))
+    time_steps = int(max(d) - min(R))
     model = heinz_instance(*main_params)
     x_vars_count = number_of_facilities * number_of_tasks
     y_vars_lowerbound = 0
@@ -75,7 +75,7 @@ def test_hooker_simple_instance():
 
 
 def test_heinz_simple_instance():
-    (
+    params = (
         n_resources,
         n_tasks,
         time_steps,
@@ -112,7 +112,7 @@ def _simple_instance_params():
     release_times = [0]
     # change the deadline to 0 or 1 to make it infeasible for the heinz formulation
     # and add 1 late task to the hooker formulation
-    deadlines = {0: 2}
+    deadlines = [2]
     resource_requirements = {(0, 0): 1}
     return (
         n_resources,
