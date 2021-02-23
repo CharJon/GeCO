@@ -222,11 +222,99 @@ def heinz_formulation(
     return model
 
 
+def hooker_cost_formulation(
+    number_of_facilities,
+    number_of_tasks,
+    processing_times,
+    capacities,
+    assignment_costs,
+    release_dates,
+    deadlines,
+    resource_requirements,
+    name="Hooker Cost Scheduling Formulation",
+):
+    """Generates scheduling MIP formulation according to [1].
+
+    Parameters
+    ----------
+    number_of_facilities: int
+        the number of facilities to schedule on
+    number_of_tasks: int
+        the number of tasks to assign to facilities
+    processing_times: dict[(int,int),int]
+        time steps to process each task
+    capacities: list[int]
+        capacity of each facility
+    assignment_costs: dict[(int,int),int]
+        cost of assigning a task to a facility
+    release_dates: list[int]
+        time step at which a job is released
+    deadlines: dict[int, float]
+        deadline (time step) to finish a job
+    resource_requirements: dict[(int,int),int]
+        resources required for each task assigned to a facility
+    name: str
+        assigned name to generated instance
+
+    Returns
+    -------
+        model: SCIP model of generated instance
+
+    References
+    ----------
+    .. [1] J. N. Hooker, A hybrid method for planning and scheduling, CP 2004.
+    """
+    model = scip.Model(name)
+
+    time_steps = range(min(release_dates), int(max(deadlines)))
+
+    # objective function
+    x = {}
+    for j, i, t in itertools.product(
+        range(number_of_tasks), range(number_of_facilities), time_steps
+    ):
+        var = model.addVar(
+            lb=0, ub=1, obj=assignment_costs[j, i], name=f"x_{j}_{i}_{t}", vtype="B"
+        )
+        x[j, i, t] = var
+
+    # add constraints
+    # constraints (a)
+    for j in range(number_of_tasks):
+        model.addCons(
+            scip.quicksum(
+                x[j, i, t]
+                for i, t in itertools.product(range(number_of_facilities), time_steps)
+            )
+            == 1
+        )
+
+    # constraints (b)
+    for i, t in itertools.product(range(number_of_facilities), time_steps):
+        model.addCons(
+            scip.quicksum(
+                resource_requirements[j, i] * x[j, i, t] for j in range(number_of_tasks)
+            )
+            <= capacities[i]
+        )
+
+    # constraints (c)
+    for j, i, t in itertools.product(
+        range(number_of_tasks), range(number_of_facilities), time_steps
+    ):
+        if (
+            deadlines[j] - processing_times[j, i] < t < release_dates[j]
+            or t > number_of_tasks - processing_times[j, i]
+        ):
+            model.addCons(x[j, i, t] == 0)
+
+    return model
+
+
 @py_random_state(-1)
 def generate_params(number_of_facilities, number_of_tasks, seed=0):
     """
     Generic instance parameter generator for heinz [1] and hooker [2] formulations.
-
     Parameters
     ----------
     number_of_facilities: int
@@ -235,7 +323,6 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
         the number of tasks to assign to facilities
     seed: int, random object or None
         for randomization
-
     Returns
     -------
     processing_times: dict[int,int]
@@ -250,7 +337,6 @@ def generate_params(number_of_facilities, number_of_tasks, seed=0):
         deadline (time step) to finish a job
     resource_requirements: dict[int,int]
         resources required for each task assigned to a facility
-
     References
     ----------
     .. [1] Heinz, J. (2013). Recent Improvements Using Constraint Integer Programming for Resource Allocation and Scheduling.

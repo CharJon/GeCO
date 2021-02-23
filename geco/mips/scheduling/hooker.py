@@ -2,6 +2,7 @@ import itertools
 import math
 
 import pyscipopt as scip
+from geco.mips.scheduling.generic import generate_params
 from networkx.utils import py_random_state
 from geco.mips.scheduling.generic import *
 

@@ -260,3 +260,19 @@ def test_df_params_generation():
             ],
         )
     assert n == 8
+
+
+@pytest.mark.parametrize(
+    "number_of_facilities,number_of_tasks", itertools.product([2, 3, 4], [10, 20, 30])
+)
+def test_hooker_cost_formulation(number_of_facilities, number_of_tasks):
+    params = c_params_generator(number_of_facilities, number_of_tasks)
+    model = hooker_cost_formulation(*params)
+    time_steps = range(min(params[5]), int(max(params[6])))
+    constraints_lower_bound = number_of_tasks + number_of_facilities * len(time_steps)
+    constraints_upper_bound = (
+        constraints_lower_bound
+        + number_of_facilities * number_of_tasks * len(time_steps)
+    )
+    assert model.getNVars() == number_of_facilities * number_of_tasks * len(time_steps)
+    assert constraints_lower_bound <= model.getNConss() <= constraints_upper_bound
