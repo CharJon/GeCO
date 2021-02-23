@@ -1,3 +1,5 @@
+import math
+
 import pytest
 
 from geco.mips.scheduling.heinz import *
@@ -67,7 +69,7 @@ def test_param_generation_seeding(n_resources, n_tasks, seed1, seed2):
 
 
 def test_hooker_simple_instance():
-    hooker_model = hooker_formulation(*_simple_instance_params()[:-1])
+    hooker_model = late_tasks_formulation(*_simple_instance_params()[:-1])
     hooker_model.hideOutput()
     hooker_model.optimize()
     assert hooker_model.getStatus() == "optimal"
@@ -145,3 +147,116 @@ def _check_hookers_instance(model, number_of_facilities, number_of_tasks, time_s
     )
     assert constraints_lowerbound <= model.getNConss() <= constraints_upperbound
     assert model.getObjectiveSense() == "minimize"
+
+
+def check_params_dimensions(params):
+    (
+        number_of_facilities,
+        number_of_tasks,
+        processing_times,
+        capacities,
+        assignment_costs,
+        release_times,
+        deadlines,
+        resource_requirements,
+    ) = params
+    facility_for_task_count = number_of_facilities * number_of_tasks
+    assert len(processing_times) == facility_for_task_count
+    assert len(assignment_costs) == facility_for_task_count
+    assert len(resource_requirements) == facility_for_task_count
+    assert len(release_times) == number_of_tasks
+    assert len(deadlines) == number_of_tasks
+    assert len(capacities) == number_of_facilities
+
+
+def check_params_ranges(params, params_ranges):
+    for param, (start, end) in zip(params, params_ranges):
+        if isinstance(param, int):
+            assert start <= param < end
+        elif isinstance(param, dict):
+            for val in param.values():
+                assert start <= val < end
+
+
+def test_c_params_generation():
+    n = 0
+    for params in c_instance_params():
+        n += 1
+        check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (2, 4 + 1),
+                (10, 38 + 1),
+                (1, 10 * 4),
+                (10, 10 + 1),
+                (2, 20 * 4),
+                (0, 0 + 1),
+                (21, 95 + 1),
+                (1, 10),
+            ],
+        )
+    assert n == 3 * 15
+
+
+def test_e_params_generation():
+    n = 0
+    for params in e_instance_params():
+        n += 1
+        check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (2, 10 + 1),
+                (10, 5 * 10 + 1),
+                (2, 25),
+                (10, 10 + 1),
+                (16, 53 + 1),
+                (0, 0 + 1),
+                (33, 33 + 1),
+                (1, 10),
+            ],
+        )
+    assert n == 9
+
+
+def test_de_params_generation():
+    n = 0
+    for params in de_instance_params():
+        n += 1
+        check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (3, 3 + 1),
+                (14, 28 + 1),
+                (2, 30),
+                (10, 10 + 1),
+                (10, 60),
+                (0, 0 + 1),
+                (6, 95 + 1),
+                (1, 10),
+            ],
+        )
+    assert n == 8
+
+
+def test_df_params_generation():
+    n = 0
+    for params in df_instance_params():
+        n += 1
+        check_params_dimensions(params)
+        check_params_ranges(
+            params,
+            [
+                (3, 3 + 1),
+                (14, 28 + 1),
+                (2, 30),
+                (10, 10 + 1),
+                (10, 60),
+                (0, 4 + 1),
+                (2, math.inf),
+                (1, 10),
+            ],
+        )
+    assert n == 8

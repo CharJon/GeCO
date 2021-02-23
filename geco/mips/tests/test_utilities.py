@@ -21,3 +21,10 @@ def test_saving_shuffled_instance():
                 break
         else:
             assert False
+
+
+def test_expand_parameters():
+    def add(x, y):
+        return x + y
+
+    assert list(expand_parameters(add, x=[1, 2], y=[3, 4])) == [4, 5, 5, 6]
