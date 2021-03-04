@@ -1,2 +1,2 @@
-import geco.mips.facility_location.generic as generic
-import geco.mips.facility_location.cornuejols as cornuejols
+from geco.mips.facility_location.generic import *
+from geco.mips.facility_location.cornuejols import *

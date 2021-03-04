@@ -2,7 +2,7 @@ import networkx as nx
 import pyscipopt as scip
 
 
-def independent_set(graph: nx.Graph, name: str = "Independent Set") -> scip.Model:
+def independent_set(graph, name="Independent Set"):
     """
     Generates an independent set instance according to [1].
 
@@ -11,12 +11,12 @@ def independent_set(graph: nx.Graph, name: str = "Independent Set") -> scip.Mode
     graph: nx.Graph
         Networkx undirected graph
     name: str
-        name of the generated model
+        Name of the generated model
 
     Returns
     -------
     model: scip.Model
-        pyscipopt model of the generated instance
+        A pyscipopt model of the generated instance
 
     References
     ----------
@@ -38,15 +38,20 @@ def independent_set(graph: nx.Graph, name: str = "Independent Set") -> scip.Mode
     return model
 
 
-def _get_cliques(graph: nx.Graph) -> list:
+def _get_cliques(graph):
     """
     Partition the graph into cliques using a greedy algorithm, this code is
     based on the code from [1].
 
+    Parameters
+    ----------
+    graph: nx.Graph
+        Networkx undirected graph
+
     Returns
     -------
-    cliques: list of sets
-        The resulting clique partition.
+    cliques: list[set]
+        The resulting clique partition
 
     References
     ----------
@@ -73,7 +78,7 @@ def _get_cliques(graph: nx.Graph) -> list:
     return cliques
 
 
-def clique_independent_set(graph: nx.Graph, name: str = "Clique Independent Set"):
+def clique_independent_set(graph, name="Clique Independent Set"):
     """
     Generates an independent set instance according to [1, 4.6.4].
 
@@ -82,12 +87,12 @@ def clique_independent_set(graph: nx.Graph, name: str = "Clique Independent Set"
     graph: nx.Graph
         Networkx undirected graph
     name: str
-        name of the generated model
+        Name of the generated model
 
     Returns
     -------
     model: scip.Model
-        pyscipopt model of the generated instance
+        A pyscipopt model of the generated instance
 
     References
     ----------

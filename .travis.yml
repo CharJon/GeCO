@@ -1,21 +1,28 @@
 language: python
 install:
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-    wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - source "$HOME/miniconda/etc/profile.d/conda.sh"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-  - conda env create -n GeCO --file conda-dev-env.yml
-  - conda activate GeCO
+- if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+  -O miniconda.sh; else wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  -O miniconda.sh; fi
+- bash miniconda.sh -b -p $HOME/miniconda
+- source "$HOME/miniconda/etc/profile.d/conda.sh"
+- hash -r
+- conda config --set always_yes yes --set changeps1 no
+- conda update -q conda
+- conda info -a
+- conda env create -n GeCO --file conda-dev-env.yml
+- conda activate GeCO
 script:
-  - black --check geco/
-  - coverage run -m pytest
+- black --check geco/
+- coverage run -m pytest
 after_success:
-  - codecov # submit coverage
+- codecov
+deploy:
+  provider: pypi
+  username: __token__
+  password:
+    secure: b78OC2RgSQwn5l8F6eF9dDQgwtKh2JCClx4Vk7tFF1kWNYH85943qY1GNqTpPyGSJq1o2U9CYsDITDy4Jn+MKBAunMaBsGJFnIVAkn/0aEpxSGO3iLWQFhG8U0UBxMm4zRJVBK65I4Ht7lfwT5EokFU+LzqM7LVx/RcKUDRUpnhPp5dKR4RHIrg6kWuFNJoiLc/fpQSOc7XEtNXv4v83C+gsV9yUK5expATfsEZOMPC31TSyuBE8EWch1v2AjQfQxsQGDJ+0WDi3nNbWZWGLwhBVngMYGyO5zc8C4/ccLJHmwjTQ/5MKYOYwEtvuddz6Gl9UeQMCexFX+ROeUZAnik0UGlqGNOqjZMm5igjhLh8HYuAVcan0fT1JOASa0gVOJNY/Uc+Ntc19JvMxahgrbzShiZk86+0pbxO/F8J5im/+UAXBrJ2nGcFXPKFQC7aDY73crWKNUlzK50DRvti/STrI7KX3/SB8ZFMV7FHshBzCQVYZKCuuSnWvayJnBOMvyHhN8IG13Ff7c38Ukoz+O5pxxehFy8F8luxRpWba47uo5Znhmd6Z1N1shY2X761q6aPH9i/WUGzvThwd/YfkVRdxp7PfgkKeSJyCtYaDOT9dARXpKMh55B90xhrV/OIVnQGR5I3nTIePVymYlDmEgEmOfRV0CsUxfsuwrRd62kU=
+  on:
+    repo: CharJon/GeCO
+    branch: main
+  skip_cleanup: true
+  skip_existing: true

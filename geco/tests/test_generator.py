@@ -4,7 +4,8 @@ import pytest
 
 from geco.generator import *
 from geco.mips.facility_location.cornuejols import cornuejols_instance
-from geco.mips.set_cover import *
+from geco.mips.set_cover.generic import *
+from geco.mips.set_cover.sun import *
 
 
 def test_generate():

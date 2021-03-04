@@ -1,6 +1,7 @@
 import pytest
 
-from geco.mips.max_cut import *
+from geco.mips.max_cut.generic import *
+from geco.mips.max_cut.tang import *
 
 
 def test_tang():
@@ -9,15 +10,6 @@ def test_tang():
     assert model.getNVars() == m + n
     assert model.getNConss() == 2 * m
     assert model.getObjectiveSense() == "maximize"
-
-
-def test_empty_edge():
-    graph = nx.generators.complete_graph(3)
-    for _, _, data in graph.edges(data=True):
-        data["weight"] = 1
-    _, model = empty_edge(graph)
-    assert model.getNVars() == len(graph.edges)
-    assert model.getNConss() == 0
 
 
 def test_triangle():
@@ -70,8 +62,8 @@ def test_naive_non_negative():
 )
 def test_seeding(n, seed1, seed2):
     graph = nx.generators.complete_graph(n)
-    weights1 = tang_weights(graph, seed=seed1)
-    weights2 = tang_weights(graph, seed=seed2)
+    weights1 = tang_params(graph, seed=seed1)
+    weights2 = tang_params(graph, seed=seed2)
     same_seeds_produce_same_params = seed1 == seed2 and weights1 == weights2
     different_seeds_produce_different_params = seed1 != seed2 and weights1 != weights2
     assert same_seeds_produce_same_params or different_seeds_produce_different_params
