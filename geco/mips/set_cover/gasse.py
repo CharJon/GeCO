@@ -31,9 +31,9 @@ def gasse_instance(nrows, ncols, density, max_coef=100, seed=0):
 
     References
     ----------
-    .. [1] Yu Yang, Natashia Boland, Bistra Dilkina, Martin Savelsbergh,
-    "Learning Generalized Strong Branching for Set Covering,
-    Set Packing, and 0-1 Knapsack Problems", 2020.
+    .. [1] E.Balas and A.Ho, Set covering algorithms using cutting planes, heuristics,
+    and subgradient optimization: A computational study, Mathematical
+    Programming, 12 (1980), 37-60.
     """
     return set_cover(
         *gasse_params(nrows, ncols, density, max_coef, seed), name="Gasse Set Cover"
