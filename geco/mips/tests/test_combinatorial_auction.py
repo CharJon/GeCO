@@ -42,7 +42,7 @@ def test_gasse_instance_creation():
 
 @pytest.mark.parametrize(
     "n_items, n_bids, min_value, max_value, value_deviation, add_item_prob, max_n_sub_bids, additivity, "
-    "budget_factor, resale_factor, seed1, seed2",
+    "budget_factor, resale_factor, integers, warnings, seed1, seed2",
     itertools.product(
         [5, 10, 100],
         [500],
@@ -54,6 +54,8 @@ def test_gasse_instance_creation():
         [0.2],
         [1.5],
         [0.5],
+        [True, False],
+        [True, False],
         [1, 1337],
         [1, 1337],
     ),
@@ -69,6 +71,8 @@ def test_gasse_seeding(
     additivity,
     budget_factor,
     resale_factor,
+    integers,
+    warnings,
     seed1,
     seed2,
 ):
@@ -83,6 +87,8 @@ def test_gasse_seeding(
         additivity,
         budget_factor,
         resale_factor,
+        integers,
+        warnings,
         seed=seed1,
     )
     params2 = gasse_params(
@@ -96,6 +102,8 @@ def test_gasse_seeding(
         additivity,
         budget_factor,
         resale_factor,
+        integers,
+        warnings,
         seed=seed2,
     )
     same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
