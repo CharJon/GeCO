@@ -9,3 +9,4 @@ import geco.mips.production_planning as production_planning
 import geco.mips.packing as packing
 import geco.mips.graph_coloring as graph_coloring
 import geco.mips.loading as miplib
+import geco.mips.combinatorial_auction as combinatorial_auction
