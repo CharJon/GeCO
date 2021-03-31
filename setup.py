@@ -13,5 +13,5 @@ setup(
     url="https://github.com/CharJon/GeCO",
     license="MIT License",
     packages=find_packages(exclude=("tests", "docs", "data", "notebooks", "examples")),
-    install_requires=["pyscipopt", "networkx", "numpy", "pandas"]
+    install_requires=["pyscipopt", "networkx", "numpy", "scipy", "pandas"],
 )

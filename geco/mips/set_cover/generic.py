@@ -1,7 +1,7 @@
 import pyscipopt as scip
 
 
-def set_cover(costs, sets):
+def set_cover(costs, sets, name="Set Cover"):
     """
     Generates basic set cover formulation.
 
@@ -18,7 +18,7 @@ def set_cover(costs, sets):
         A pyscipopt model of the generated instance
 
     """
-    model = scip.Model("Set Cover")
+    model = scip.Model(name)
 
     # add variables and their cost
     variables = [
