@@ -31,8 +31,7 @@ way to install it is using conda
 conda install -c scipopt pyscipopt
 ```
 
-This just might not result in the most up-to-date version, another way is installing the SCIP solver and the pip package
-of `pyscipopt` following [this](https://github.com/scipopt/PySCIPOpt/blob/master/INSTALL.md) guide.
+If you prefer installing SCIP yourself or using an existing installation of SCIP on your system, you can follow [this](https://github.com/scipopt/PySCIPOpt/blob/master/INSTALL.md) guide for installing `pyscipopt`.
 
 Then, once you have `pyscipopt` installed, you are ready to install the `geco` package.
 
