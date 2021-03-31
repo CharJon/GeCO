@@ -6,6 +6,7 @@ import pytest
 from geco.mips.set_cover.yang import *
 from geco.mips.set_cover.sun import *
 from geco.mips.set_cover.orlib import *
+from geco.mips.set_cover.gasse import *
 
 """
 Generic Tests
@@ -137,3 +138,42 @@ def test_rail_orlib():
     instance = orlib_instance(instance_name)
     assert instance.getNVars() == 63009
     assert instance.getNConss() == 507
+
+
+"""
+Gasse tests
+"""
+
+
+@pytest.mark.parametrize(
+    "nrows,ncols,density,seed1,seed2",
+    itertools.product(
+        [100, 200],
+        [10, 100, 200],
+        [0.2, 0.3, 0.5],
+        [0, 1, 1337, 53115],
+        [0, 1, 1337, 53115],
+    ),
+)
+def test_gasse_params(nrows, ncols, density, seed1, seed2):
+    params1 = gasse_params(nrows, ncols, density, seed=seed1)
+    params2 = gasse_params(nrows, ncols, density, seed=seed2)
+    same_seeds_produce_same_params = seed1 == seed2 and params1 == params2
+    different_seeds_produce_different_params = seed1 != seed2 and params1 != params2
+    assert same_seeds_produce_same_params or different_seeds_produce_different_params
+
+
+@pytest.mark.parametrize(
+    "nrows,ncols,density,seed",
+    itertools.product(
+        [100, 200],
+        [50, 70],
+        [0.2, 0.3, 0.5],
+        [0, 1, 1337, 53115],
+    ),
+)
+def test_gasse_instance(nrows, ncols, density, seed):
+    model = gasse_instance(nrows, ncols, density, max_coef=10, seed=seed)
+    assert model.getNVars() == ncols
+    assert model.getNConss() == nrows
+    assert model.getObjectiveSense() == "minimize"
