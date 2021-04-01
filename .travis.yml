@@ -11,6 +11,7 @@ install:
 - conda info -a
 - conda env create -n GeCO --file conda-dev-env.yml
 - conda activate GeCO
+- pip install . 
 script:
 - black --check geco/
 - coverage run -m pytest
