@@ -5,17 +5,8 @@ channels:
   - default
 dependencies:
   - python=3.8
-  - pip
-  - numpy
-  - scipy
-  - jupyter
-  - pandas
-  - tqdm
   - pyscipopt=3.1.0
-  - networkx
   - pytest
   - black
   - codecov
-  - pip:
-      - git+https://github.com/rhgrant10/tsplib95.git
-      - dwave_networkx
+
