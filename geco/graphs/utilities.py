@@ -155,7 +155,7 @@ def graph_properties(g):
     )
     average_clustering_coeff = nx.average_clustering(g)
     max_k_core = max(nx.core_number(g).values())
-    num_of_simple_cycles = num_of_simple_cycles(g)
+    number_of_simple_cycles = num_of_simple_cycles(g)
 
     return {
         "num_nodes": g.number_of_nodes(),
@@ -172,5 +172,5 @@ def graph_properties(g):
         "number_of_triangles": number_of_triangles,
         "average_clustering_coeff": average_clustering_coeff,
         "max_k_core": max_k_core,
-        "num_of_simple_cycles": num_of_simple_cycles,
+        "number_of_simple_cycles": number_of_simple_cycles,
     }
