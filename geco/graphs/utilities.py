@@ -35,6 +35,63 @@ def edgeweight_properties(graph):
     return max_weight, min_weight, num_of_zero_weights
 
 
+def num_of_simple_cycles(graph):
+    """
+    Finds number of simple cycles
+    
+    Parameters
+    ----------
+    graph: nx.Graph
+        Graph to find number of simple cycles in
+    
+    Returns
+    -------
+    num_of_simple_cycles: int
+        Number of simple cycles in graph
+    """
+    if graph.is_directed():
+        return len(list(nx.simple_cycles(graph)))
+    else:
+        graph = nx.DiGraph(graph)
+        all_simple_cycles = list(nx.simple_cycles(graph))
+        all_simple_cycles = filter(lambda x: len(x) > 2, all_simple_cycles)
+        all_simple_cycles = set(map(lambda x: tuple(sorted(x)), all_simple_cycles))
+        return len(list(all_simple_cycles))
+
+
+def find_parallel_edges(graph):
+    """
+    Finds parallel edges (not total edges) between nodes and their amount.
+    
+    Parameters
+    ----------
+    graph: nx.Graph
+        Graph to find parallel edges in
+    
+    Returns
+    -------
+    parallel_edges: list
+        Edge as tuple, followed by number of parallel edges
+    """
+    all_parallel_edges = []
+    for node in graph:
+        for neighbor in graph.neighbors(node):
+            num_of_edges = graph.number_of_edges(node, neighbor)
+            if num_of_edges > 1:
+                all_parallel_edges.append([(node, neighbor), num_of_edges-1])
+
+    if not graph.is_directed():
+        filtered_edges, seen = [], set()
+        for parallel_edge_data in all_parallel_edges:
+            edge = tuple(parallel_edge_data[0])
+            if edge not in seen and tuple(reversed(parallel_edge_data[0])) not in seen:
+                seen.add(edge)
+                filtered_edges.append(parallel_edge_data)
+        return filtered_edges
+
+    return all_parallel_edges
+
+
 def graph_properties(g):
     """
     Calculates properties of edge weights.
@@ -74,6 +131,8 @@ def graph_properties(g):
         Average clustering coefficient as defined in [2]
     max_k_core: int
         Maximum k-core as defined in [3]
+    num_of_simple_cycles: int
+        Number of simple cycles in the graph
 
     References
     ----------
@@ -96,6 +155,7 @@ def graph_properties(g):
     )
     average_clustering_coeff = nx.average_clustering(g)
     max_k_core = max(nx.core_number(g).values())
+    num_of_simple_cycles = num_of_simple_cycles(g)
 
     return {
         "num_nodes": g.number_of_nodes(),
@@ -112,4 +172,5 @@ def graph_properties(g):
         "number_of_triangles": number_of_triangles,
         "average_clustering_coeff": average_clustering_coeff,
         "max_k_core": max_k_core,
+        "num_of_simple_cycles": num_of_simple_cycles,
     }

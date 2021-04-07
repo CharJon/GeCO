@@ -17,6 +17,36 @@ def test_edge_properties():
 
 
 @pytest.mark.parametrize("n", [3, 10, 100])
+def test_simple_cycle_number(n):
+    graph = nx.path_graph(n)
+    graph.add_edge(n-1, 0)
+    diGraph = nx.path_graph(n, nx.DiGraph)
+    diGraph.add_edge(n-1, 0)
+    assert num_of_simple_cycles(graph) == 1
+    assert num_of_simple_cycles(diGraph) == 1
+
+
+@pytest.mark.parametrize("n", [3, 10, 100])
+def test_parallel_edge_finding(n):
+    graph = nx.Graph()
+    diGraph = nx.DiGraph()
+    multiGraph = nx.MultiGraph()
+    multiDiGraph = nx.MultiDiGraph()
+    
+    for node in range(2, n):
+        for parallel_edge in range(1, node):
+            graph.add_edge(1, node)
+            diGraph.add_edge(1, node)
+            multiGraph.add_edge(1, node)
+            multiDiGraph.add_edge(1, node)
+    
+    assert len(find_parallel_edges(graph)) == 0
+    assert len(find_parallel_edges(diGraph)) == 0
+    assert len(find_parallel_edges(multiGraph)) == n - 3
+    assert len(find_parallel_edges(multiDiGraph)) == n - 3
+
+
+@pytest.mark.parametrize("n", [3, 10, 100])
 def test_graph_properties(n):
     graph = nx.path_graph(n)
     for u, v, data in graph.edges(data=True):
