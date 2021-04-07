@@ -19,8 +19,10 @@ def test_edge_properties():
 @pytest.mark.parametrize("n", [3, 10, 100])
 def test_simple_cycle_number(n):
     graph = nx.path_graph(n)
-    graph.add_edge(n-1, 0)
     diGraph = nx.path_graph(n, nx.DiGraph)
+    assert num_of_simple_cycles(graph) == 0
+    assert num_of_simple_cycles(diGraph) == 0
+    graph.add_edge(n-1, 0)
     diGraph.add_edge(n-1, 0)
     assert num_of_simple_cycles(graph) == 1
     assert num_of_simple_cycles(diGraph) == 1
