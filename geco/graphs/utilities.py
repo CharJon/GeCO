@@ -38,12 +38,12 @@ def edgeweight_properties(graph):
 def num_of_simple_cycles(graph):
     """
     Finds number of simple cycles
-    
+
     Parameters
     ----------
     graph: nx.Graph
         Graph to find number of simple cycles in
-    
+
     Returns
     -------
     num_of_simple_cycles: int
@@ -62,12 +62,12 @@ def num_of_simple_cycles(graph):
 def find_parallel_edges(graph):
     """
     Finds parallel edges (not total edges) between nodes and their amount.
-    
+
     Parameters
     ----------
     graph: nx.Graph
         Graph to find parallel edges in
-    
+
     Returns
     -------
     parallel_edges: list
@@ -78,7 +78,7 @@ def find_parallel_edges(graph):
         for neighbor in graph.neighbors(node):
             num_of_edges = graph.number_of_edges(node, neighbor)
             if num_of_edges > 1:
-                all_parallel_edges.append([(node, neighbor), num_of_edges-1])
+                all_parallel_edges.append([(node, neighbor), num_of_edges - 1])
 
     if not graph.is_directed():
         filtered_edges, seen = [], set()
