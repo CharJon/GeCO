@@ -48,6 +48,11 @@ def num_of_simple_cycles(graph):
     -------
     num_of_simple_cycles: int
         Number of simple cycles in graph
+
+    Notes
+    -----
+    It was pointed out that this implementation
+    is probably buggy in the undirected case.
     """
     if graph.is_directed():
         return len(list(nx.simple_cycles(graph)))
@@ -72,6 +77,11 @@ def find_parallel_edges(graph):
     -------
     parallel_edges: list
         Edge as tuple, followed by number of parallel edges
+
+    Notes
+    -----
+    If the graph is undirected, this implementation finds all parallel
+    edges twice (once from both vertices), then filters out the duplicate.
     """
     all_parallel_edges = []
     for node in graph:
@@ -131,8 +141,12 @@ def graph_properties(g):
         Average clustering coefficient as defined in [2]
     max_k_core: int
         Maximum k-core as defined in [3]
-    num_of_simple_cycles: int
+    number_of_simple_cycles: int
         Number of simple cycles in the graph
+    number_of_selfloop_nodes: int
+        Number of nodes that have a self-loop
+    number_of_selfloops: int
+        Total number of selfloops in the graph
 
     References
     ----------
@@ -156,6 +170,8 @@ def graph_properties(g):
     average_clustering_coeff = nx.average_clustering(g)
     max_k_core = max(nx.core_number(g).values())
     number_of_simple_cycles = num_of_simple_cycles(g)
+    number_of_selfloop_nodes = len(list(nx.nodes_with_selfloops(g)))
+    number_of_selfloops = len(list(nx.selfloop_edges(g)))
 
     return {
         "num_nodes": g.number_of_nodes(),
@@ -173,4 +189,6 @@ def graph_properties(g):
         "average_clustering_coeff": average_clustering_coeff,
         "max_k_core": max_k_core,
         "number_of_simple_cycles": number_of_simple_cycles,
+        "number_of_selfloop_nodes": number_of_selfloop_nodes,
+        "number_of_selfloops": number_of_selfloops,
     }

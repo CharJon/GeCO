@@ -70,3 +70,5 @@ def test_graph_properties(n):
     assert properties["max_k_core"] == 1
     assert properties["average_clustering_coeff"] == 0
     assert properties["number_of_simple_cycles"] == 0
+    assert properties["number_of_selfloop_nodes"] == 0
+    assert properties["number_of_selfloops"] == 0
