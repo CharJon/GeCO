@@ -96,9 +96,7 @@ def graph_properties(graph):
     num_of_connected_components = nx.number_connected_components(graph)
     number_of_triangles = sum(nx.triangles(graph).values()) // 3
     max_degree = max(degree for _, degree in graph.degree())
-    assortativity_coeff = (
-        None  # TODO (JC): bug - nx.degree_assortativity_coefficient(g)
-    )
+    assortativity_coeff = nx.degree_assortativity_coefficient(graph)
     average_clustering_coeff = nx.average_clustering(graph)
     max_k_core = max(nx.core_number(graph).values())
 
