@@ -40,6 +40,6 @@ def test_graph_properties(n):
 
 
 def test_ising():
-    g = nx.read_weighted_edgelist("ising.txt")
+    g = nx.read_weighted_edgelist("geco/graphs/tests/ising.txt")
     with pytest.raises(RuntimeError):
         nx.degree_assortativity_coefficient(g)
