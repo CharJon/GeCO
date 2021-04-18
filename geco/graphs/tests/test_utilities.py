@@ -37,3 +37,9 @@ def test_graph_properties(n):
     assert properties["number_of_triangles"] == 0
     assert properties["max_k_core"] == 1
     assert properties["average_clustering_coeff"] == 0
+
+
+def test_ising():
+    g = nx.read_weighted_edgelist("ising.txt")
+    with pytest.raises(RuntimeError):
+        nx.degree_assortativity_coefficient(g)
