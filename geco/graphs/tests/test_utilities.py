@@ -17,35 +17,20 @@ def test_edge_properties():
 
 
 @pytest.mark.parametrize("n", [3, 10, 100])
-def test_simple_cycle_number(n):
-    graph = nx.path_graph(n)
-    diGraph = nx.path_graph(n, nx.DiGraph)
-    assert num_of_simple_cycles(graph) == 0
-    assert num_of_simple_cycles(diGraph) == 0
-    graph.add_edge(n - 1, 0)
-    diGraph.add_edge(n - 1, 0)
-    assert num_of_simple_cycles(graph) == 1
-    assert num_of_simple_cycles(diGraph) == 1
-
-
-@pytest.mark.parametrize("n", [3, 10, 100])
 def test_parallel_edge_finding(n):
-    graph = nx.Graph()
-    diGraph = nx.DiGraph()
-    multiGraph = nx.MultiGraph()
-    multiDiGraph = nx.MultiDiGraph()
-
+    graphs_answers = [
+        (nx.Graph(), 0),
+        (nx.DiGraph(), 0),
+        (nx.MultiGraph(), n - 3),
+        (nx.MultiDiGraph(), n - 3),
+    ]
     for node in range(2, n):
         for parallel_edge in range(1, node):
-            graph.add_edge(1, node)
-            diGraph.add_edge(1, node)
-            multiGraph.add_edge(1, node)
-            multiDiGraph.add_edge(1, node)
+            for graph, _ in graphs_answers:
+                graph.add_edge(1, node)
 
-    assert len(find_parallel_edges(graph)) == 0
-    assert len(find_parallel_edges(diGraph)) == 0
-    assert len(find_parallel_edges(multiGraph)) == n - 3
-    assert len(find_parallel_edges(multiDiGraph)) == n - 3
+    for graph, answer in graphs_answers:
+        assert len(find_parallel_edges(graph)) == answer
 
 
 @pytest.mark.parametrize("n", [3, 10, 100])
@@ -69,6 +54,5 @@ def test_graph_properties(n):
     assert properties["number_of_triangles"] == 0
     assert properties["max_k_core"] == 1
     assert properties["average_clustering_coeff"] == 0
-    assert properties["number_of_simple_cycles"] == 0
     assert properties["number_of_selfloop_nodes"] == 0
     assert properties["number_of_selfloops"] == 0
