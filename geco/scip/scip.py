@@ -6,6 +6,81 @@ MAX_SEED = 2147483648
 MAX_PRIORITY = 536870911
 
 
+def stats(m: scip.Model):
+    d = {
+        "solving_time": m.getSolvingTime(),
+        "num_nodes": m.getNNodes(),
+        "status": m.getStatus(),
+        "primal_bound_": m.getPrimalbound(),
+        "dual_bound": m.getDualbound(),
+        "root_dual_bound": m.getDualboundRoot(),
+        "obj_val": m.getObjVal(),
+        # "primal_root": None
+        "num_leaves": m.getNLeaves()
+    }
+    return d
+
+
+class DualBoundEventHandler(scip.Eventhdlr):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.history = []
+
+    def extract_metrics(self):
+        self.history.append({
+            "time": self.model.getSolvingTime(),
+            "total_nodes": self.model.getNTotalNodes(),
+            "dual_bound": self.model.getDualbound(),
+            "lp_iterations": self.model.getNLPIterations()
+        })
+
+    def eventinit(self):
+        self.model.catchEvent(scip.SCIP_EVENTTYPE.LPEVENT, self)
+
+    def eventexit(self):
+        self.model.dropEvent(scip.SCIP_EVENTTYPE.LPEVENT, self)
+
+    def eventexec(self, event):
+        self.extract_metrics()
+
+    def eventinitsol(self):
+        self.extract_metrics()
+
+    def eventexitsol(self):
+        self.extract_metrics()
+
+
+class PrimalBoundEventHandler(scip.Eventhdlr):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.history = []
+
+    def extract_metrics(self):
+        self.history.append({
+            "time": self.model.getSolvingTime(),
+            "total_nodes": self.model.getNTotalNodes(),
+            "primal_bound": self.model.getPrimalBound(),
+            "lp_iterations": self.model.getNLPIterations()
+        })
+
+    def eventinit(self):
+        self.model.catchEvent(scip.SCIP_EVENTTYPE.BESTSOLFOUND, self)
+
+    def eventexit(self):
+        self.model.dropEvent(scip.SCIP_EVENTTYPE.BESTSOLFOUND, self)
+
+    def eventexec(self, event):
+        self.extract_metrics()
+
+    def eventinitsol(self):
+        self.extract_metrics()
+
+    def eventexitsol(self):
+        self.extract_metrics()
+
+
 def branching_parameter(m: scip.Model, cuts_at_root=True):
     """
     Sets parameter to try to isolate impact of branching heuristic.
