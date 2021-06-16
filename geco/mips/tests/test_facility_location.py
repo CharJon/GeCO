@@ -1,8 +1,31 @@
 import pytest
 
+from geco.mips.facility_location.beasley import *
 from geco.mips.facility_location.cornuejols import *
 from geco.mips.facility_location.generic import *
 from geco.mips.facility_location.orlib import *
+
+
+def test_beasley_params():
+    n_customers, n_facilities = 25, 10
+    capacity, n_desired_open = 10, 3
+    trans_costs, demands, fixed_costs, capacities = beasley_params(n_customers, n_facilities, capacity, n_desired_open,
+                                                                   seed=0)
+    assert (trans_costs.shape == (n_customers, n_facilities))
+    assert (demands.shape == (n_customers,))
+    assert (fixed_costs.shape == capacities.shape == (n_facilities,))
+
+
+def test_beasley_instance():
+    n_customers, n_facilities = 20, 10
+    capacity, n_desired_open = 3000, 5
+    trans_costs, demands, fixed_costs, capacities = beasley_params(n_customers, n_facilities, capacity, n_desired_open,
+                                                                   seed=0)
+    model = capacitated_facility_location(n_customers, n_facilities, trans_costs, demands, fixed_costs, capacities)
+    assert model.getObjectiveSense() == "minimize"
+    model.hideOutput()
+    model.optimize()
+    assert model.getStatus() == "optimal"
 
 
 def test_capacitated_facility_location():
@@ -11,7 +34,7 @@ def test_capacitated_facility_location():
     model = capacitated_facility_location(n_customers, n_facilities, *instance_params)
     assert model.getNVars() == n_customers * n_facilities + n_facilities
     assert (
-        model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
+            model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
     )
     assert model.getObjectiveSense() == "minimize"
     model.hideOutput()
