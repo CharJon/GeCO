@@ -1,7 +1,7 @@
 import numpy as np
-import scipy
-from networkx.utils import np_random_state
 import pyscipopt as scip
+from networkx.utils import np_random_state
+from scipy import sparse
 
 from geco.mips.set_cover.generic import set_cover
 
@@ -93,14 +93,14 @@ def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
 
         # empty column, fill with random rows
         if i >= nrows:
-            indices[i : i + n] = seed.choice(nrows, size=n, replace=False)
+            indices[i: i + n] = seed.choice(nrows, size=n, replace=False)
 
         # partially filled column, complete with random rows among remaining ones
         elif i + n > nrows:
             remaining_rows = np.setdiff1d(
                 np.arange(nrows), indices[i:nrows], assume_unique=True
             )
-            indices[nrows : i + n] = seed.choice(
+            indices[nrows: i + n] = seed.choice(
                 remaining_rows, size=i + n - nrows, replace=False
             )
 
@@ -111,12 +111,12 @@ def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
     c = seed.randint(max_coef, size=ncols) + 1
 
     # sparse CSC to sparse CSR matrix
-    A = scipy.sparse.csc_matrix(
+    A = sparse.csc_matrix(
         (np.ones(len(indices), dtype=int), indices, indptr), shape=(nrows, ncols)
     ).tocsr()
     indices = A.indices
     indptr = A.indptr
 
     costs = list(c)
-    sets = [list(indices[indptr[i] : indptr[i + 1]]) for i in range(nrows)]
+    sets = [list(indices[indptr[i]: indptr[i + 1]]) for i in range(nrows)]
     return costs, sets
