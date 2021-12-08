@@ -1,7 +1,7 @@
 import numpy as np
 import pyscipopt as scip
 from networkx.utils import np_random_state
-from scipy import sparse
+import scipy.sparse
 
 from geco.mips.set_cover.generic import set_cover
 
@@ -111,7 +111,7 @@ def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
     c = seed.randint(max_coef, size=ncols) + 1
 
     # sparse CSC to sparse CSR matrix
-    A = sparse.csc_matrix(
+    A = scipy.sparse.csc_matrix(
         (np.ones(len(indices), dtype=int), indices, indptr), shape=(nrows, ncols)
     ).tocsr()
     indices = A.indices
