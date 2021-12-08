@@ -311,7 +311,7 @@ def hooker_cost_formulation(
     return model
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def generate_params(number_of_facilities, number_of_tasks, seed=0):
     """
     Generic instance parameter generator for heinz [1] and hooker [2] formulations.

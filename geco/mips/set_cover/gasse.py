@@ -40,7 +40,7 @@ def gasse_instance(nrows, ncols, density, max_coef=100, seed=0):
     )
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
     """
     Generates instance params for set cover generation as described in [1],
