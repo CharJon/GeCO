@@ -1,7 +1,7 @@
 from networkx.utils import py_random_state
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def generate(generating_function, seed=0):
     """
     Convenience wrapper to generate multiple instances.
@@ -21,7 +21,7 @@ def generate(generating_function, seed=0):
         yield generating_function(seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def generate_n(generating_function, n, seed=0):
     """
     Convenience wrapper to generate n instances.
@@ -43,7 +43,7 @@ def generate_n(generating_function, n, seed=0):
         yield i, generating_function(seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def common_substructure_generator(
     instance_generation_function,
     backbone,

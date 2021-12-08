@@ -7,7 +7,7 @@ from networkx.utils import py_random_state
 from geco.mips.scheduling.generic import *
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def hooker_params(number_of_facilities, number_of_tasks, seed=0):
     """Generates late tasks mip instance described in section 4 in [1].
 
@@ -41,7 +41,7 @@ def hooker_params(number_of_facilities, number_of_tasks, seed=0):
     return generate_params(number_of_facilities, number_of_tasks, seed)[:-1]
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def hooker_instance(number_of_facilities, number_of_tasks, time_steps, seed=0):
     """Generates late tasks mip instance described in section 4 in [1].
 
@@ -91,13 +91,13 @@ def _common_hooker_params(number_of_facilities, number_of_tasks, seed):
     return capacities, resource_requirements
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def c_instance_params(seed=0):
     for m, n in itertools.product(range(2, 4 + 1), range(10, 38 + 1, 2)):
         yield c_params_generator(m, n, seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def c_params_generator(number_of_facilities, number_of_tasks, seed=0):
     """
     Generate instance parameters for the c problem set mentioned in [1].
@@ -167,13 +167,13 @@ def c_params_generator(number_of_facilities, number_of_tasks, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def e_instance_params(seed=0):
     for m in range(2, 10 + 1):
         yield e_params_generator(m, 5 * m, seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def e_params_generator(number_of_facilities, number_of_tasks, seed=0):
     """
     Generate instance parameters for the e problem set mentioned in [1].
@@ -244,13 +244,13 @@ def e_params_generator(number_of_facilities, number_of_tasks, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def de_instance_params(seed=0):
     for n in range(14, 28 + 1, 2):
         yield de_params_generator(3, n, seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def de_params_generator(number_of_facilities, number_of_tasks, seed=0):
     """
     Generate instance parameters for the de problem set mentioned in [1].
@@ -323,13 +323,13 @@ def de_params_generator(number_of_facilities, number_of_tasks, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def df_instance_params(seed=0):
     for n in range(14, 28 + 1, 2):
         yield df_params_generator(3, n, seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def df_params_generator(number_of_facilities, number_of_tasks, seed=0):
     """
     Generate instance parameters for the df problem set mentioned in [1].

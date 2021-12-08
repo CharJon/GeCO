@@ -47,7 +47,7 @@ def generate_from_distribution(
     return profits, weights
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def uncorrelated_distribution(R, seed=0):
     """
     Generates an uncorrelated distribution as described in section 3 of [1].
@@ -81,7 +81,7 @@ def uncorrelated_distribution(R, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def uncorrelated(n, c, R=1000, seed=0):
     """
     Generates an uncorrelated distribution knapsack instance as described in section 3 of [1].
@@ -113,7 +113,7 @@ def uncorrelated(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def weakly_correlated_distribution(R, seed=0):
     """
     Generates an weakly correlated distribution as described in section 3 of [1].
@@ -147,7 +147,7 @@ def weakly_correlated_distribution(R, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def weakly_correlated(n, c, R=1000, seed=0):
     """
     Generates an weakly correlated distribution knapsack instance as described in section 3 of [1].
@@ -181,7 +181,7 @@ def weakly_correlated(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def strongly_correlated_distribution(R, seed=0):
     """
     Generates a strongly correlated distribution as described in section 3 of [1].
@@ -215,7 +215,7 @@ def strongly_correlated_distribution(R, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def strongly_correlated(n, c, R=1000, seed=0):
     """
     Generates a strongly correlated distribution knapsack instance as described in section 3 of [1].
@@ -249,7 +249,7 @@ def strongly_correlated(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def inverse_strongly_correlated_distribution(R, seed=0):
     """
     Generates an inverse strongly correlated distribution as described in section 3 of [1].
@@ -283,7 +283,7 @@ def inverse_strongly_correlated_distribution(R, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def inverse_strongly_correlated(n, c, R=1000, seed=0):
     """
     Generates an inverse strongly correlated distribution knapsack instance as described in section 3 of [1].
@@ -317,7 +317,7 @@ def inverse_strongly_correlated(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def almost_strongly_correlated_distribution(R, seed=0):
     """
     Generates an almost strongly correlated distribution as described in section 3 of [1].
@@ -353,7 +353,7 @@ def almost_strongly_correlated_distribution(R, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def almost_strongly_correlated(n, c, R=1000, seed=0):
     """
     Generates an almost strongly correlated distribution knapsack instance as described in section 3 of [1].
@@ -387,7 +387,7 @@ def almost_strongly_correlated(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def subset_sum_distribution(R, seed=0):
     """
     Generates a subset sum distribution as described in section 3 of [1].
@@ -421,7 +421,7 @@ def subset_sum_distribution(R, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def subset_sum(n, c, R=1000, seed=0):
     """
     Generates an subset sum distribution knapsack instance as described in section 3 of [1].
@@ -453,7 +453,7 @@ def subset_sum(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def uncorrelated_with_similar_weights_distribution(R=None, seed=0):
     """
     Generates an uncorrelated with similar weights distribution as described in section 3 of [1].
@@ -487,7 +487,7 @@ def uncorrelated_with_similar_weights_distribution(R=None, seed=0):
     }
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def uncorrelated_with_similar_weights(n, c, R=1000, seed=0):
     """
     Generates an uncorrelated with similar weights distribution knapsack instance as described in section 3 of [1].
@@ -521,7 +521,7 @@ def uncorrelated_with_similar_weights(n, c, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def spanner(v, m, n, distribution, capacity, R=1000, seed=0):
     """
     Generates a spanner knapsack instance as described in section 3 of [1].
@@ -578,7 +578,7 @@ def spanner(v, m, n, distribution, capacity, R=1000, seed=0):
     return knapsack(profits, weights, capacity)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def profit_ceiling(n, c, d=3, R=1000, seed=0):
     """
     Generates a profit ceiling knapsack instance as described in section 3 of [1].
@@ -616,7 +616,7 @@ def profit_ceiling(n, c, d=3, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def circle(n, c, d=2 / 3, R=1000, seed=0):
     """
     Generates a circle knapsack instance as described in section 3 of [1].
@@ -654,7 +654,7 @@ def circle(n, c, d=2 / 3, R=1000, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def multiple_strongly_correlated(n, c, k1, k2, d, R=1000, seed=0):
     """
     Generates a multiple strongly correlated knapsack instance as described in section 3 of [1].

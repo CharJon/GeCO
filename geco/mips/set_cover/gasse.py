@@ -6,7 +6,7 @@ import pyscipopt as scip
 from geco.mips.set_cover.generic import set_cover
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def gasse_instance(nrows, ncols, density, max_coef=100, seed=0):
     """
     Generates instance for set cover generation as described in [1].

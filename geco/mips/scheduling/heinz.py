@@ -1,7 +1,7 @@
 from geco.mips.scheduling.generic import *
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def heinz_params(number_of_facilities, number_of_tasks, seed=0):
     """Generates scheduling MIP instance params according to [1].
 
@@ -38,7 +38,7 @@ def heinz_params(number_of_facilities, number_of_tasks, seed=0):
     return generate_params(number_of_facilities, number_of_tasks, seed)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def heinz_instance(number_of_facilities, number_of_tasks, seed=0):
     """Generates scheduling MIP instance according to [1].
 

@@ -3,7 +3,7 @@ from networkx.utils import py_random_state
 from geco.mips.set_cover.generic import set_cover
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def yang_instance(m, seed=0):
     """
     Generates instance for set cover generation as described in [1].
@@ -29,7 +29,7 @@ def yang_instance(m, seed=0):
     return set_cover(*yang_params(m, seed))
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def yang_params(m, seed=0):
     """
     Generates instance params for set cover generation as described in [1].

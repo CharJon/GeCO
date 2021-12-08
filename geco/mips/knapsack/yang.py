@@ -5,7 +5,7 @@ from networkx.utils import py_random_state
 from geco.mips.knapsack.generic import knapsack
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def yang_params(n, seed=0):
     """
     Generates knapsack instance params according to [1].
@@ -43,7 +43,7 @@ def yang_params(n, seed=0):
     return profits, weights, capacity
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def yang_instance(n, seed=0):
     """
     Generates knapsack instance according to [1].
