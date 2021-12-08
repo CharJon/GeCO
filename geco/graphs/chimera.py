@@ -1,16 +1,14 @@
-import numpy as np
+import dwave_networkx as dwave
 import networkx as nx
 from networkx.utils import py_random_state, np_random_state
-from numpy.random import random
-import dwave_networkx as dwave
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def draw_intra_weight(seed=0):
     return seed.random() - 0.5
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def draw_inter_weight(seed=0):
     return seed.random() * 2 - 1
 
@@ -88,7 +86,7 @@ Parameterised graph generators
 """
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def selby_c(m, seed=0):
     """
     Generate Selby Chimera graph as described in section 7.3 in [1].
@@ -153,7 +151,7 @@ def in_same_chimera_tile(_from_nice, _to_nice):
     return _from_nice[y] == _to_nice[y] and _from_nice[x] == _to_nice[x]
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def dwave_chimera_graph(
     m,
     n=None,
@@ -205,7 +203,7 @@ def dwave_chimera_graph(
     return g
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def mgw(m=8, faulty=73, seed=0):
     """
     Generates McGeoch-Wang instances as described in [1].
