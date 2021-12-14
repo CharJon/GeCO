@@ -1,8 +1,9 @@
-import networkx as nx
 import math
 
+import networkx as nx
 
-def edgeweight_properties(graph):
+
+def edgeweight_properties(graph, weight_label="weight"):
     """
     Calculates properties of edge weights.
 
@@ -10,6 +11,8 @@ def edgeweight_properties(graph):
     ----------
     graph: nx.Graph
         Graph to calculate the properties from
+    weight_label:
+
 
     Returns
     -------
@@ -24,7 +27,7 @@ def edgeweight_properties(graph):
     min_weight = math.inf
     num_of_zero_weights = 0
     for u, v, d in graph.edges(data=True):
-        weight = d["weight"]
+        weight = d[weight_label]
         if weight > max_weight:
             max_weight = weight
         if weight < min_weight:
@@ -35,7 +38,7 @@ def edgeweight_properties(graph):
     return max_weight, min_weight, num_of_zero_weights
 
 
-def graph_properties(graph):
+def graph_properties(graph, weight_label="weight"):
     """
     Calculates properties of edge weights.
 
@@ -43,6 +46,9 @@ def graph_properties(graph):
     ----------
     graph: nx.Graph
         Graph to calculate the properties from
+    weight_label: str
+        Optional, which label to use as edge-weight
+        If None no edge weight related statistics get collected
 
     Returns
     -------
@@ -86,13 +92,11 @@ def graph_properties(graph):
 
     avg_degree = sum((deg for node, deg in graph.degree)) / graph.number_of_nodes()
     density = graph.number_of_edges() / (
-        (graph.number_of_nodes() * graph.number_of_nodes() - graph.number_of_nodes())
-        / 2
+            (graph.number_of_nodes() * graph.number_of_nodes() - graph.number_of_nodes())
+            / 2
     )
     planar, _ = nx.algorithms.check_planarity(graph)
-    max_edgeweight, min_edgeweight, num_of_zero_edgeweights = edgeweight_properties(
-        graph
-    )
+
     num_of_connected_components = nx.number_connected_components(graph)
     number_of_triangles = sum(nx.triangles(graph).values()) // 3
     max_degree = max(degree for _, degree in graph.degree())
@@ -102,15 +106,12 @@ def graph_properties(graph):
     average_clustering_coeff = nx.average_clustering(graph)
     max_k_core = max(nx.core_number(graph).values())
 
-    return {
+    d = {
         "num_nodes": graph.number_of_nodes(),
         "num_edges": graph.number_of_edges(),
         "avg_degree": avg_degree,
         "density": density,
         "planar": planar,
-        "max_edgeweight": max_edgeweight,
-        "min_edgeweight": min_edgeweight,
-        "num_of_zero_edgeweights": num_of_zero_edgeweights,
         "num_of_connected_components": num_of_connected_components,
         "max_degree": max_degree,
         "assortativity_coeff": assortativity_coeff,
@@ -118,3 +119,16 @@ def graph_properties(graph):
         "average_clustering_coeff": average_clustering_coeff,
         "max_k_core": max_k_core,
     }
+
+    if weight_label:
+        max_edgeweight, min_edgeweight, num_of_zero_edgeweights = edgeweight_properties(
+            graph, weight_label
+        )
+
+        d = {**d,
+             "max_edgeweight": max_edgeweight,
+             "min_edgeweight": min_edgeweight,
+             "num_of_zero_edgeweights": num_of_zero_edgeweights
+             }
+
+    return d
