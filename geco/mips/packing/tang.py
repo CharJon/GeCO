@@ -3,7 +3,7 @@ from networkx.utils import py_random_state
 from geco.mips.packing.generic import *
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def tang_instance(n, m, binary=False, seed=0):
     """Generates a packing instance as described in A.2 in [1].
 
@@ -29,7 +29,7 @@ def tang_instance(n, m, binary=False, seed=0):
     return packing(n, m, *tang_params(n, m, binary, seed), binary, name="Tang Packing")
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def tang_params(n, m, binary, seed=0):
     """Generates a packing instance as described in A.2 in [1].
 

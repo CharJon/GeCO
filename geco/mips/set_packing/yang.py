@@ -3,7 +3,7 @@ from networkx.utils import py_random_state
 from geco.mips.set_packing.generic import *
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def yang_instance(m, seed=0):
     """
     Generates a set packing instance following [1].
@@ -29,7 +29,7 @@ def yang_instance(m, seed=0):
     return set_packing(m, *yang_parameters(m, seed), name="Yang Set Packing")
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def yang_parameters(m, seed=0):
     """
     Generates a set packing instance following [1].

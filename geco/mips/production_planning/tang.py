@@ -3,7 +3,7 @@ from networkx.utils import py_random_state
 from geco.mips.production_planning.generic import *
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def tang_instance(T, seed=0):
     """Generates a production planning instance as described in A.2 in [1].
 
@@ -29,7 +29,7 @@ def tang_instance(T, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def tang_params(T, seed=0):
     """Generates production planning instance params as described in A.2 in [1].
 

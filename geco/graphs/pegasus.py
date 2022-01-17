@@ -50,7 +50,7 @@ def in_same_chimera_tile(_from_nice, _to_nice):
     return _from_nice[y] == _to_nice[y] and _from_nice[x] == _to_nice[x]
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def dwave_pegasus_graph(
     size,
     draw_inter_weight=draw_inter_weight,

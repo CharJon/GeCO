@@ -4,7 +4,7 @@ from networkx.utils import py_random_state
 from geco.mips.max_cut.generic import naive
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def tang_instance(n, m, seed=0):
     """
     Generates a max-cut instance as described in A.2 in [1].
@@ -36,7 +36,7 @@ def tang_instance(n, m, seed=0):
     return model
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def tang_params(graph, seed=0):
     """
     Generates max-cut instance params as described in A.2 in [1].

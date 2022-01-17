@@ -3,7 +3,7 @@ from geco.mips.facility_location.generic import capacitated_facility_location
 from networkx.utils import py_random_state
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def cornuejols_instance(n_customers, n_facilities, ratio, seed=0):
     """
     Generates a Capacitated Facility Location MIP formulation following [1].
@@ -37,7 +37,7 @@ def cornuejols_instance(n_customers, n_facilities, ratio, seed=0):
     )
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def cornuejols_params(n_customers, n_facilities, ratio, seed=0):
     """
     Generates a Capacitated Facility Location instance params following [1].

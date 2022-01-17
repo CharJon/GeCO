@@ -1,12 +1,12 @@
 import numpy as np
-import scipy
-from networkx.utils import np_random_state
 import pyscipopt as scip
+from networkx.utils import np_random_state
+import scipy.sparse
 
 from geco.mips.set_cover.generic import set_cover
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def gasse_instance(nrows, ncols, density, max_coef=100, seed=0):
     """
     Generates instance for set cover generation as described in [1].
@@ -40,7 +40,7 @@ def gasse_instance(nrows, ncols, density, max_coef=100, seed=0):
     )
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
     """
     Generates instance params for set cover generation as described in [1],
@@ -93,14 +93,14 @@ def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
 
         # empty column, fill with random rows
         if i >= nrows:
-            indices[i : i + n] = seed.choice(nrows, size=n, replace=False)
+            indices[i: i + n] = seed.choice(nrows, size=n, replace=False)
 
         # partially filled column, complete with random rows among remaining ones
         elif i + n > nrows:
             remaining_rows = np.setdiff1d(
                 np.arange(nrows), indices[i:nrows], assume_unique=True
             )
-            indices[nrows : i + n] = seed.choice(
+            indices[nrows: i + n] = seed.choice(
                 remaining_rows, size=i + n - nrows, replace=False
             )
 
@@ -118,5 +118,5 @@ def gasse_params(nrows, ncols, density, max_coef=100, seed=0):
     indptr = A.indptr
 
     costs = list(c)
-    sets = [list(indices[indptr[i] : indptr[i + 1]]) for i in range(nrows)]
+    sets = [list(indices[indptr[i]: indptr[i + 1]]) for i in range(nrows)]
     return costs, sets

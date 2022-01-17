@@ -4,7 +4,7 @@ from networkx.utils import np_random_state
 from geco.mips.combinatorial_auction.generic import combinatorial_auction
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def gasse_instance(
     n_items=100,
     n_bids=500,
@@ -84,7 +84,7 @@ def gasse_instance(
     )
 
 
-@np_random_state(-1)
+@np_random_state("seed")
 def gasse_params(
     n_items=100,
     n_bids=500,

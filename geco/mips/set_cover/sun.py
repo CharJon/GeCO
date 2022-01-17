@@ -27,7 +27,7 @@ def _sun_sets(n, m, seed, initial_sets=None):
     return sets
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def sun_instance(n, m, seed=0):
     """
     Generates instance for set cover generation as described in [1].
@@ -55,7 +55,7 @@ def sun_instance(n, m, seed=0):
     return set_cover(*sun_params(n, m, seed))
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def sun_params(n, m, seed=0):
     """
     Generates instance params for set cover generation as described in [1].
@@ -85,7 +85,7 @@ def sun_params(n, m, seed=0):
     return _sun_costs(n, seed), _sun_sets(n, m, seed, initial_sets=None)
 
 
-@py_random_state(-1)
+@py_random_state("seed")
 def expand_sun_params(new_params, base_result, seed=0):
     """
     Implements the expansion from an existing set cover instance as described in [1].
