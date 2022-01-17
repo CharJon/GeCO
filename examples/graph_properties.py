@@ -6,7 +6,7 @@ from geco.graphs import utilities as util
 
 
 def skip_first_line(path):
-    f = open(path, 'r')
+    f = open(path, "r")
     first_line = f.readline()
     return f
 
@@ -18,4 +18,4 @@ if __name__ == "__main__":
     g = nx.read_weighted_edgelist(skip_first_line("/path/to/some/edgelist.el"))
 
     g_props = util.graph_properties(g)
-    json.dump(g_props, open("res.json", 'w'))
+    json.dump(g_props, open("res.json", "w"))

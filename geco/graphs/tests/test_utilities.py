@@ -17,6 +17,23 @@ def test_edge_properties():
 
 
 @pytest.mark.parametrize("n", [3, 10, 100])
+def test_parallel_edge_finding(n):
+    graphs_answers = [
+        (nx.Graph(), 0),
+        (nx.DiGraph(), 0),
+        (nx.MultiGraph(), n - 3),
+        (nx.MultiDiGraph(), n - 3),
+    ]
+    for node in range(2, n):
+        for parallel_edge in range(1, node):
+            for graph, _ in graphs_answers:
+                graph.add_edge(1, node)
+
+    for graph, answer in graphs_answers:
+        assert len(find_parallel_edges(graph)) == answer
+
+
+@pytest.mark.parametrize("n", [3, 10, 100])
 def test_graph_properties(n):
     graph = nx.path_graph(n)
     for u, v, data in graph.edges(data=True):
@@ -37,3 +54,5 @@ def test_graph_properties(n):
     assert properties["number_of_triangles"] == 0
     assert properties["max_k_core"] == 1
     assert properties["average_clustering_coeff"] == 0
+    assert properties["number_of_selfloop_nodes"] == 0
+    assert properties["number_of_selfloops"] == 0

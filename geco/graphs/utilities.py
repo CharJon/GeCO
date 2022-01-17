@@ -38,6 +38,50 @@ def edgeweight_properties(graph, weight_label="weight"):
     return max_weight, min_weight, num_of_zero_weights
 
 
+def find_parallel_edges(graph):
+    """
+    Finds parallel edges (not total edges) between nodes and their amount.
+
+    Parameters
+    ----------
+    graph: nx.Graph
+        Graph to find parallel edges in
+
+    Returns
+    -------
+    parallel_edges: list
+        Edge as tuple, followed by number of parallel edges
+
+    Notes
+    -----
+    Accepts both undirected and directed graphs.
+    If the graph is undirected, this implementation finds all parallel
+    edges twice (once from both vertices), then filters out the duplicate.
+    """
+    all_parallel_edges = []
+    for node in graph:
+        for neighbor in graph.neighbors(node):
+            num_of_edges = graph.number_of_edges(node, neighbor)
+            if num_of_edges > 1:
+                all_parallel_edges.append(((node, neighbor), num_of_edges - 1))
+
+    if not graph.is_directed():
+        filtered_parallel_edges = __remove_duplicate_parallel_edges(all_parallel_edges)
+        return filtered_parallel_edges
+
+    return all_parallel_edges
+
+
+def __remove_duplicate_parallel_edges(all_parallel_edges):
+    filtered_edges, seen = [], set()
+    for parallel_edge_data in all_parallel_edges:
+        edge = tuple(parallel_edge_data[0])
+        if edge not in seen and tuple(reversed(parallel_edge_data[0])) not in seen:
+            seen.add(edge)
+            filtered_edges.append(parallel_edge_data)
+    return filtered_edges
+
+
 def graph_properties(graph, weight_label="weight"):
     """
     Calculates properties of edge weights.
@@ -82,6 +126,10 @@ def graph_properties(graph, weight_label="weight"):
             Average clustering coefficient as defined in [2]
         max_k_core: int
             Maximum k-core as defined in [3]
+        number_of_selfloop_nodes: int
+            Number of nodes that have a self-loop
+        number_of_selfloops: int
+            Total number of selfloops in the graph
 
     References
     ----------
@@ -103,8 +151,12 @@ def graph_properties(graph, weight_label="weight"):
     assortativity_coeff = (
         None  # TODO (JC): bug - nx.degree_assortativity_coefficient(g)
     )
-    average_clustering_coeff = nx.average_clustering(graph)
-    max_k_core = max(nx.core_number(graph).values())
+
+    average_clustering_coeff = nx.average_clustering(g)
+    max_k_core = max(nx.core_number(g).values())
+    number_of_selfloop_nodes = len(list(nx.nodes_with_selfloops(g)))
+    number_of_selfloops = len(list(nx.selfloop_edges(g)))
+
 
     d = {
         "num_nodes": graph.number_of_nodes(),
@@ -118,6 +170,8 @@ def graph_properties(graph, weight_label="weight"):
         "number_of_triangles": number_of_triangles,
         "average_clustering_coeff": average_clustering_coeff,
         "max_k_core": max_k_core,
+        "number_of_selfloop_nodes": number_of_selfloop_nodes,
+        "number_of_selfloops": number_of_selfloops,
     }
 
     if weight_label:
