@@ -19,6 +19,7 @@ def test_lavrov_graph_properties(k):
     g = lavrov_graph(k)
     assert g.number_of_nodes() == k * 2
     assert g.number_of_edges() == k * 4
+    assert all(d == 4 for v, d in g.degree)
     assert sum(1 for _ in nx.connected_components(g)) == 1
 
 
