@@ -21,9 +21,11 @@ def lavrov_graph(
     ----------
     ..[1] https://math.stackexchange.com/questions/2811736/an-upper-bound-on-the-number-of-chordless-cycles-in-an-undirected-graph/2811761#2811761
     """
+    if k <= 2:
+        raise ValueError("k needs to be >= 3")
 
     g = nx.Graph()
-    g.add_nodes_from([0,2 * k - 1])
+    g.add_nodes_from([0, 2 * k - 1])
 
     for i in range(0, k):
         g.add_edge(i, (i + 1) % k)

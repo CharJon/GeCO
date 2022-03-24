@@ -147,15 +147,15 @@ def graph_properties(graph, weight_label="weight"):
 
     num_of_connected_components = nx.number_connected_components(graph)
     number_of_triangles = sum(nx.triangles(graph).values()) // 3
-    max_degree = max(degree for _, degree in graph.degree())
+    max_degree = max(degree for _, degree in graph.degree)
     assortativity_coeff = (
         None  # TODO (JC): bug - nx.degree_assortativity_coefficient(g)
     )
 
-    average_clustering_coeff = nx.average_clustering(g)
-    max_k_core = max(nx.core_number(g).values())
-    number_of_selfloop_nodes = len(list(nx.nodes_with_selfloops(g)))
-    number_of_selfloops = len(list(nx.selfloop_edges(g)))
+    average_clustering_coeff = nx.average_clustering(graph)
+    max_k_core = max(nx.core_number(graph).values())
+    number_of_selfloop_nodes = len(list(nx.nodes_with_selfloops(graph)))
+    number_of_selfloops = len(list(nx.selfloop_edges(graph)))
 
 
     d = {
