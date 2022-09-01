@@ -1,4 +1,4 @@
-from geco.graphs.biqmac_rudy import *
+from geco.graphs.biqmac import *
 from geco.graphs.utilities import edgeweight_properties, graph_properties
 
 import pytest
