@@ -37,8 +37,6 @@ def test_g05():
     g = g05_graph(100)
     g_info = graph_properties(g, weight_label=None)
 
-    assert g_info["density"] < 0.6
-    assert g_info["density"] > 0.4
     assert g_info["num_nodes"] == 100
     assert g_info["number_of_selfloops"] == 0
 
