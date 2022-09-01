@@ -11,6 +11,7 @@ def test_generate_weighted_random_graph():
     assert g_info["density"] == 0.5
     assert g_info["num_nodes"] == 100
     assert g_info["num_of_zero_edgeweights"] == 241
+    assert g_info["number_of_selfloops"] == 0
 
     # check that setting seed works
     g = generate_weighted_random_graph(100, 0.5, zero_to_ten, 0, True)
@@ -19,6 +20,7 @@ def test_generate_weighted_random_graph():
     assert g_info["density"] == 0.5
     assert g_info["num_nodes"] == 100
     assert g_info["num_of_zero_edgeweights"] == 241
+    assert g_info["number_of_selfloops"] == 0
 
     # test for discarding zero wedges
     g = generate_weighted_random_graph(100, 0.5, zero_to_ten, 0, False)
@@ -28,6 +30,7 @@ def test_generate_weighted_random_graph():
     assert g_info["num_edges"] == 2234
     assert g_info["num_nodes"] == 100
     assert g_info["num_of_zero_edgeweights"] == 0
+    assert g_info["number_of_selfloops"] == 0
 
 
 def test_g05():
@@ -37,6 +40,7 @@ def test_g05():
     assert g_info["density"] < 0.6
     assert g_info["density"] > 0.4
     assert g_info["num_nodes"] == 100
+    assert g_info["number_of_selfloops"] == 0
 
 
 def test_pm1s():
