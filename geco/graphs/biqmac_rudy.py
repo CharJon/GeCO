@@ -28,11 +28,16 @@ def generate_weighted_random_graph(n, d, weight_func, seed=0, keep_zero_edges=Tr
 
     m = int(d * (n * (n - 1)) / 2)
 
-    graph = nx.gnm_random_graph(n, m, seed)
+    if d <= 0.1:
+        # for sparse graphs
+        graph = nx.gnm_random_graph(n, m, seed)
+    else:
+        # for dense graphs
+        graph = nx.dense_gnm_random_graph(n, m, seed)
     random.seed(seed)
 
     for e in graph.edges:
-        w = weight_func(seed)
+        w = weight_func()
 
         if w != 0 or keep_zero_edges:
             graph.add_edge(e[0], e[1], weight=w)
@@ -54,7 +59,7 @@ def zero_to_ten():
     return random.randint(0, 10)
 
 
-def g05_n(n, seed=0):
+def g05_graph(n, seed=0):
     """
     Generates a g05 graph as described in [1], using networkx
 
@@ -80,7 +85,7 @@ def g05_n(n, seed=0):
     return graph
 
 
-def pm1s_graph(n, seed, keep_zero_edges=True):
+def pm1s_graph(n, seed=0, keep_zero_edges=True):
     """
     Generates a pm1s graph as described in [1], using networkx
 
@@ -105,7 +110,7 @@ def pm1s_graph(n, seed, keep_zero_edges=True):
     return generate_weighted_random_graph(n, 0.1, negative_one_to_one, seed, keep_zero_edges)
 
 
-def pm1d_graph(n, seed, keep_zero_edges=True):
+def pm1d_graph(n, seed=0, keep_zero_edges=True):
     """
     Generates a pm1d graph as described in [1], using networkx
 
@@ -130,7 +135,7 @@ def pm1d_graph(n, seed, keep_zero_edges=True):
     return generate_weighted_random_graph(n, 0.99, negative_one_to_one, seed, keep_zero_edges)
 
 
-def wd_graph(n, d, seed, keep_zero_edges=True):
+def wd_graph(n, d, seed=0, keep_zero_edges=True):
     """
     Generates a wd_n graph as described in [1], using networkx
 
@@ -157,7 +162,7 @@ def wd_graph(n, d, seed, keep_zero_edges=True):
     return generate_weighted_random_graph(n, d, negative_ten_to_ten, seed, keep_zero_edges)
 
 
-def pwd_graph(n, d, seed, keep_zero_edges=True):
+def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     """
     Generates a pwd_n graph as described in [1], using networkx
 
