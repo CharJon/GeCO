@@ -101,7 +101,7 @@ def pm1s_graph(n, seed=0, keep_zero_edges=True):
     Returns
     -------
     graph: nx.Graph
-        The generated g05 graph with n nodes.
+        The generated pm1s graph.
 
     References
     ----------
@@ -126,7 +126,7 @@ def pm1d_graph(n, seed=0, keep_zero_edges=True):
     Returns
     -------
     graph: nx.Graph
-        The generated g05 graph with n nodes.
+        The generated pm1d graph.
 
     References
     ----------
@@ -153,7 +153,7 @@ def wd_graph(n, d, seed=0, keep_zero_edges=True):
     Returns
     -------
     graph: nx.Graph
-        The generated g05 graph with n nodes.
+        The generated w graph.
 
     References
     ----------
@@ -180,7 +180,7 @@ def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     Returns
     -------
     graph: nx.Graph
-        The generated g05 graph with n nodes.
+        The generated pw graph.
 
     References
     ----------
@@ -206,8 +206,28 @@ def random_ones(n):
             num_minus_ones -= 1
 
 
-def torus(n, seed):
-    g = networkx.Graph()
+def t2g_graph(n, seed=0):
+    """
+    Generates a 2d torus graph as described by [1]
+
+    Parameters
+    ----------
+    n: int
+        Size of the grid, number of nodes ill be n*n
+    seed:
+        Seed for random numbers
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated t2g graph.
+
+    References
+    ----------
+    ..[1] https://biqmac.aau.at/biqmaclib.html
+
+    """
+    g = nx.Graph()
     random.seed(seed)
 
     for i in range(n):

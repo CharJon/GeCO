@@ -100,3 +100,12 @@ def test_wd():
     assert g_info["density"] < 0.6
     assert g_info["num_nodes"] == 100
     assert g_info["num_of_zero_edgeweights"] == 0
+
+
+def test_t2g():
+    g = t2g_graph(100)
+    g_info = graph_properties(g)
+
+    assert g_info["num_nodes"] == 10000
+    assert g_info["max_degree"] == 4
+    assert g_info["avg_degree"] == 4
