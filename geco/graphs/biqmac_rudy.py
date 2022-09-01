@@ -187,3 +187,41 @@ def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
     return generate_weighted_random_graph(n, d, zero_to_ten, seed, keep_zero_edges)
+
+
+def node_name(i, j):
+    return f"({i}, {j})"
+
+
+def random_ones(n):
+    num_plus_ones = n * n
+    num_minus_ones = n * n
+
+    while num_minus_ones + num_plus_ones > 0:
+        number = random.choices([1, -1], weights=[num_plus_ones, num_minus_ones], k=1)
+        yield number[0]
+        if number[0] == 1:
+            num_plus_ones -= 1
+        else:
+            num_minus_ones -= 1
+
+
+def torus(n, seed):
+    g = networkx.Graph()
+    random.seed(seed)
+
+    for i in range(n):
+        for j in range(n):
+            g.add_node(node_name(i, j))
+
+    num_generator = (x for x in random_ones(n))
+
+    for i in range(n):
+        for j in range(n):
+            next_index = j + 1 if j + 1 < n else 0
+            weight = next(num_generator)
+            g.add_edge(node_name(i, j), node_name(i, next_index), weight=weight)
+            weight = next(num_generator)
+            g.add_edge(node_name(j, i), node_name(next_index, i), weight=weight)
+
+    return g
