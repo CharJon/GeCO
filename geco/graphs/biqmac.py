@@ -4,7 +4,7 @@ import random
 from networkx.utils import py_random_state
 
 
-def generate_weighted_random_graph(n, d, weight_func, seed=0, keep_zero_edges=True):
+def generate_weighted_random_graph(n, d, weight_func, nx_seed=0, keep_zero_edges=True):
     """
     Generate a random weighted graph with 'exact' target density using specified weight function.
 
@@ -16,7 +16,7 @@ def generate_weighted_random_graph(n, d, weight_func, seed=0, keep_zero_edges=Tr
         target density
     weight_func: function() -> number
       Function which returns an edge weight
-    seed: int
+    nx_seed: int
         Seed for random generation
     keep_zero_edges: bool
         If True zero edges are kept in the graph, if False zero weight edges are discarded
@@ -31,9 +31,9 @@ def generate_weighted_random_graph(n, d, weight_func, seed=0, keep_zero_edges=Tr
     m = int(d * (n * (n - 1)) / 2)
 
     if d <= 0.1:
-        graph = nx.gnm_random_graph(n, m, seed)
+        graph = nx.gnm_random_graph(n, m, nx_seed)
     else:
-        graph = nx.dense_gnm_random_graph(n, m, seed)
+        graph = nx.dense_gnm_random_graph(n, m, nx_seed)
 
     for u, v in graph.edges:
         w = weight_func()
@@ -58,6 +58,7 @@ def negative_ten_to_ten(seed):
 
 @py_random_state("seed")
 def zero_to_ten(seed):
+    print([seed.randint(0, 10) for _ in range(100)])
     return seed.randint(0, 10)
 
 
@@ -88,6 +89,7 @@ def g05_graph(n, seed=0):
     return graph
 
 
+@py_random_state("seed")
 def pm1s_graph(n, seed=0, keep_zero_edges=True):
     """
     Generates a pm1s graph as described in [1], using networkx
@@ -110,9 +112,10 @@ def pm1s_graph(n, seed=0, keep_zero_edges=True):
     ----------
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
-    return generate_weighted_random_graph(n, 0.1, negative_one_to_one, seed, keep_zero_edges)
+    return generate_weighted_random_graph(n, 0.1, lambda: negative_one_to_one(seed), seed, keep_zero_edges)
 
 
+@py_random_state("seed")
 def pm1d_graph(n, seed=0, keep_zero_edges=True):
     """
     Generates a pm1d graph as described in [1], using networkx
@@ -135,9 +138,10 @@ def pm1d_graph(n, seed=0, keep_zero_edges=True):
     ----------
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
-    return generate_weighted_random_graph(n, 0.99, negative_one_to_one, seed, keep_zero_edges)
+    return generate_weighted_random_graph(n, 0.99, lambda: negative_one_to_one(seed), seed, keep_zero_edges)
 
 
+@py_random_state("seed")
 def wd_graph(n, d, seed=0, keep_zero_edges=True):
     """
     Generates a wd_n graph as described in [1], using networkx
@@ -162,9 +166,10 @@ def wd_graph(n, d, seed=0, keep_zero_edges=True):
     ----------
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
-    return generate_weighted_random_graph(n, d, negative_ten_to_ten, seed, keep_zero_edges)
+    return generate_weighted_random_graph(n, d, lambda: negative_ten_to_ten(seed), seed, keep_zero_edges)
 
 
+@py_random_state("seed")
 def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     """
     Generates a pwd_n graph as described in [1], using networkx
@@ -189,7 +194,7 @@ def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     ----------
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
-    return generate_weighted_random_graph(n, d, zero_to_ten, seed, keep_zero_edges)
+    return generate_weighted_random_graph(n, d, lambda: zero_to_ten(seed), seed, keep_zero_edges)
 
 
 def node_name(i, j):

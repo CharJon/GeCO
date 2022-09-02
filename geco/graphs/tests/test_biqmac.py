@@ -1,33 +1,29 @@
 from geco.graphs.biqmac import *
-from geco.graphs.utilities import edgeweight_properties, graph_properties
-
-import pytest
+from geco.graphs.utilities import graph_properties
 
 
 def test_generate_weighted_random_graph():
-    g = generate_weighted_random_graph(100, 0.5, zero_to_ten, 0, True)
+    seed = 0
+    r1 = random.Random(seed)
+    r2 = random.Random(seed)
+    g_1 = generate_weighted_random_graph(100, 0.5, lambda: zero_to_ten(r1), 0, True)
+    g_2 = generate_weighted_random_graph(100, 0.5, lambda: zero_to_ten(r2), 0, True)
+    for g in (g_1, g_2):
+        g_info = graph_properties(g)
+
+        assert g_info["density"] == 0.5
+        assert g_info["num_nodes"] == 100
+        assert g_info["number_of_selfloops"] == 0
+    assert g_1.number_of_edges() == g_2.number_of_edges()
+
+
+def test_generate_weighted_random_graph_no_zeros():
+    seed = 0
+    r = random.Random(seed)
+    g = generate_weighted_random_graph(100, 0.5, lambda: zero_to_ten(r), 0, False)
     g_info = graph_properties(g)
 
-    assert g_info["density"] == 0.5
-    assert g_info["num_nodes"] == 100
-    assert g_info["num_of_zero_edgeweights"] == 241
-    assert g_info["number_of_selfloops"] == 0
-
-    # check that setting seed works
-    g = generate_weighted_random_graph(100, 0.5, zero_to_ten, 0, True)
-    g_info = graph_properties(g)
-
-    assert g_info["density"] == 0.5
-    assert g_info["num_nodes"] == 100
-    assert g_info["num_of_zero_edgeweights"] == 241
-    assert g_info["number_of_selfloops"] == 0
-
-    # test for discarding zero wedges
-    g = generate_weighted_random_graph(100, 0.5, zero_to_ten, 0, False)
-    g_info = graph_properties(g)
-
-    assert g_info["density"] < 0.5
-    assert g_info["num_edges"] == 2234
+    assert g_info["density"] <= 0.5
     assert g_info["num_nodes"] == 100
     assert g_info["num_of_zero_edgeweights"] == 0
     assert g_info["number_of_selfloops"] == 0
