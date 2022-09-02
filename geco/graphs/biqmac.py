@@ -58,7 +58,6 @@ def negative_ten_to_ten(seed):
 
 @py_random_state("seed")
 def zero_to_ten(seed):
-    print([seed.randint(0, 10) for _ in range(100)])
     return seed.randint(0, 10)
 
 
