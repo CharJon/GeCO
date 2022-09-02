@@ -44,10 +44,12 @@ def test_pm1s():
     assert g_info["density"] == 0.1
     assert g_info["num_nodes"] == 100
 
+
+def test_pm1s_no_zeros():
     g = pm1s_graph(100, 0, False)
     g_info = graph_properties(g)
 
-    assert g_info["density"] < 0.1
+    assert g_info["density"] <= 0.1
     assert g_info["num_nodes"] == 100
     assert g_info["num_of_zero_edgeweights"] == 0
 
@@ -59,10 +61,12 @@ def test_pm1d():
     assert g_info["density"] == 0.99
     assert g_info["num_nodes"] == 200
 
+
+def test_pm1d_no_zeros():
     g = pm1d_graph(200, 0, False)
     g_info = graph_properties(g)
 
-    assert g_info["density"] < 0.99
+    assert g_info["density"] <= 0.99
     assert g_info["num_nodes"] == 200
     assert g_info["num_of_zero_edgeweights"] == 0
 
@@ -75,6 +79,8 @@ def test_pwd():
     assert g_info["num_nodes"] == 100
     assert g_info["min_edgeweight"] >= 0
 
+
+def test_pwd_no_zeros():
     g = pwd_graph(100, 0.3, 0, False)
     g_info = graph_properties(g)
 

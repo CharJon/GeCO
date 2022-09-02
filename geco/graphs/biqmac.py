@@ -47,8 +47,8 @@ def generate_weighted_random_graph(n, d, weight_func, nx_seed=0, keep_zero_edges
 
 
 @py_random_state("seed")
-def negative_one_to_one(seed):
-    return seed.randint(-1, 1)
+def one_or_minus_one(seed):
+    return seed.choices([1, -1], k=1)[0]
 
 
 @py_random_state("seed")
@@ -111,7 +111,7 @@ def pm1s_graph(n, seed=0, keep_zero_edges=True):
     ----------
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
-    return generate_weighted_random_graph(n, 0.1, lambda: negative_one_to_one(seed), seed, keep_zero_edges)
+    return generate_weighted_random_graph(n, 0.1, lambda: one_or_minus_one(seed), seed, keep_zero_edges)
 
 
 @py_random_state("seed")
@@ -137,7 +137,7 @@ def pm1d_graph(n, seed=0, keep_zero_edges=True):
     ----------
     ..[1] https://biqmac.aau.at/biqmaclib.html
     """
-    return generate_weighted_random_graph(n, 0.99, lambda: negative_one_to_one(seed), seed, keep_zero_edges)
+    return generate_weighted_random_graph(n, 0.99, lambda: one_or_minus_one(seed), seed, keep_zero_edges)
 
 
 @py_random_state("seed")
