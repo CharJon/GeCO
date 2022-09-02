@@ -1,10 +1,12 @@
 import networkx as nx
 import random
 
+from networkx.utils import py_random_state
+
 
 def generate_weighted_random_graph(n, d, weight_func, seed=0, keep_zero_edges=True):
     """
-    Generate a random weighted graph with target density using specified weight function.
+    Generate a random weighted graph with 'exact' target density using specified weight function.
 
     Parameters
     ----------
@@ -29,36 +31,37 @@ def generate_weighted_random_graph(n, d, weight_func, seed=0, keep_zero_edges=Tr
     m = int(d * (n * (n - 1)) / 2)
 
     if d <= 0.1:
-        # for sparse graphs
         graph = nx.gnm_random_graph(n, m, seed)
     else:
-        # for dense graphs
         graph = nx.dense_gnm_random_graph(n, m, seed)
-    random.seed(seed)
 
-    for e in graph.edges:
+    for u, v in graph.edges:
         w = weight_func()
 
         if w != 0 or keep_zero_edges:
-            graph.add_edge(e[0], e[1], weight=w)
+            graph.add_edge(u, v, weight=w)
         else:
-            graph.remove_edge(e[0], e[1])
+            graph.remove_edge(u, v)
 
     return graph
 
 
-def negative_one_to_one():
-    return random.randint(-1, 1)
+@py_random_state("seed")
+def negative_one_to_one(seed):
+    return seed.randint(-1, 1)
 
 
-def negative_ten_to_ten():
-    return random.randint(-10, 10)
+@py_random_state("seed")
+def negative_ten_to_ten(seed):
+    return seed.randint(-10, 10)
 
 
-def zero_to_ten():
-    return random.randint(0, 10)
+@py_random_state("seed")
+def zero_to_ten(seed):
+    return seed.randint(0, 10)
 
 
+@py_random_state("seed")
 def g05_graph(n, seed=0):
     """
     Generates a g05 graph as described in [1], using networkx
