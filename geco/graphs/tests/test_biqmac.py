@@ -61,7 +61,7 @@ def test_pm1d():
     g_info = graph_properties(g)
 
     assert g_info["density"] == 0.99
-    assert g_info["num_nodes"] == 2000
+    assert g_info["num_nodes"] == 200
 
     g = pm1d_graph(200, 0, False)
     g_info = graph_properties(g)
