@@ -54,6 +54,12 @@ def test_pm1s_no_zeros():
     assert g_info["num_of_zero_edgeweights"] == 0
 
 
+def test_pm1s_save():
+    i = 140
+    g = pm1s_graph(i, 0, False)
+    nx.write_weighted_edgelist(g, f"pm1s_{i}.el")
+
+
 def test_pm1d():
     g = pm1d_graph(200, 0)
     g_info = graph_properties(g)
