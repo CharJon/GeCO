@@ -60,6 +60,10 @@ def negative_ten_to_ten(seed):
 def zero_to_ten(seed):
     return seed.randint(0, 10)
 
+@py_random_state("seed")
+def random_gauss(seed, mu, sigma):
+    return seed.gauss(mu, sigma)
+
 
 @py_random_state("seed")
 def g05_graph(n, seed=0):
@@ -213,14 +217,17 @@ def random_ones(n):
             num_minus_ones -= 1
 
 
-def t2g_graph(n, seed=0):
+@py_random_state("seed")
+def t2g_base(n, weight_func, seed=0, keep_zero_edges=True):
     """
-    Generates a 2d torus graph as described by [1]
+    Generates a 2d torus graph using the given weight func
 
     Parameters
     ----------
     n: int
         Size of the grid, number of nodes ill be n*n
+    weight_func: function(seed) -> number
+        Function for edge weights
     seed:
         Seed for random numbers
 
@@ -228,10 +235,6 @@ def t2g_graph(n, seed=0):
     -------
     graph: nx.Graph
         The generated t2g graph.
-
-    References
-    ----------
-    ..[1] https://biqmac.aau.at/biqmaclib.html
 
     """
     g = nx.Graph()
@@ -241,18 +244,46 @@ def t2g_graph(n, seed=0):
         for j in range(n):
             g.add_node(node_name(i, j))
 
-    num_generator = (x for x in random_ones(n))
-
     for i in range(n):
         for j in range(n):
             next_index = j + 1 if j + 1 < n else 0
-            weight = next(num_generator)
-            g.add_edge(node_name(i, j), node_name(i, next_index), weight=weight)
-            weight = next(num_generator)
-            g.add_edge(node_name(j, i), node_name(next_index, i), weight=weight)
+
+            w = weight_func()
+            if w != 0 or keep_zero_edges:
+                g.add_edge(node_name(i, j), node_name(i, next_index), weight=w)
+
+            w = weight_func()
+            if w != 0 or keep_zero_edges:
+                g.add_edge(node_name(j, i), node_name(next_index, i), weight=w)
 
     return g
 
+@py_random_state("seed")
+def t2g_graph(n, seed=0, keep_zero_edges=True):
+    """
+       Generates a 2d torus graph using with gaussian weight as described by [1]
+
+       Parameters
+       ----------
+       n: int
+           Size of the grid, number of nodes ill be n*n
+       weight_func: function(seed) -> number
+           Function for edge weights
+       seed:
+           Seed for random numbers
+
+       Returns
+       -------
+       graph: nx.Graph
+           The generated t2g graph.
+
+       References
+       ----------
+       ..[1] https://biqmac.aau.at/biqmaclib.html
+
+       """
+
+    return t2g_base(n, lambda: random_gauss(seed, 0.9, 1), seed, keep_zero_edges)
 
 def t2g_one(n, seed=0):
     """
