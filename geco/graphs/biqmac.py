@@ -252,3 +252,44 @@ def t2g_graph(n, seed=0):
             g.add_edge(node_name(j, i), node_name(next_index, i), weight=weight)
 
     return g
+
+
+def t2g_one(n, seed=0):
+    """
+    Generates a 2d torus graph as described by [1]
+
+    Parameters
+    ----------
+    n: int
+        Size of the grid, number of nodes ill be n*n
+    seed:
+        Seed for random numbers
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated t2g graph.
+
+    References
+    ----------
+    ..[1] https://biqmac.aau.at/biqmaclib.html
+
+    """
+    g = nx.Graph()
+    random.seed(seed)
+
+    for i in range(n):
+        for j in range(n):
+            g.add_node(node_name(i, j))
+
+    num_generator = (x for x in random_ones(n))
+
+    for i in range(n):
+        for j in range(n):
+            next_index = j + 1 if j + 1 < n else 0
+            weight = next(num_generator)
+            g.add_edge(node_name(i, j), node_name(i, next_index), weight=weight)
+            weight = next(num_generator)
+            g.add_edge(node_name(j, i), node_name(next_index, i), weight=weight)
+
+    return g
