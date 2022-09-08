@@ -284,7 +284,7 @@ def t2g_graph(n, seed=0, keep_zero_edges=True):
 
        """
 
-    return t2g_base(n, lambda: int(10 ** 5 * random_gauss(seed, 0, 1)), keep_zero_edges)
+    return t2g_base(n, lambda: round(10 ** 5 * random_gauss(seed, 0, 1)), keep_zero_edges)
 
 
 @py_random_state("seed")
