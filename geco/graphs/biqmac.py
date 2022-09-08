@@ -205,12 +205,13 @@ def node_name(i, j):
     return f"({i}, {j})"
 
 
-def random_ones(n):
-    num_plus_ones = n * n
-    num_minus_ones = n * n
+@py_random_state("seed")
+def equal_many_ones(n, seed):
+    num_plus_ones = n
+    num_minus_ones = n
 
     while num_minus_ones + num_plus_ones > 0:
-        number = random.choices([1, -1], weights=[num_plus_ones, num_minus_ones], k=1)
+        number = seed.choices([1, -1], weights=[num_plus_ones, num_minus_ones], k=1)
         yield number[0]
         if number[0] == 1:
             num_plus_ones -= 1
@@ -289,9 +290,11 @@ def t2g_graph(n, seed=0, keep_zero_edges=True):
     return t2g_base(n, lambda: int(10 ** 5 * random_gauss(seed, 0, 1)), seed, keep_zero_edges)
 
 
-def t2g_one(n, seed=0):
+@py_random_state("seed")
+def t2g_one(n, seed=0, keep_zero_edges=True):
     """
     Generates a 2d torus graph as described by [1]
+    All edges have weight -1 or 1 and there are equal many of each (+-1)
 
     Parameters
     ----------
@@ -307,24 +310,10 @@ def t2g_one(n, seed=0):
 
     References
     ----------
-    ..[1] https://biqmac.aau.at/biqmaclib.html
+    ..[1] Bonato, T., Jünger, M., Reinelt, G., Rinaldi, G.:
+    Lifting and separation procedures for the cut polytope.Math. Prog.146(1–2), 351–378 (2014)
 
     """
-    g = nx.Graph()
-    random.seed(seed)
 
-    for i in range(n):
-        for j in range(n):
-            g.add_node(node_name(i, j))
-
-    num_generator = (x for x in random_ones(n))
-
-    for i in range(n):
-        for j in range(n):
-            next_index = j + 1 if j + 1 < n else 0
-            weight = next(num_generator)
-            g.add_edge(node_name(i, j), node_name(i, next_index), weight=weight)
-            weight = next(num_generator)
-            g.add_edge(node_name(j, i), node_name(next_index, i), weight=weight)
-
-    return g
+    weight_generator = equal_many_ones(n * n, seed)
+    return t2g_base(n, lambda: next(weight_generator), seed, keep_zero_edges)

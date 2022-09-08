@@ -1,3 +1,5 @@
+import pytest
+
 from geco.graphs.biqmac import *
 from geco.graphs.utilities import graph_properties
 
@@ -110,11 +112,38 @@ def test_wd():
     assert g_info["num_of_zero_edgeweights"] == 0
 
 
-def test_t2g():
-    g = t2g_graph(10)
+@pytest.mark.parametrize(
+    "n", [5, 10, 15]
+)
+def test_t2g(n):
+    g = t2g_graph(n)
     g_info = graph_properties(g, "weight")
 
-    assert g_info["num_nodes"] == 100
+    assert g_info["num_nodes"] == n ** 2
     assert g_info["max_degree"] == 4
     assert g_info["avg_degree"] == 4
     assert g_info["max_edgeweight"] != g_info["min_edgeweight"]
+
+
+@pytest.mark.parametrize(
+    "n", [5, 10, 15]
+)
+def test_t2g_ones(n):
+    g = t2g_one(n)
+    g_info = graph_properties(g)
+
+    assert g_info["num_nodes"] == n ** 2
+    assert g_info["max_degree"] == 4
+    assert g_info["avg_degree"] == 4
+
+    num_ones = 0
+    num_minus_ones = 0
+    for u, v, d in g.edges(data=True):
+        w = d["weight"]
+        if w == -1:
+            num_minus_ones += 1
+        elif w == 1:
+            num_ones += 1
+        else:
+            assert False
+    assert (num_ones == num_minus_ones) or (num_ones + 1 == num_minus_ones) or (num_ones == num_minus_ones + 1)
