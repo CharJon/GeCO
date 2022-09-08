@@ -1,5 +1,4 @@
 import networkx as nx
-import random
 
 from networkx.utils import py_random_state
 
@@ -219,8 +218,7 @@ def equal_many_ones(n, seed):
             num_minus_ones -= 1
 
 
-@py_random_state("seed")
-def t2g_base(n, weight_func, seed=0, keep_zero_edges=True):
+def t2g_base(n, weight_func, keep_zero_edges=True):
     """
     Generates a 2d torus graph using the given weight func
 
@@ -230,8 +228,6 @@ def t2g_base(n, weight_func, seed=0, keep_zero_edges=True):
         Size of the grid, number of nodes ill be n*n
     weight_func: function(seed) -> number
         Function for edge weights
-    seed:
-        Seed for random numbers
     keep_zero_edges: bool
         If True zero edges are kept in the graph, if False zero weight edges are discarded
 
@@ -242,7 +238,6 @@ def t2g_base(n, weight_func, seed=0, keep_zero_edges=True):
 
     """
     g = nx.Graph()
-    random.seed(seed)
 
     for i in range(n):
         for j in range(n):
@@ -289,7 +284,7 @@ def t2g_graph(n, seed=0, keep_zero_edges=True):
 
        """
 
-    return t2g_base(n, lambda: int(10 ** 5 * random_gauss(seed, 0, 1)), seed, keep_zero_edges)
+    return t2g_base(n, lambda: int(10 ** 5 * random_gauss(seed, 0, 1)), keep_zero_edges)
 
 
 @py_random_state("seed")
@@ -319,4 +314,4 @@ def t2g_one(n, seed=0, keep_zero_edges=True):
     """
 
     weight_generator = equal_many_ones(n * n, seed)
-    return t2g_base(n, lambda: next(weight_generator), seed, keep_zero_edges)
+    return t2g_base(n, lambda: next(weight_generator), keep_zero_edges)

@@ -1,5 +1,7 @@
 import pytest
 
+import random
+
 from geco.graphs.biqmac import *
 from geco.graphs.utilities import graph_properties
 
