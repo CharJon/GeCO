@@ -60,6 +60,7 @@ def negative_ten_to_ten(seed):
 def zero_to_ten(seed):
     return seed.randint(0, 10)
 
+
 @py_random_state("seed")
 def random_gauss(seed, mu, sigma):
     return seed.gauss(mu, sigma)
@@ -258,10 +259,12 @@ def t2g_base(n, weight_func, seed=0, keep_zero_edges=True):
 
     return g
 
+
 @py_random_state("seed")
 def t2g_graph(n, seed=0, keep_zero_edges=True):
     """
-       Generates a 2d torus graph using with gaussian weight as described by [1]
+       Generates a 2d torus graph using with gaussian weight as described by [1].
+       Weights are drawn from gaussian distribution with mu=0, sigma=1, scaled by 10^5 and rounded.
 
        Parameters
        ----------
@@ -283,7 +286,8 @@ def t2g_graph(n, seed=0, keep_zero_edges=True):
 
        """
 
-    return t2g_base(n, lambda: random_gauss(seed, 0.9, 1), seed, keep_zero_edges)
+    return t2g_base(n, lambda: int(10 ** 5 * random_gauss(seed, 0, 1)), seed, keep_zero_edges)
+
 
 def t2g_one(n, seed=0):
     """
