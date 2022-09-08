@@ -288,7 +288,7 @@ def t2g_graph(n, seed=0, keep_zero_edges=True):
 
 
 @py_random_state("seed")
-def t2g_one(n, seed=0, keep_zero_edges=True):
+def t2g_one(n, seed=0):
     """
     Generates a 2d torus graph as described by [1]
     All edges have weight -1 or 1 and there are equal many of each (+-1)
@@ -314,4 +314,4 @@ def t2g_one(n, seed=0, keep_zero_edges=True):
     """
 
     weight_generator = equal_many_ones(n * n, seed)
-    return t2g_base(n, lambda: next(weight_generator), keep_zero_edges)
+    return t2g_base(n, lambda: next(weight_generator))
