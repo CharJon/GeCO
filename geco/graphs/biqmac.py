@@ -232,6 +232,8 @@ def t2g_base(n, weight_func, seed=0, keep_zero_edges=True):
         Function for edge weights
     seed:
         Seed for random numbers
+    keep_zero_edges: bool
+        If True zero edges are kept in the graph, if False zero weight edges are discarded
 
     Returns
     -------
@@ -271,10 +273,10 @@ def t2g_graph(n, seed=0, keep_zero_edges=True):
        ----------
        n: int
            Size of the grid, number of nodes ill be n*n
-       weight_func: function(seed) -> number
-           Function for edge weights
        seed:
            Seed for random numbers
+       keep_zero_edges: bool
+            If True zero edges are kept in the graph, if False zero weight edges are discarded
 
        Returns
        -------
@@ -302,7 +304,8 @@ def t2g_one(n, seed=0, keep_zero_edges=True):
         Size of the grid, number of nodes ill be n*n
     seed:
         Seed for random numbers
-
+    keep_zero_edges: bool
+        If True zero edges are kept in the graph, if False zero weight edges are discarded
     Returns
     -------
     graph: nx.Graph
