@@ -11,7 +11,7 @@ def test_capacitated_facility_location():
     model = capacitated_facility_location(n_customers, n_facilities, *instance_params)
     assert model.getNVars() == n_customers * n_facilities + n_facilities
     assert (
-        model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
+            model.getNConss() == n_customers + n_facilities + 1 + n_customers * n_facilities
     )
     assert model.getObjectiveSense() == "minimize"
     model.hideOutput()
@@ -83,6 +83,4 @@ def test_orlib_solution(instance_name):
     instance.hideOutput()
     instance.optimize()
     assert instance.getStatus() == "optimal"
-    assert pytest.approx(
-        instance.getObjVal() == df[df["name"] == instance_name]["solution_value"]
-    )
+    assert instance.getObjVal() == pytest.approx(df[df["name"] == instance_name]["solution_value"])
