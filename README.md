@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/CharJon/GeCO.svg?branch=main)](https://travis-ci.org/CharJon/GeCO) [![codecov](https://codecov.io/gh/CharJon/GeCO/branch/main/graph/badge.svg?token=IRS3LOkoFZ)](https://codecov.io/gh/CharJon/GeCO)
+[![DOI](https://zenodo.org/badge/307989354.svg)](https://zenodo.org/badge/latestdoi/307989354)
 
 # GeCO
 
