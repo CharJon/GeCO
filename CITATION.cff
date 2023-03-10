@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: GeCO
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jonas
+    family-names: Charfreitag
+    email: jcharfreitag@uni-bonn.de
+  - given-names: Mohammed
+    family-names: Ghannam
+    email: ghannam@zib.de
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7713440
