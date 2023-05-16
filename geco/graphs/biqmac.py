@@ -3,6 +3,41 @@ import networkx as nx
 from networkx.utils import py_random_state
 
 
+@py_random_state("seed")
+def one_or_minus_one(seed):
+    return seed.choices([1, -1], k=1)[0]
+
+
+@py_random_state("seed")
+def negative_ten_to_ten(seed):
+    return seed.randint(-10, 10)
+
+
+@py_random_state("seed")
+def zero_to_ten(seed):
+    return seed.randint(0, 10)
+
+
+@py_random_state("seed")
+def random_gauss(seed, mu, sigma):
+    return seed.gauss(mu, sigma)
+
+
+def __add_weights(graph, weight_func, keep_zero_edges):
+    """
+    Adds weights to a graph using the specified weight function.
+    """
+    for u, v in graph.edges:
+        w = weight_func()
+
+        if w != 0 or keep_zero_edges:
+            graph.add_edge(u, v, weight=w)
+        else:
+            graph.remove_edge(u, v)
+
+    return graph
+
+
 def generate_weighted_random_graph(n, d, weight_func, nx_seed=0, keep_zero_edges=True):
     """
     Generate a random weighted graph with 'exact' target density using specified weight function.
@@ -34,35 +69,39 @@ def generate_weighted_random_graph(n, d, weight_func, nx_seed=0, keep_zero_edges
     else:
         graph = nx.dense_gnm_random_graph(n, m, nx_seed)
 
-    for u, v in graph.edges:
-        w = weight_func()
-
-        if w != 0 or keep_zero_edges:
-            graph.add_edge(u, v, weight=w)
-        else:
-            graph.remove_edge(u, v)
+    __add_weights(graph, weight_func, keep_zero_edges)
 
     return graph
 
 
-@py_random_state("seed")
-def one_or_minus_one(seed):
-    return seed.choices([1, -1], k=1)[0]
+def generate_weighted_random_regular_graph(n, k, weight_func, nx_seed=0, keep_zero_edges=True):
+    """
+    Generate a random k-regular weighted graph using specified weight function.
 
+    Parameters
+    ----------
+    n: int
+        Number of nodes
+    k: int
+        degree
+    weight_func: function() -> number
+      Function which returns an edge weight
+    nx_seed: int
+        Seed for random generation
+    keep_zero_edges: bool
+        If True zero edges are kept in the graph, if False zero weight edges are discarded
 
-@py_random_state("seed")
-def negative_ten_to_ten(seed):
-    return seed.randint(-10, 10)
+    Returns
+    -------
+        graph: nx.Graph
+            generated random graph
 
+    """
 
-@py_random_state("seed")
-def zero_to_ten(seed):
-    return seed.randint(0, 10)
+    graph = nx.random_regular_graph(k, n, nx_seed)
+    __add_weights(graph, weight_func, keep_zero_edges)
 
-
-@py_random_state("seed")
-def random_gauss(seed, mu, sigma):
-    return seed.gauss(mu, sigma)
+    return graph
 
 
 @py_random_state("seed")
@@ -175,7 +214,7 @@ def wd_graph(n, d, seed=0, keep_zero_edges=True):
 @py_random_state("seed")
 def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     """
-    Generates a pwd_n graph as described in [1], using networkx
+    Generates a random k regular graph, using networkx
 
     Parameters
     ----------
@@ -191,13 +230,81 @@ def pwd_graph(n, d, seed=0, keep_zero_edges=True):
     Returns
     -------
     graph: nx.Graph
-        The generated pw graph.
-
-    References
-    ----------
-    ..[1] https://biqmac.aau.at/biqmaclib.html
+        The generated graph.
     """
     return generate_weighted_random_graph(n, d, lambda: zero_to_ten(seed), seed, keep_zero_edges)
+
+
+@py_random_state("seed")
+def pwk_graph(n, k, seed=0, keep_zero_edges=True):
+    """
+    Generates a random k regular graph, using networkx
+
+    Parameters
+    ----------
+    n: int
+        Size of generated graph
+    k: float
+        Degree of every node
+    seed:
+        Seed for random generation
+    keep_zero_edges: bool
+        If True zero edges are kept in the graph, if False zero weight edges are discarded
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated pw graph.
+    """
+    return generate_weighted_random_regular_graph(n, k, lambda: zero_to_ten(seed), seed, keep_zero_edges)
+
+
+@py_random_state("seed")
+def wk_graph(n, k, seed=0, keep_zero_edges=True):
+    """
+    Generates a random k regular graph, using networkx
+
+    Parameters
+    ----------
+    n: int
+        Size of generated graph
+    k: float
+        Degree of every node
+    seed:
+        Seed for random generation
+    keep_zero_edges: bool
+        If True zero edges are kept in the graph, if False zero weight edges are discarded
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated pw graph.
+    """
+    return generate_weighted_random_regular_graph(n, k, lambda: negative_ten_to_ten(seed), seed, keep_zero_edges)
+
+
+@py_random_state("seed")
+def mk_graph(n, k, seed=0, keep_zero_edges=True):
+    """
+    Generates a random k regular graph, using networkx
+
+    Parameters
+    ----------
+    n: int
+        Size of generated graph
+    k: float
+        Degree of every node
+    seed:
+        Seed for random generation
+    keep_zero_edges: bool
+        If True zero edges are kept in the graph, if False zero weight edges are discarded
+
+    Returns
+    -------
+    graph: nx.Graph
+        The generated graph.
+    """
+    return generate_weighted_random_regular_graph(n, k, lambda: one_or_minus_one(seed), seed, keep_zero_edges)
 
 
 def node_name(i, j):

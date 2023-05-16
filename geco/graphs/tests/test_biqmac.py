@@ -21,6 +21,22 @@ def test_generate_weighted_random_graph():
     assert g_1.number_of_edges() == g_2.number_of_edges()
 
 
+def test_generate_weighted_random_regular_graph():
+    seed = 0
+    r1 = random.Random(seed)
+    g_1 = generate_weighted_random_regular_graph(100, 10, lambda: zero_to_ten(r1), 0, True)
+    g_2 = generate_weighted_random_regular_graph(100, 10, lambda: zero_to_ten(r1), 0, True)
+
+    for g in (g_1, g_2):
+        g_info = graph_properties(g)
+
+        assert g_info["avg_degree"] == 10
+        assert g_info["max_degree"] == 10
+        assert g_info["num_nodes"] == 100
+        assert g_info["num_edges"] == 500
+        assert g_info["number_of_selfloops"] == 0
+
+
 def test_generate_weighted_random_graph_no_zeros():
     seed = 0
     r = random.Random(seed)
@@ -88,6 +104,36 @@ def test_pwd():
     assert g_info["density"] == 0.3
     assert g_info["num_nodes"] == 100
     assert g_info["min_edgeweight"] >= 0
+
+
+def test_pwk():
+    g = pwk_graph(100, 10, 0)
+    g_info = graph_properties(g)
+
+    assert g_info["avg_degree"] == 10
+    assert g_info["max_degree"] == 10
+    assert g_info["num_nodes"] == 100
+    assert g_info["min_edgeweight"] >= 0
+
+
+def test_wk():
+    g = wk_graph(100, 10, 0)
+    g_info = graph_properties(g)
+
+    assert g_info["avg_degree"] == 10
+    assert g_info["max_degree"] == 10
+    assert g_info["num_nodes"] == 100
+    assert g_info["min_edgeweight"] >= -10
+
+
+def test_mk():
+    g = mk_graph(100, 10, 0)
+    g_info = graph_properties(g)
+
+    assert g_info["avg_degree"] == 10
+    assert g_info["max_degree"] == 10
+    assert g_info["num_nodes"] == 100
+    assert g_info["min_edgeweight"] >= -1
 
 
 def test_pwd_no_zeros():
